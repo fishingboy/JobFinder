@@ -1,6 +1,6 @@
 ## 找工作小工作
 
-* 使用 Laravel PHP Framework
+使用 Laravel PHP Framework
 
 因為覺得 104 的求職條件只能設 5 組不太夠用
 而且無法根據公司來做收合，無法快速瀏灠符合條件的公司有哪些？
