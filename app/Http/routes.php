@@ -12,12 +12,12 @@
 */
 
 // 歡迎
-Route::get('/welcome', function()
-{
-    return view('welcome');
-});
+Route::get('/welcome', function(){return view('welcome'); });
+
+// 目前的 route 總表，方便測試
+Route::get('/', function(){return view('link');});
 
 // 工作列表
-Route::get('/', 'ListController@index');
+// Route::get('/', 'ListController@index');
 Route::get('/list', 'ListController@index');
 Route::get('/ptt_list', 'ListController@ptt_list');
