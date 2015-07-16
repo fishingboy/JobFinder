@@ -21,3 +21,5 @@ Route::get('/', function(){return view('link');});
 // Route::get('/', 'ListController@index');
 Route::get('/list', 'ListController@index');
 Route::get('/ptt_list', 'ListController@ptt_list');
+Route::get('/db_test', 'ListController@db_test');
+

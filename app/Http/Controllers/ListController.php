@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\User;
+use App\Models\Job;
 use App\Models\Job104;
 use App\Models\JobPtt;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use DB;
 
 class ListController extends Controller
 {
@@ -18,12 +22,20 @@ class ListController extends Controller
      */
     public function index(Job104 $job)
     {
-        return $job->search();
+        // 更新資料庫
+        return $job->update();
+
+        // return $job->search();
         // return "ListController::index";
     }
 
+    public function list_104(Job104 $job)
+    {
+        # code...
+    }
+
     /**
-     * Display a listing of the resource.
+     * PTT
      *
      * @return Response
      */
@@ -34,68 +46,14 @@ class ListController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 資料庫測試
      *
      * @return Response
      */
-    public function create()
+    public function db_test($id=1)
     {
-        //
-    }
+        $rows = User::query();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        echo "<pre>rows = " . print_r($rows, TRUE). "</pre>";
     }
 }
