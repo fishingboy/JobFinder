@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
+// 歡迎
+Route::get('/welcome', function()
+{
     return view('welcome');
 });
+
+// 工作列表
+Route::get('/', 'ListController@index');
+Route::get('/list', 'ListController@index');
+Route::get('/ptt_list', 'ListController@ptt_list');
