@@ -33,6 +33,17 @@ class Job104 extends JobBase
         return $this->_api_url . '?' . $this->_api_params;
     }
 
+    /**
+     * 從來源更新資料庫
+     */
+    public function update()
+    {
+
+    }
+
+    /**
+     * 搜尋
+     */
     public function search()
     {
         $url = $this->_get_api_url();

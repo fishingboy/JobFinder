@@ -4,7 +4,7 @@ use App\Library\Curl;
 use App\Models\JobBase;
 
 /**
-* Job 104
+* Job PTT
 */
 class JobPtt extends JobBase
 {
@@ -17,6 +17,17 @@ class JobPtt extends JobBase
         'https://www.ptt.cc/bbs/Soft_Job/index.html'
     ];
 
+    /**
+     * 從來源更新資料庫
+     */
+    public function update()
+    {
+
+    }
+
+    /**
+     * 搜尋
+     */
     public function search()
     {
         $content = Curl::get_response($this->_url[0]);
