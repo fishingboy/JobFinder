@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use App\Library\Curl;
 use App\Models\JobBase;
 
 /**
@@ -18,7 +19,7 @@ class JobPtt extends JobBase
 
     public function search()
     {
-        $content = self::curl_get_response($this->_url[0]);
+        $content = Curl::get_response($this->_url[0]);
         $content = ($content['status']) ? $content['data'] : NULL;
         return view('joblist', ['content' => $content]);
     }

@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use App\Models\JobBase;
+use App\Library\Curl;
 
 /**
 * Job 104
@@ -36,7 +37,7 @@ class Job104 extends JobBase
     {
         $url = $this->_get_api_url();
         // $content = $this->show_category();
-        $content = self::curl_get_json_data($url);
+        $content = Curl::get_json_data($url);
         $content = "<pre>" . print_r($content, TRUE) . "</pre>";
         return view('joblist', ['content' => $content]);
     }
