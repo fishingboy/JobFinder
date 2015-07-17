@@ -16,33 +16,49 @@ use DB;
 class ListController extends Controller
 {
     /**
+     * 建立 job 實體
+     * @param  string $source 來源
+     * @return object         job 實體
+     */
+    private function _create_job($source = '104')
+    {
+        switch ($source)
+        {
+            case 'ptt':
+                echo 'ptt';
+                $job = new JobPtt();
+                break;
+
+            case '104':
+                echo '104';
+                $job = new Job104();
+            default:
+                break;
+        }
+        return $job;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index(Job104 $job)
+    public function index($source = '104')
     {
-        // 更新資料庫
-        return $job->update();
+        // 取得 job 實體
+        $job = $this->_create_job($source);
 
-        // return $job->search();
-        // return "ListController::index";
-    }
-
-    public function list_104(Job104 $job)
-    {
-        # code...
-    }
-
-    /**
-     * PTT
-     *
-     * @return Response
-     */
-    public function ptt_list(JobPtt $job)
-    {
         return $job->search();
         // return "ListController::index";
+    }
+
+    public function update($source = '104')
+    {
+        // 取得 job 實體
+        $job = $this->_create_job($source);
+
+        // 更新資料庫
+        return $job->update();
     }
 
     /**
