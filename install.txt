@@ -36,3 +36,12 @@ JobFinder 安裝步驟
        DB_DATABASE={DATABASE_NAME}
        DB_USERNAME={DATABASE_USER}
        DB_PASSWORD={DATABASE_PASSWORD}
+
+6. 同步資料
+
+   剛裝好的時候，資料庫是沒有資料的
+   請請打開瀏灠器執行
+
+   http://jobfinder/update/104
+
+   會去打 104 API 同步資料，會花些時間，請稍待
