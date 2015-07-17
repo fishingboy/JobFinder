@@ -32,7 +32,7 @@ class Job extends Model
         // 資料已存在則取消操作
         if ($j_code && isset(self::$_j_code_list[$j_code]))
         {
-            return FALSE;
+            return self::$_j_code_list[$j_code];
         }
 
         // 查詢 job 是否已存在
@@ -53,7 +53,7 @@ class Job extends Model
         // 儲存 j_code
         self::$_j_code_list[$j_code] = $id;
 
-        return TRUE;
+        return $id;
     }
 
     /**

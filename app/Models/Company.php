@@ -32,8 +32,7 @@ class Company extends Model
         // 資料已存在則取消操作
         if ($c_code && isset(self::$_c_code_list[$c_code]))
         {
-            echo "cancel '$c_code'<br>";
-            return FALSE;
+            return self::$_c_code_list[$c_code];
         }
 
         // 查詢 company 是否已存在
@@ -43,19 +42,17 @@ class Company extends Model
         // 新增/更新
         if ($row)
         {
-            echo "update '$c_code'<br>";
             $id = $row->companyID;
             DB::table('company')->where('companyID', $id)->update($param);
         }
         else
         {
-            echo "insert '$c_code'<br>";
             $id = DB::table('company')->insertGetId($param);
         }
 
         // 儲存 c_code
         self::$_c_code_list[$c_code] = $id;
 
-        return TRUE;
+        return $id;
     }
 }
