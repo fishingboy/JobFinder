@@ -14,7 +14,7 @@
     <div class='title'>搜尋表單</div>
     <form action='{{ $url }}' method='GET'>
         @foreach ($search_field as $field)
-            <div>{{ $field }}: <input type='text' name='{{ $field }}'></div>
+            <div>{{ $field }}: <input type='text' name='{{ $field }}' value='{{ $search_param[$field] or '' }}'></div>
         @endforeach
         <input type='submit' value='搜尋'>
     </form>
