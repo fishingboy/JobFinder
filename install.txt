@@ -1,0 +1,37 @@
+JobFinder 安裝步驟
+--------------------------
+1. clone 專案
+   $ git clone https://github.com/fishingboy/JobFinder.git  www_jobfinder
+
+2. 執行 composer install
+   開啟 cmd 畫面
+   > cd www_jobfinder
+   > php D:\xampp\php\composer composer global require "laravel/installer=~1.1"
+   > php D:\xampp\php\composer install
+
+   如未安裝 composer 請參考：
+   http://wbkuo.pixnet.net/blog/post/201053931
+
+3. 設定 Virtual Host
+
+   請參考：
+   http://wbkuo.pixnet.net/blog/post/201053931
+
+4. 匯入 mysql
+
+   sql 檔案在 /jobfinder.sql
+   請開啟 phpMyAdmin 建立一個資料庫，然後匯入
+
+5. 調整 .env 設定檔
+
+   5.1 開啟 git bash，將 .evn.example 複製成 .env
+       (或使用任何方法複製，不過 windows 會叫你輸入檔名)
+
+       $ cp .env.example .env
+
+   5.2 調整以下設定
+       APP_KEY=BNx7BhfE6D3QCntRKJWLsAOEGmOEdaWn
+
+       DB_DATABASE={DATABASE_NAME}
+       DB_USERNAME={DATABASE_USER}
+       DB_PASSWORD={DATABASE_PASSWORD}
