@@ -12,6 +12,5 @@
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond $1 !^(index\.php|js|css|img|$)
     RewriteRule ^ index.php [L]
 </IfModule>
