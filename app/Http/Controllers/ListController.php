@@ -25,21 +25,19 @@ class ListController extends Controller
         switch ($source)
         {
             case 'ptt':
-                echo 'ptt';
                 $job = new JobPtt();
                 break;
 
             case '104':
-                echo '104';
-                $job = new Job104();
             default:
+                $job = new Job104();
                 break;
         }
         return $job;
     }
 
     /**
-     * Display a listing of the resource.
+     * 顯示工作列表
      *
      * @return Response
      */
@@ -48,10 +46,19 @@ class ListController extends Controller
         // 取得 job 實體
         $job = $this->_create_job($source);
 
-        return $job->search();
-        // return "ListController::index";
+        // 取得查詢資料
+        $data = $job->search();
+
+        // 畫面輸出
+        $content = "<pre>data = " . print_r($data, TRUE). "</pre>";
+        return view('joblist', ['content' => $content]);
     }
 
+    /**
+     * 從來源更新工作資料庫
+     * @param  string $source 來源類別
+     * @return Response
+     */
     public function update($source = '104')
     {
         // 取得 job 實體

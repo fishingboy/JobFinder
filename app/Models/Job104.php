@@ -2,6 +2,7 @@
 
 use App\Models\JobBase;
 use App\Library\Curl;
+use App\Models\Job;
 
 /**
 * Job 104
@@ -14,6 +15,22 @@ class Job104 extends JobBase
     }
 
     /**
+     * 允許搜尋的欄位
+     *
+     * @var array
+     */
+    protected $_allow_search_field = [
+        'keyword',
+        'cat',
+        'area',
+        'ind',
+        'major',
+        'comp',
+        'jskill',
+        'cert',
+    ];
+
+    /**
      * 104 API 網址
      * @var string
      */
@@ -23,7 +40,7 @@ class Job104 extends JobBase
      * API 參數
      * @var string
      */
-    private $_api_params = 'cat=2007001006&role=1,4&fmt=8';
+    private $_api_params = 'cat=2007001006&role=1,4&pgsz=400&fmt=8';
 
     /**
      * @return string url
@@ -111,6 +128,14 @@ class Job104 extends JobBase
     {
         $url = $this->_get_api_url();
         $json_data = Curl::get_json_data($url);
+
+        // 取不到資料時
+        if ( ! $json_data)
+        {
+            return '資料取得錯誤';
+        }
+
+        // 寫入資料
         foreach ($json_data->data as $row)
         {
             // 寫入 job 資料表
@@ -128,15 +153,16 @@ class Job104 extends JobBase
     /**
      * 搜尋
      */
-    public function search()
+    public function search($param = [])
     {
-        $url = $this->_get_api_url();
-        // $content = $this->show_category();
-        $content = Curl::get_json_data($url);
-        $content = "<pre>" . print_r($content, TRUE) . "</pre>";
-        return view('joblist', ['content' => $content]);
+        $rows = Job::search($param);
+        return $rows;
     }
 
+    /**
+     * 104 json 檔案測試
+     * @return Response
+     */
     public function show_category()
     {
         $file = JSON_DIR . '104/category.json';

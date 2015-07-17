@@ -9,6 +9,15 @@ use App\Models\JobBase;
 class JobPtt extends JobBase
 {
     /**
+     * 允許搜尋的欄位
+     *
+     * @var array
+     */
+    protected $_allow_search_field = [
+        'keyword',
+    ];
+
+    /**
      * 104 API 網址
      * @var string
      */

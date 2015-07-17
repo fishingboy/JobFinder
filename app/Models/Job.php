@@ -55,4 +55,14 @@ class Job extends Model
 
         return TRUE;
     }
+
+    /**
+     * 搜尋
+     * @param  array  $param 搜尋條件
+     * @return array         job 資料
+     */
+    public static function search($param = [])
+    {
+        return DB::table('job')->limit(100)->get();
+    }
 }

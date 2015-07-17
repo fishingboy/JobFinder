@@ -18,7 +18,7 @@ abstract class JobBase
      *
      * @var array
      */
-    protected $_allow_search_field;
+    protected $_allow_search_field = [];
 
     /**
      * 更新(從來源更新資料庫)
