@@ -27,7 +27,7 @@ class Curl
      */
     public static function get_response($url)
     {
-        $timeout = 10;
+        $timeout = 100;
         $curl = curl_init($url);
         if (substr($url, 0, 5) == "https")
         {
