@@ -34,7 +34,7 @@ abstract class JobBase
      * 取得允許查詢欄位
      * @return array 允許查詢欄位
      */
-    protected function _get_allow_field()
+    public function get_allow_search_field()
     {
         return $this->_allow_search_field;
     }

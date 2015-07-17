@@ -37,10 +37,8 @@ class JobPtt extends JobBase
     /**
      * 搜尋
      */
-    public function search()
+    public function search($param = [])
     {
-        $content = Curl::get_response($this->_url[0]);
-        $content = ($content['status']) ? $content['data'] : NULL;
-        return view('joblist', ['content' => $content]);
+        return Job::search($param);
     }
 }

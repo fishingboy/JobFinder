@@ -155,8 +155,7 @@ class Job104 extends JobBase
      */
     public function search($param = [])
     {
-        $rows = Job::search($param);
-        return $rows;
+        return Job::search($param);
     }
 
     /**
