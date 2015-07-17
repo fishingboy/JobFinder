@@ -11,6 +11,7 @@
     <li><a target='_blank' href='/list/ptt'>PTT 列表</a></li>
     <li><a target='_blank' href='/update'>更新 104 資料</a></li>
     <li><a target='_blank' href='/update/ptt'>更新 PTT 資料</a></li>
+    <li><a target='_blank' href='/plugin/firephp'>firephp 測試</a></li>
     <li><a target='_blank' href='/db_test'>資料庫測試</a></li>
 <ul>
 </body>

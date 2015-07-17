@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5c6026b96e6fa11a641b51a6ba976f5e",
+    "hash": "07f855725f77d1d0a72277b61498d70d",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -215,6 +215,45 @@
                 "string"
             ],
             "time": "2014-12-20 21:24:13"
+        },
+        {
+            "name": "firephp/firephp-core",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firephp/firephp-core.git",
+                "reference": "67b5aa8e314eb88f8927d1213ea268effa1dfa3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firephp/firephp-core/zipball/67b5aa8e314eb88f8927d1213ea268effa1dfa3d",
+                "reference": "67b5aa8e314eb88f8927d1213ea268effa1dfa3d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/FirePHPCore/FirePHP.class.php",
+                    "lib/FirePHPCore/fb.php"
+                ],
+                "files": [
+                    "lib/FirePHPCore/fb.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christoph Dorn",
+                    "email": "christoph@christophdorn.com",
+                    "homepage": "http://christophdorn.com"
+                }
+            ],
+            "description": "Traditional FirePHPCore library for sending PHP variables to the browser.",
+            "homepage": "https://github.com/firephp/firephp-core",
+            "time": "2014-11-26 18:59:18"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -739,16 +778,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "dff239267fd1befa1cd40430c9ed12591aa720ca"
+                "reference": "196f177cfefa0f1f7166c0a05d8255889be12418"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dff239267fd1befa1cd40430c9ed12591aa720ca",
-                "reference": "dff239267fd1befa1cd40430c9ed12591aa720ca",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/196f177cfefa0f1f7166c0a05d8255889be12418",
+                "reference": "196f177cfefa0f1f7166c0a05d8255889be12418",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +797,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -780,7 +819,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-05-02 15:40:40"
+            "time": "2015-07-14 17:31:05"
         },
         {
             "name": "psr/log",
@@ -822,16 +861,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.5.1",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "e5a46a767928e85f1f47dda654beda8c680ddd94"
+                "reference": "aaf8772ade08b5f0f6830774a5d5c2f800415975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/e5a46a767928e85f1f47dda654beda8c680ddd94",
-                "reference": "e5a46a767928e85f1f47dda654beda8c680ddd94",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/aaf8772ade08b5f0f6830774a5d5c2f800415975",
+                "reference": "aaf8772ade08b5f0f6830774a5d5c2f800415975",
                 "shasum": ""
             },
             "require": {
@@ -890,7 +929,50 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2015-07-03 16:48:00"
+            "time": "2015-07-16 15:26:57"
+        },
+        {
+            "name": "sunra/php-simple-html-dom-parser",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
+                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sunra",
+                    "email": "sunra@yandex.ru",
+                    "homepage": "http://github.com/sunra"
+                }
+            ],
+            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
+            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
+            "keywords": [
+                "dom",
+                "html",
+                "parser"
+            ],
+            "time": "2013-05-04 14:32:03"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2923,7 +3005,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "firephp/firephp-core": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

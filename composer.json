@@ -6,7 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "sunra/php-simple-html-dom-parser": "v1.5.0",
+         "firephp/firephp-core" : "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

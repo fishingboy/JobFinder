@@ -25,4 +25,5 @@ Route::get('/update/{source}', 'ListController@update');
 
 // test
 Route::get('/db_test', 'ListController@db_test');
+Route::get('/plugin/firephp', 'PluginController@firephp');
 
