@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace App\Classes;
 
 /**
 * Job 基礎類別

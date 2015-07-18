@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Job;
-use App\Models\Job104;
-use App\Models\JobPtt;
+use App\Classes\Job;
+use App\Classes\Job104;
+use App\Classes\JobPtt;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 

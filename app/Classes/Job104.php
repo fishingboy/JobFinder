@@ -1,7 +1,9 @@
-<?php namespace App\Models;
+<?php
+namespace App\Classes;
 
-use App\Models\JobBase;
+use App\Classes\JobBase;
 use App\Library\Curl;
+use App\Models\Company;
 use App\Models\Job;
 
 /**

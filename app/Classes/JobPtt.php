@@ -1,7 +1,8 @@
-<?php namespace App\Models;
+<?php
+namespace App\Classes;
 
+use App\Classes\JobBase;
 use App\Library\Curl;
-use App\Models\JobBase;
 
 /**
 * Job PTT
