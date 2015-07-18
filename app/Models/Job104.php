@@ -40,7 +40,7 @@ class Job104 extends JobBase
      * API 參數
      * @var string
      */
-    private $_api_params = 'cat=2007001006&role=1,4&pgsz=400&fmt=8';
+    private $_api_params = 'cat=2007001006&role=1,4&pgsz=50&fmt=8';
 
     /**
      * @return string url
