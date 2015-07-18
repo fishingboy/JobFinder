@@ -3,6 +3,7 @@ namespace App\Classes;
 
 use App\Classes\JobBase;
 use App\Library\Curl;
+use App\Models\Job;
 
 /**
 * Job PTT
