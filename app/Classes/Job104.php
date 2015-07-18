@@ -39,17 +39,62 @@ class Job104 extends JobBase
     private $_api_url = 'http://www.104.com.tw/i/apis/jobsearch.cfm';
 
     /**
-     * API 參數
-     * @var string
+     * 呼叫 104 API 的查詢條件
+     * @var array
      */
-    private $_api_params = 'cat=2007001006&role=1,4&pgsz=50&fmt=8';
+    private $_update_conditions = [
+        'cat'  => '2007001006',
+        'role' => [1, 4],
+        'pgsz' => 50,
+        'fmt'  => 8,
+    ];
 
     /**
+     * 取得 104 API 呼叫網址
      * @return string url
      */
     private function _get_api_url()
     {
-        return $this->_api_url . '?' . $this->_api_params;
+        return $this->_api_url . '?' . $this->_get_api_params() . '&fmt=8';
+    }
+
+    /**
+     * 組合 api 參數
+     * @return string api 參數
+     */
+    private function _get_api_params()
+    {
+        $get_param_array = [];
+        foreach ($this->_update_conditions as $key => $value)
+        {
+            $value_str = '';
+            switch (gettype($value))
+            {
+                case 'array':
+                    $value_str = implode(',', $value);
+                    break;
+
+                case 'string':
+                    $value_str = urlencode($value);
+                    break;
+
+                case 'integer':
+                default:
+                    $value_str = $value;
+                    break;
+            }
+            $get_param_array[] = "{$key}={$value_str}";
+        }
+        return implode('&', $get_param_array);
+    }
+
+    /**
+     * 設定更新過瀘條件
+     * @param array $conditions 更新時的查詢條件
+     */
+    public function _set_update_condition($conditions = NULL)
+    {
+        $this->_update_conditions = $conditions;
     }
 
     /**
@@ -126,10 +171,22 @@ class Job104 extends JobBase
     /**
      * 從來源更新資料庫
      */
-    public function update()
+    public function update($conditions = NULL)
     {
+        // 設定更新時的查詢條件
+        if ($conditions)
+        {
+            $this->_set_update_condition($conditions);
+        }
+
+        // 取得 api 網址，查詢資料
         $url = $this->_get_api_url();
         $json_data = Curl::get_json_data($url);
+
+        // 取得額外資訊
+        $api_condition_response = Curl::get_response(str_replace('&fmt=8', '&fmt=9', $url))['data'];
+        $api_count_response = Curl::get_response(str_replace('&fmt=8', '&fmt=6', $url))['data'];
+
 
         // 取不到資料時
         if ( ! $json_data)
@@ -150,7 +207,12 @@ class Job104 extends JobBase
             $jobID = Job::insert($job_data);
         }
 
-        return view('update_report', ['source' => self::class]);
+        return view('update_report', [
+            'source' => self::class,
+            'api_url' => $url,
+            'condition' => $api_condition_response,
+            'job_count' => $api_count_response
+        ]);
     }
 
     /**

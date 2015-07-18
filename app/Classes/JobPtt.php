@@ -33,7 +33,7 @@ class JobPtt extends JobBase
      */
     public function update()
     {
-
+        return view('update_report', ['source' => self::class]);
     }
 
     /**

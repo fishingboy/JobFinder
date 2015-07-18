@@ -95,8 +95,19 @@ class ListController extends Controller
         // 取得 job 實體
         $job = $this->_create_job($source);
 
+        // 取得查詢條件(之後可以改成用資料庫或其他方式取得)
+        $conditions = [
+            'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
+            'area' => ['6001001000', '6001002000'],
+            'role' => [1, 4],
+            'pgsz' => 100,
+            'exp'  => 7,
+            'kws'  => 'php python',
+            'kwop' => 3,
+        ];
+
         // 更新資料庫
-        return $job->update();
+        return $job->update($conditions);
     }
 
     /**
