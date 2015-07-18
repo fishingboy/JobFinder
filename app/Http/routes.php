@@ -23,6 +23,9 @@ Route::get('/list/{source}', 'ListController@index');
 Route::get('/update', 'ListController@update');
 Route::get('/update/{source}', 'ListController@update');
 
+// 資料庫操作
+Route::get('/truncate', 'ToolController@truncate');
+
 // test
 Route::get('/db_test', 'ListController@db_test');
 Route::get('/plugin/firephp', 'PluginController@firephp');
