@@ -11,7 +11,8 @@
     <li><a target='_blank' href='/list'>104 列表</a></li>
     <li><a target='_blank' href='/list/ptt'>PTT 列表</a></li>
     <br>
-    <li><a target='_blank' href='/update'>更新 104 資料</a></li>
+    <li><a target='_blank' href='/update/104'>更新 104 資料</a></li>
+    <li><a target='_blank' href='/update/104?preview=1'>預灠 104 資料(不更新資料庫)</a></li>
     <li><a target='_blank' href='/update/ptt'>更新 PTT 資料</a></li>
     <br>
     <li><a target='_blank' href='/truncate'>清空 job, company 資料</a></li>

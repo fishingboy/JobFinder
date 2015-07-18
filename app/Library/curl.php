@@ -11,7 +11,7 @@ class Curl
         $data = self::get_response($url);
         if ($data['status'])
         {
-            return json_decode($data['data']);
+            return json_decode($data['data'], TRUE);
         }
         else
         {

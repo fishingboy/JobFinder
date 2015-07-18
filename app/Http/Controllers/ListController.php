@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Classes\Job;
 use App\Classes\Job104;
 use App\Classes\JobPtt;
+use App\Library\Debug;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -90,7 +91,7 @@ class ListController extends Controller
      * @param  string $source 來源類別
      * @return Response
      */
-    public function update($source = '104')
+    public function update(Request $request, $source = '104')
     {
         // 取得 job 實體
         $job = $this->_create_job($source);
@@ -100,14 +101,31 @@ class ListController extends Controller
             'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
             'area' => ['6001001000', '6001002000'],
             'role' => [1, 4],
-            'pgsz' => 100,
+            // 'pgsz' => 100,
             'exp'  => 7,
             'kws'  => 'php python',
             'kwop' => 3,
         ];
 
+        // 取得分頁
+        $conditions['page'] = $request->input('page', NULL);
+
+        // 是否為預灠
+        $conditions['preview'] = $request->input('preview', NULL);
+
         // 更新資料庫
-        return $job->update($conditions);
+        $job_data = $job->update($conditions);
+        Debug::fblog('$job_data', $job_data);
+
+        // 判斷更新是否要自動跳轉下一頁
+        $job_data['go_next_page_js'] = '';
+        if ( ! $conditions['preview'] && $job_data['page'] != $job_data['total_page'])
+        {
+            $next_url = "/update/{$source}?page=" . ($job_data['page'] + 1);
+            $job_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
+        }
+
+        return view('update_report', $job_data);
     }
 
     /**

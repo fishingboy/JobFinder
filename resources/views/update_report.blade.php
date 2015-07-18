@@ -2,15 +2,33 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>更新</title>
+<title>更新 {{ $source }}</title>
 </head>
 <body>
-<div style='font-weight:bold;'>Update {{ $source }} Success.</div>
+{{-- 顯示更新標題 --}}
+<div style='font-weight:bold;'>Update {{ $source }}
+@if ($page == $total_page)
+    Success.
+@else
+    ....
+@endif
+</div>
+<br>
+
+{{-- 顯示求職條件(僅預灠模式) --}}
+@if ($preview_mode)
+<div>求職條件: {{ $condition }}</div>
+@endif
+
+{{-- 顯示其他資訊 --}}
 @if ($source == 'App\Classes\Job104')
-    <br>
-    <div>API 網址: {{ $api_url }}</div>
-    <div>查詢條件: {{ $condition }}</div>
-    <div>符合筆數: {{ $job_count }}</div>
+    <div>符合筆數: {{ $record_count }}</div>
+    @if ( ! $preview_mode)
+    <div>完成度:  {{ $finish_record_count }} / {{ $record_count }} ( {{ $finish_percent }}%)</div>
+    <div>頁數:   {{ $page }} / {{ $total_page }}</div>
+    @endif
 @endif
 </body>
 </html>
+{{-- 自動跳到下頁更新 --}}
+{!! $go_next_page_js !!}
