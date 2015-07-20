@@ -55,4 +55,20 @@ class Company extends Model
 
         return $id;
     }
+
+    /**
+     * 搜尋
+     * @param  array  $param 搜尋條件
+     * @return array         company 資料
+     */
+    public static function search($param = [])
+    {
+        $sql = "SELECT count(*) AS cnt, `company`.*
+                FROM `company`
+                      INNER JOIN `job`
+                      ON `job`.`companyID` = `company`.`companyID`
+                GROUP BY `companyID`
+                ORDER BY `CNT` DESC";
+        return DB::select($sql);
+    }
 }
