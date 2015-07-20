@@ -23,6 +23,9 @@ Route::get('/list/{source}', 'ListController@index');
 Route::get('/update', 'ListController@update');
 Route::get('/update/{source}', 'ListController@update');
 
+// 爬蟲
+Route::get('/crawler/company', 'CrawlerController@get_company');
+
 // 資料庫操作
 Route::get('/truncate', 'ToolController@truncate');
 
