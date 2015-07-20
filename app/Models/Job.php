@@ -63,6 +63,9 @@ class Job extends Model
      */
     public static function search($param = [])
     {
-        return DB::table('job')->limit(100)->get();
+        return DB::table('job')
+                 ->join('company', 'job.companyID', '=', 'company.companyID')
+                 ->limit(100)
+                 ->get();
     }
 }
