@@ -17,6 +17,13 @@ class Job extends Model
     private static $_j_code_list;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'job';
+
+    /**
      * 新增 job
      * @param  array $param 新增資料
      * @return boolean      新增是否成功
