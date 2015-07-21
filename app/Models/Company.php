@@ -89,4 +89,27 @@ class Company extends Model
         $rows = DB::table('company')->where('companyID', $companyID)->get();
         return ($rows) ? $rows[0] : NULL;
     }
+
+    /**
+     * 取得 1 筆員工人數為 NULL 的公司
+     */
+    public static function get_null_employees()
+    {
+        $count      = DB::table('company')->count();
+        $null_count = DB::table('company')->whereNull('employees')->count();
+        $rows       = DB::table('company')->whereNull('employees')->limit(1)->get();
+        if ($count)
+        {
+            return [
+                'count'      => $count,
+                'null_count' => $null_count,
+                'row'        => (count($rows)) ? $rows[0] : NULL
+            ];
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
 }

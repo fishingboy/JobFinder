@@ -24,7 +24,7 @@
 @if ($source == 'App\Classes\Job104')
     <div>符合筆數: {{ $record_count }}</div>
     @if ( ! $preview_mode)
-    <div>完成度:  {{ $finish_record_count }} / {{ $record_count }} ( {{ $finish_percent }}%)</div>
+    <div>完成度:  {{ $finish_record_count }} / {{ $record_count }} ({{ $finish_percent }}%)</div>
     <div>頁數:   {{ $page }} / {{ $total_page }}</div>
     @endif
 @endif
