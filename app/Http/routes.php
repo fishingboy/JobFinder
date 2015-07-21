@@ -28,6 +28,13 @@ Route::get('/crawler/company/get/{companyID}', 'CrawlerController@get_company');
 Route::get('/crawler/company/get', 'CrawlerController@get_company');
 Route::get('/crawler/company/update', 'CrawlerController@update_company');
 
+// API
+Route::get('/job/get', 'JobController@get');
+Route::get('/job/get/{format}', 'JobController@get');
+Route::get('/company/get', 'CompanyController@get');
+Route::get('/company/get/{format}', 'CompanyController@get');
+
+
 // 資料庫操作
 Route::get('/truncate', 'ToolController@truncate');
 

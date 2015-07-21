@@ -70,9 +70,24 @@ class Job extends Model
      */
     public static function search($param = [])
     {
-        return DB::table('job')
+        $page_size = (isset($param['page_size'])) ? $param['page_size'] : 50;
+        $page      = (isset($param['page'])) ? $param['page'] : 1;
+
+        $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
-                 ->limit(100)
-                 ->get();
+                 ->select('company.*', 'job.*')
+                 ->limit(50);
+
+        $rows       = $obj->get();
+        $count      = $obj->count();
+        $total_page = ceil($count / $page_size);
+
+        return [
+            'count'      => $count,
+            'page_size'  => $page_size,
+            'curr_page'  => $page,
+            'total_page' => $total_page,
+            'rows'       => $rows,
+        ];
     }
 }

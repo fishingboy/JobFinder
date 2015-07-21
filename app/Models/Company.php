@@ -70,13 +70,53 @@ class Company extends Model
      */
     public static function search($param = [])
     {
-        $sql = "SELECT count(*) AS cnt, `company`.*
+        $page_size = (isset($param['page_size'])) ? $param['page_size'] : 50;
+        $page      = (isset($param['page'])) ? $param['page'] : 1;
+
+        // 分頁
+        $page_start = ($page - 1) * $page_size;
+
+        // 排序
+        $orderby = [];
+        if (isset($param['orderby']))
+        {
+            foreach ($param['orderby'] as $key => $asc)
+            {
+                $orderby[] = "{$key} {$asc}";
+            }
+        }
+        $orderby = 'ORDER BY ' . implode(',', $orderby);
+
+        // 查詢 company 資料
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `company`.*, count(*) AS `job_count`
                 FROM `company`
                       INNER JOIN `job`
                       ON `job`.`companyID` = `company`.`companyID`
                 GROUP BY `companyID`
-                ORDER BY `CNT` DESC";
-        return DB::select($sql);
+                $orderby
+                LIMIT $page_start, $page_size";
+        echo "<pre>sql = " . print_r($sql, TRUE). "</pre>";
+        $rows  = DB::select($sql);
+        $count = DB::select("SELECT FOUND_ROWS() as cnt")[0]->cnt;
+        $total_page = ceil($count / $page_size);
+
+        // 查詢 job 資料
+        foreach ($rows as $key => $row)
+        {
+            $jobs = DB::table('job')
+                         ->join('company', 'job.companyID', '=', 'company.companyID')
+                         ->where('job.companyID', $row->companyID)
+                         ->get();
+            $row->jobs = $jobs;
+        }
+
+        return [
+            'count'      => $count,
+            'page_size'  => $page_size,
+            'curr_page'  => $page,
+            'total_page' => $total_page,
+            'rows'       => $rows
+        ];
     }
 
     /**
