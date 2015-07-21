@@ -20,12 +20,12 @@ JobFinder 安裝步驟
 
 4. 調整 .env 設定檔
 
-   5.1 開啟 git bash，將 .evn.example 複製成 .env
+   4.1 開啟 git bash，將 .evn.example 複製成 .env
        (或使用任何方法複製，不過 windows 會叫你輸入檔名)
 
        $ cp .env.example .env
 
-   5.2 調整以下設定
+   4.2 調整以下設定
        APP_KEY=BNx7BhfE6D3QCntRKJWLsAOEGmOEdaWn
 
        DB_DATABASE={DATABASE_NAME}
@@ -34,7 +34,9 @@ JobFinder 安裝步驟
 
 5. 匯入 mysql
 
-   請執行以下命令
+   5.1 請先手動建立一個資料庫
+
+   5.2 請執行以下命令
    > cd www_jobfinder
    > php artisan migrate
 
