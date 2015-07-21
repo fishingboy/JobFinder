@@ -18,12 +18,7 @@ JobFinder 安裝步驟
    請參考：
    http://wbkuo.pixnet.net/blog/post/201053931
 
-4. 匯入 mysql
-
-   sql 檔案在 /jobfinder.sql
-   請開啟 phpMyAdmin 建立一個資料庫，然後匯入
-
-5. 調整 .env 設定檔
+4. 調整 .env 設定檔
 
    5.1 開啟 git bash，將 .evn.example 複製成 .env
        (或使用任何方法複製，不過 windows 會叫你輸入檔名)
@@ -36,6 +31,12 @@ JobFinder 安裝步驟
        DB_DATABASE={DATABASE_NAME}
        DB_USERNAME={DATABASE_USER}
        DB_PASSWORD={DATABASE_PASSWORD}
+
+5. 匯入 mysql
+
+   請執行以下命令
+   > cd www_jobfinder
+   > php artisan migrate
 
 6. 同步資料
 
