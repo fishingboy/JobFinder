@@ -1,0 +1,175 @@
+@import "compass/css3";
+@import "define/__init.scss";
+@import "frame/_reset.scss";
+@import url(http://fonts.googleapis.com/css?family=Nobile:700,400);
+$primary: #c40606;
+$slider:#F38630;
+.hide{
+    display:none;
+}
+body{
+    background-color:#fefefe;//fef6df
+    background-image: url('../../img/bg.jpg');
+    background-size: cover;
+    min-width: 300px;
+    overflow-x:hidden;
+    color:#333;
+    font-size: 100%;
+    font-family: "Nobile","Microsoft YaHei","Microsoft JhengHei","Apple LiGothic Medium","PMingLiU",sans-serif,​Helvetica,​Heiti,'Open Sans';
+}
+img{
+    max-width:100%;
+}
+button{
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+::-webkit-input-placeholder { color:#eee;letter-spacing:1px;}
+:-moz-placeholder {color:#eee; letter-spacing:1px;}
+::-moz-placeholder {color:#eee; letter-spacing:1px;}
+:-ms-input-placeholder {color:#eee;letter-spacing:1px;}
+
+// 共用
+// img.bg{
+//     min-height: 100%;
+//     min-width: 1024px;
+//     width: 100%;
+//     height: auto;
+//     position: fixed;
+//     bottom: 0;
+//     left: 0;
+// }
+.header,.content{
+    width:980px;
+    margin:0 auto;
+}
+.header{
+    h1{
+        margin-top:20px;
+        color:#fff;
+        font-weight: 700;
+        font-size: 1.8em;
+        font-style: italic;
+        text-align: center;
+    }
+}
+.jobtable{
+    min-width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+    tr:hover{
+        @include background-image(linear-gradient(#333, #222));
+    }
+    th,td{
+        padding: 8px 10px;
+        color:#eee;
+        text-align: center;
+        // border-bottom: #fff 1px solid;
+        // border-right: #fff 1px solid;
+        line-height:1.2;
+        @include background-image(linear-gradient(#555, #444));
+        @include box-shadow(#333 1px 1px 5px);
+    }
+    // tr:nth-child(odd) td{
+    //     @include background-image(linear-gradient(#333, #222));
+    // }
+    thead{
+        th{
+            color:#fff;
+            font-weight:500;
+            @include background-image(linear-gradient(#F9B84A, #ff9547));
+        }
+    }
+    .fixword{
+        width:110px;
+        height:20px;
+        margin: 0 auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .table-sort{
+        color:#fff;
+        background: none;
+        padding:3px;
+        position:relative;
+        bottom:2px;
+    }
+    .btn-detail{
+        color:#fff;
+        @include border-radius(50%);
+        width:30px;
+        height:30px;
+        border:1px solid #ff9547;
+    }
+
+}
+.job-detail{
+    > td{
+        padding:0;
+        background:#444;
+        border-bottom:#ff9547 3px solid;
+        // border-top:none;
+        @include box-shadow(inset #111 0 1px 5px)
+    }
+    .jobtable{
+        min-width:99%;
+        margin:5px;
+        th{
+            background: #555;
+        }
+    }
+    .detail-content{
+        max-height:300px;
+        overflow:auto;
+    }
+}
+
+
+// go top
+// .nav-to-top{
+//     display: none;
+//     position: fixed;
+//     bottom: 20px;
+//     right: 10px;
+//     padding: 8px 13px;
+//     text-align: center;
+//     border: 1px solid #ccc;
+//     font-size: 1.2em;
+//     z-index: 70;
+//     cursor: pointer;
+//     background-color: #efefef;
+//     @include opacity(0.9);
+//     @include border-radius(6px);
+// }
+
+// -------------------------------------------------
+
+// media query
+@media only screen and(min-width: 1750px){
+
+}
+@media (min-width: 1239px) and (max-width: 1749px){
+
+}
+@media (min-width: 999px) and (max-width: 1238px){
+
+}
+@include RWD(pad-mobile){
+
+}
+@include RWD(pad){
+
+}
+@include RWD(mobile){
+
+}
+@media only screen and(max-width: 480px){
+
+}
+
+@media only screen and(max-width: 518px){
+
+}
