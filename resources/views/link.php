@@ -21,7 +21,9 @@
     <li><a target='_blank' href='/crawler/company/update'>爬蟲 - 更新公司資訊(自動呼叫下一筆)</a></li>
     <br>
     <li><a target='_blank' href='/company'>Company API</a></li>
+    <li><a target='_blank' href='/company/test?page_size=50'>Company API 測試</a></li>
     <li><a target='_blank' href='/job'>Job API</a></li>
+    <li><a target='_blank' href='/job/test'>Job API 測試</a></li>
     <br>
     <li><a target='_blank' href='/truncate'>清空 job, company 資料</a></li>
     <br>
