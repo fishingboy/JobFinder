@@ -50,10 +50,13 @@ class Job extends Model
         if ($row)
         {
             $id = $row->jobID;
+            $param['updated_at'] = DB::raw('NOW()');
             DB::table('job')->where('jobID', $id)->update($param);
         }
         else
         {
+            $param['created_at'] = DB::raw('NOW()');
+            $param['updated_at'] = DB::raw('NOW()');
             $id = DB::table('job')->insertGetId($param);
         }
 

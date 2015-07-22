@@ -50,10 +50,13 @@ class Company extends Model
         if ($row)
         {
             $id = $row->companyID;
+            $param['updated_at'] = DB::raw('NOW()');
             DB::table('company')->where('companyID', $id)->update($param);
         }
         else
         {
+            $param['created_at'] = DB::raw('NOW()');
+            $param['updated_at'] = DB::raw('NOW()');
             $id = DB::table('company')->insertGetId($param);
         }
 
