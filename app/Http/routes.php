@@ -18,8 +18,8 @@ Route::get('/welcome', function(){return view('welcome'); });
 Route::get('/', function(){return view('link');});
 
 // 工作列表
-Route::get('/list', 'ListController@index');
-Route::get('/list/{source}', 'ListController@index');
+Route::get('/list', 'ListController@listJob');
+// Route::get('/list/{source}', 'ListController@index');
 
 // 資料更新
 Route::get('/update', 'UpdateController@update');

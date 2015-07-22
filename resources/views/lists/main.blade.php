@@ -19,9 +19,9 @@
 
 	<link rel="shortcut icon" href="../img/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href=""/>
-	<link rel="stylesheet" type="text/css" href="../compile/css/3rd-party/font-awesome.min.css"/>
-	<link rel="stylesheet" type="text/css" href="../compile/css/3rd-party/jquery-ui-1.10.4.custom.css"/>
-	<link rel="stylesheet" type="text/css" href="../compile/css/common.css"/>
+	<link rel="stylesheet" type="text/css" href="{{ URL::asset('/compile/css/3rd-party/font-awesome.min.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ URL::asset('/compile/css/3rd-party/jquery-ui-1.10.4.custom.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ URL::asset('/compile/css/common.css') }}"/>
 
 	<!--[if lt IE 9]>
 	<link rel="stylesheet" type="text/css" href="../compile/css/ie8.css">
@@ -34,7 +34,7 @@
 		<h1 class="title">JobFinder</h1>
 	</header>
 		@yield('content')
-	<script src="../js/jquery-2.1.4.min.js" charset="utf-8"></script>
+	<script src="{{ URL::asset('js/jquery-2.1.4.min.js') }}" charset="utf-8"></script>
 		@include('lists/common_js')
 		@section('customJs')
 		@show

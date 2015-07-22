@@ -21,4 +21,4 @@
 	<tbody id="jobListBody">
 	</tbody>
 	</table>
-</section><script id="jobListTmpl" type="x-tmpl-mustache">		@{{#rows}}		<tr>			<td>@{{created_at}}</td>			<td><div class="fixword">@{{title}}</td>			<td><div class="fixword">@{{name}}</div></td>			<td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>			<td>@{{job_addr_no_descript}}</td>			<td>@{{employees}}</td>			<td>@{{period}}</td>			<td>@{{job_count}}</td>			<td>@{{capital}}</td>		</tr>		@{{/rows}}</script>@stop@section('customJs')	<script src="../js/lists/job.js" charset="utf-8"></script>@stop
+</section><script id="jobListTmpl" type="x-tmpl-mustache">		@{{#rows}}		<tr>			<td>@{{created_at}}</td>			<td><div class="fixword">@{{title}}</td>			<td><div class="fixword">@{{name}}</div></td>			<td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>			<td>@{{job_addr_no_descript}}</td>			<td>@{{employees}}</td>			<td>@{{period}}</td>			<td>@{{job_count}}</td>			<td>@{{capital}}</td>		</tr>		@{{/rows}}</script>@stop@section('customJs')	<script src="{{ URL::asset('/js/lists/job.js') }}" charset="utf-8"></script>@stop

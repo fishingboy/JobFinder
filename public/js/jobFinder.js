@@ -27,14 +27,18 @@ jobList.listJobs = function(renderView) {
 		method: "GET",
 		dataType: "JSON"
 	}).done(function(res) {
-		console.log(res);
-		renderView(res);
+		// console.log(res);
+		if (res.status === true) {
+			renderView(res);
+		} else {
+			alert("取得資料失敗");
+		}
 	});
 };
 
 jobList.renderView = function(data) {
-	var template = $('#jobListTmpl').html();
+	var template = $("#jobListTmpl").html();
 	Mustache.parse(template);
 	var rendered = Mustache.render(template, data);
-	$('#jobListBody').append(rendered);
+	$("#jobListBody").append(rendered);
 };
