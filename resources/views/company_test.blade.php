@@ -18,10 +18,27 @@
         count:      {{ $count }},
         page_size:  {{ $page_size }},
         curr_page:  {{ $curr_page }},
-        total_page: {{ $total_page }}
+        total_page: {{ $total_page }},
+        orderby:    {{ json_encode($orderby) }}
     </div>
     <br>
 
+    {{-- 排序 --}}
+    排序:
+    <a href='{{ $url['job_count_desc_url'] }}'>職缺數 ▼</a> |
+    <a href='{{ $url['job_count_asc_url'] }}'>職缺數 ▲</a> |
+    <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
+    <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a>
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a>
+
+    {{-- 分頁 --}}
+    分頁:
+    <a href='{{ $url['prev_url'] }}'>上一頁</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁</a>
+
+
+    {{-- 列表 --}}
     <div class='tableBox'>
         <table>
             <tr>
@@ -51,6 +68,21 @@
             @endforeach
         </table>
     </div>
+
+    {{-- 排序 --}}
+    排序:
+    <a href='{{ $url['job_count_desc_url'] }}'>職缺數 ▼</a> |
+    <a href='{{ $url['job_count_asc_url'] }}'>職缺數 ▲</a> |
+    <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
+    <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a>
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a>
+
+    {{-- 分頁 --}}
+    分頁:
+    <a href='{{ $url['prev_url'] }}'>上一頁</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁</a>
+
 </div>
 </body>
 </html>

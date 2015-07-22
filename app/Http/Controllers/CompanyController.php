@@ -77,6 +77,40 @@ class CompanyController extends Controller
         }
     }
 
+    /**
+     * 取得網址
+     * @param  array  $search_param 查詢參數
+     * @param  array  $diff_param   要修改的參數
+     * @return string               網址
+     */
+    private function _get_url($search_param, $diff_param = [])
+    {
+        $param = [];
+        foreach ($search_param as $key => $value)
+        {
+            // 取代參數
+            if (array_key_exists($key, $diff_param))
+            {
+                $search_param[$key] = $diff_param[$key];
+            }
+
+            // 組合網址
+            if (gettype($search_param[$key]) == 'array')
+            {
+                foreach ($search_param[$key] as $array_key => $array_value)
+                {
+                    $param[] = "{$key}[{$array_key}]={$array_value}";
+                }
+            }
+            else
+            {
+                $param[] = "{$key}={$search_param[$key]}";
+            }
+        }
+
+        return "/company/test?" . implode('&', $param);
+    }
+
     public function test(Request $request)
     {
         // 查詢參數(先寫死)
@@ -84,6 +118,18 @@ class CompanyController extends Controller
 
         // 取得查詢資料
         $data = Company::search($search_param);
+
+        // 取得網址
+        $data['url'] = [
+            'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
+            'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
+            'job_count_desc_url' => $this->_get_url($search_param, ['orderby' => ['job_count' => 'DESC', 'employees' => 'DESC']]),
+            'job_count_asc_url'  => $this->_get_url($search_param, ['orderby' => ['job_count' => 'ASC', 'employees' => 'DESC']]),
+            'employees_desc_url' => $this->_get_url($search_param, ['orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
+            'employees_asc_url'  => $this->_get_url($search_param, ['orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
+            'capital_desc_url'   => $this->_get_url($search_param, ['orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
+            'capital_asc_url'    => $this->_get_url($search_param, ['orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
+        ];
 
         // 輸出
         return view('company_test', $data);
