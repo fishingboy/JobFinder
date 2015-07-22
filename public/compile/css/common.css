@@ -1,0 +1,256 @@
+@import url(http://fonts.googleapis.com/css?family=Nobile:700,400);
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Nobile', arial, serif,"Microsoft JhengHei","新細明體", "PMingLiU", Helvetica,Lucida Grande,san-serif, Arial;
+}
+
+* {
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none;
+}
+
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input, select {
+  vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+::-webkit-search-cancel-button {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+body {
+  background-color: #fefefe;
+  background-image: url("../../img/bg.jpg");
+  background-size: cover;
+  min-width: 300px;
+  overflow-x: hidden;
+  color: #333;
+  font-size: 100%;
+  font-family: "Nobile","Microsoft YaHei","Microsoft JhengHei","Apple LiGothic Medium","PMingLiU",sans-serif,​Helvetica,​Heiti,'Open Sans';
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+::-webkit-input-placeholder {
+  color: #eee;
+  letter-spacing: 1px;
+}
+
+:-moz-placeholder {
+  color: #eee;
+  letter-spacing: 1px;
+}
+
+::-moz-placeholder {
+  color: #eee;
+  letter-spacing: 1px;
+}
+
+:-ms-input-placeholder {
+  color: #eee;
+  letter-spacing: 1px;
+}
+
+.header, .content {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.header h1 {
+  margin-top: 20px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.8em;
+  font-style: italic;
+  text-align: center;
+}
+
+.jobtable {
+  min-width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.jobtable tr:hover {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333333), color-stop(100%, #222222));
+  background-image: -webkit-linear-gradient(#333333, #222222);
+  background-image: -moz-linear-gradient(#333333, #222222);
+  background-image: -o-linear-gradient(#333333, #222222);
+  background-image: linear-gradient(#333333, #222222);
+}
+.jobtable th, .jobtable td {
+  padding: 8px 10px;
+  color: #eee;
+  text-align: center;
+  line-height: 1.2;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #555555), color-stop(100%, #444444));
+  background-image: -webkit-linear-gradient(#555555, #444444);
+  background-image: -moz-linear-gradient(#555555, #444444);
+  background-image: -o-linear-gradient(#555555, #444444);
+  background-image: linear-gradient(#555555, #444444);
+  -webkit-box-shadow: #333333 1px 1px 5px;
+  -moz-box-shadow: #333333 1px 1px 5px;
+  box-shadow: #333333 1px 1px 5px;
+}
+.jobtable thead th {
+  color: #fff;
+  font-weight: 500;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9b84a), color-stop(100%, #ff9547));
+  background-image: -webkit-linear-gradient(#f9b84a, #ff9547);
+  background-image: -moz-linear-gradient(#f9b84a, #ff9547);
+  background-image: -o-linear-gradient(#f9b84a, #ff9547);
+  background-image: linear-gradient(#f9b84a, #ff9547);
+}
+.jobtable .fixword {
+  width: 110px;
+  height: 20px;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.jobtable .table-sort {
+  color: #fff;
+  background: none;
+  padding: 3px;
+  position: relative;
+  bottom: 2px;
+}
+.jobtable .btn-detail {
+  color: #fff;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ff9547;
+}
+
+.job-detail > td {
+  padding: 0;
+  background: #444;
+  border-bottom: #ff9547 3px solid;
+  -webkit-box-shadow: inset #111111 0 1px 5px;
+  -moz-box-shadow: inset #111111 0 1px 5px;
+  box-shadow: inset #111111 0 1px 5px;
+}
+.job-detail .jobtable {
+  min-width: 99%;
+  margin: 5px;
+}
+.job-detail .jobtable th {
+  background: #555;
+}
+.job-detail .detail-content {
+  max-height: 300px;
+  overflow: auto;
+}

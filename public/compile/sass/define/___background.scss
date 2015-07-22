@@ -1,0 +1,75 @@
+
+//
+// background
+//
+@mixin background ( $width, $height, $bg-left, $bg-top, $left: 0px, $top: 0px, $right: false, $bottom: false ) {
+  $where: "after";
+  @include background-prepare( $bg_file, $bg_file_hpd, $bg_file_width, $bg_file_height, $where );
+  @include background-image( $width, $height, $bg-left, $bg-top, $left, $top, $right, $bottom, $where );
+}
+
+//
+// background2
+//
+@mixin background2 ( $width, $height, $bg-left, $bg-top, $left: 0px, $top: 0px, $right: false, $bottom: false ) {
+  $where: "before";
+  @include background-prepare( $bg_file, $bg_file_hpd, $bg_file_width, $bg_file_height, $where );
+  @include background-image( $width, $height, $bg-left, $bg-top, $left, $top, $right, $bottom, $where );
+}
+
+//
+// background3
+//
+@mixin bank ( $width, $height, $bg-left, $bg-top, $left: 0px, $top: 0px, $right: false, $bottom: false ) {
+  $where: "before";
+  @include background-prepare( $bank_file, $bank_file_hpd, $bg_file_width, $bg_file_height, $where );
+  @include background-image( $width, $height, $bg-left, $bg-top, $left, $top, $right, $bottom, $where );
+}
+
+//
+// background-image
+//
+@mixin background-image ( $width, $height, $bg-left, $bg-top, $left: 0px, $top: 0px, $right: false, $bottom: false, $where: "after" ) {
+  &:#{$where} {
+    width: $width;
+    padding-top: $height;
+    background-position: $bg-left $bg-top;
+    @if $top    != false { top:    $top   ; }
+    @if $left   != false { left:   $left  ; }
+    @if $right  != false { right:  $right ; }
+    @if $bottom != false { bottom: $bottom; }
+  }
+}
+
+
+@mixin background-prepare ( $file: $bg_file, $file2: $bg_file_hpd, $bg_width: $bg_file_width, $bg_height: $bg_file_height, $where:"after" ) {
+  @if $file2 == false {
+    $file2: $file;
+  }
+  & {
+    position: relative;
+  }
+  &:#{$where} {
+    content: ".";
+    height: 0;
+    @include box-sizing ( content-box );
+    background-image: url(#{$file});
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: absolute;
+  }
+  @include high-pixel-density( $file2, $bg_width, $bg_height, $where );
+}
+
+@mixin high-pixel-density ( $filename, $width, $height, $where ) {
+  @media  only screen and (-moz-min-device-pixel-ratio: 2),
+          only screen and (max--moz-device-pixel-ratio: 2),
+          only screen and (-o-min-device-pixel-ratio: 2/1), 
+          only screen and (-webkit-min-device-pixel-ratio: 2), 
+          only screen and (min-device-pixel-ratio: 2) {
+    &:#{$where} {
+      background-image: url(#{$filename});
+      background-size: $width $height;
+    }
+  }
+}

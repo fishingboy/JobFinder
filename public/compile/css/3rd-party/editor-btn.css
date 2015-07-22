@@ -1,0 +1,259 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, button, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  line-height: 1;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none;
+}
+
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input, select {
+  vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+.edit-area {
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 10px;
+  line-height: 1;
+  font-family: "微軟正黑體", "Microsoft Jhenghei", "Heiti TC", "LiHei Pro", sans-serif;
+  background: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: background, 0.3s;
+  -moz-transition: background, 0.3s;
+  -o-transition: background, 0.3s;
+  transition: background, 0.3s;
+  position: absolute;
+  z-index: 999999999999999999999;
+}
+
+.edit-area:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.edit-area:hover .edit-sort {
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.edit-area:hover .tooltip {
+  display: block;
+}
+
+.edit-area button {
+  color: #fff;
+  font-size: 15px;
+  font-family: "微軟正黑體", "Microsoft Jhenghei", "Heiti TC", "LiHei Pro", sans-serif;
+  padding: 7px 21px;
+  background: #0094c9;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-transition: background, 0.3s, box-shadow, 0.2s;
+  -moz-transition: background, 0.3s, box-shadow, 0.2s;
+  -o-transition: background, 0.3s, box-shadow, 0.2s;
+  transition: background, 0.3s, box-shadow, 0.2s;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.edit-area button:hover {
+  background: #006e96;
+}
+
+.edit-area button i {
+  font-size: 1.1em;
+  margin-right: 5px;
+}
+
+.edit-area button:hover {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 -5px 0 inset;
+  -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 -5px 0 inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 -5px 0 inset;
+}
+
+.edit-area button.btn-create {
+  background: #4d9900;
+}
+
+.edit-area button.btn-create:hover {
+  background: #336600;
+}
+
+.edit-area button.btn-delete {
+  background: #9aa9b3;
+}
+
+.edit-area button.btn-delete:hover {
+  background: #7d919d;
+}
+
+.edit-area button.btn-permission {
+  background: #004963;
+}
+
+.edit-area button.btn-permission:hover {
+  background: #002330;
+}
+
+.edit-area .edit-sort {
+  color: #fff;
+  font-size: 15px;
+  margin: 0 5px;
+  padding: 5px 15px;
+  background: #333;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-transition: background, 0.2s;
+  -moz-transition: background, 0.2s;
+  -o-transition: background, 0.2s;
+  transition: background, 0.2s;
+  vertical-align: top;
+  display: inline-block;
+}
+
+.edit-area .edit-sort i {
+  margin-right: 5px;
+}
+
+.edit-area .edit-sort .ui-spinner {
+  margin-left: 5px;
+}
+
+.edit-area .edit-sort .ui-spinner input {
+  font-size: 12px !important;
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  padding: 1px 2px;
+}
+
+.edit-area .edit-sort:hover {
+  color: #fff;
+  background: #0068b6;
+}
+
+.edit-area .tooltip {
+  right: 10px;
+  top: 8px;
+  margin: 0 5px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 16px;
+  background: #f90;
+  border: #fff 1px solid;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 5px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 5px;
+  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 5px;
+  display: none;
+  position: absolute;
+}
+
+.edit-area .tooltip:before, .edit-area .tooltip:after {
+  content: "\0020";
+  right: 100%;
+  top: 50%;
+  border: transparent solid;
+  position: absolute;
+}
+
+.edit-area .tooltip:before {
+  border-width: 8px;
+  border-right-color: #fff;
+  margin-top: -8px;
+}
+
+.edit-area .tooltip:after {
+  border-width: 7px;
+  border-right-color: #f90;
+  margin-top: -7px;
+}
+
+.edit-area *:focus {
+  outline: 0;
+}
