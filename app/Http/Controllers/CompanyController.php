@@ -76,4 +76,16 @@ class CompanyController extends Controller
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
         }
     }
+
+    public function test(Request $request)
+    {
+        // 查詢參數(先寫死)
+        $search_param = $this->_get_param($request);
+
+        // 取得查詢資料
+        $data = Company::search($search_param);
+
+        // 輸出
+        return view('company_test', $data);
+    }
 }

@@ -115,6 +115,7 @@ class Company extends Model
             'page_size'  => $page_size,
             'curr_page'  => $page,
             'total_page' => $total_page,
+            'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
             'rows'       => $rows
         ];
     }
