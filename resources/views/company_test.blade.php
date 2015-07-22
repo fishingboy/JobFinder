@@ -8,6 +8,7 @@
     .tableBox {}
     .center   {text-align: center;}
     table {width: 100%; border-collapse: collapse;}
+    table tr:hover{background: #DDF}
     table tr th {background: #DFD}
     table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
 </style>
