@@ -72,11 +72,30 @@ class Job extends Model
     {
         $page_size = (isset($param['page_size'])) ? $param['page_size'] : 50;
         $page      = (isset($param['page'])) ? $param['page'] : 1;
+        $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
 
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
-                 ->select('company.*', 'job.*')
-                 ->limit(10);
+                 ->select('company.*', 'job.*');
+
+        // 分頁
+        $obj->skip(($page -1) * $page_size)
+            ->take($page_size);
+
+        // 過瀘公司
+        if ($companyID)
+        {
+            $obj->where('job.companyID', $companyID);
+        }
+
+        // 排序
+        if (isset($param['orderby']))
+        {
+            foreach ($param['orderby'] as $key => $asc)
+            {
+                $obj->orderBy($key, $asc);
+            }
+        }
 
         $rows       = $obj->get();
         $count      = $obj->count();

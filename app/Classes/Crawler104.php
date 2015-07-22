@@ -3,6 +3,7 @@ namespace App\Classes;
 
 use App\Classes\JobBase;
 use App\Library\Curl;
+use App\Library\Lib;
 use App\Models\Job;
 
 /**
@@ -10,52 +11,6 @@ use App\Models\Job;
 */
 class Crawler104
 {
-    /**
-     * 將資本額轉成數字
-     * @param  string $str 資料額
-     * @return Integer     資料額的數字
-     */
-    public static function capital2number($str)
-    {
-        $str = str_replace('元', '', $str);
-        $str = str_replace('萬', '', $str);
-        $str = str_replace('億', 'e', $str);
-        $tmp = explode('e', $str);
-        if (count($tmp) == 1)
-            $money = $tmp[0] * 10000;
-        else
-            $money = $tmp[0] * 10000 * 10000 + $tmp[1] * 10000;
-
-        return $money;
-    }
-
-    public static function number2capital($number)
-    {
-        if ($number == 0)
-        {
-            return '暫不提供';
-        }
-
-        $money = '';
-        $e = 10000 * 10000;
-        $w = 10000;
-
-        if ($number > $e)
-        {
-            $n = intval($number / $e);
-            $number -= $n * $e;
-            $money .= $n . '億';
-        }
-
-        if ($number > $w)
-        {
-            $n = intval($number / $w);
-            $money .= $n . '萬';
-        }
-
-        return $money;
-    }
-
     /**
      * 爬 104 的公司資訊
      * @param  string $j_code 104 的公司代碼
@@ -75,7 +30,7 @@ class Crawler104
 
             return [
                 'employees' => $matches[1][2],
-                'capital'   => self::capital2number($matches[1][3]),
+                'capital'   => Lib::capital2number($matches[1][3]),
                 'url'       => isset($matches[1][7]) ? $matches[1][7] : NULL,
             ];
         }

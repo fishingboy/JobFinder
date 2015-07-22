@@ -2,11 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Company API 測試</title>
+<title>Job API 測試</title>
 <style>
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
+    .width100 {width:100px;}
     table {width: 100%; border-collapse: collapse;}
     table tr th {background: #DFD}
     table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
@@ -25,15 +26,25 @@
     <div class='tableBox'>
         <table>
             <tr>
-                <th>公司名稱</th>
-                <th>員工人數</th>
-                <th>資本額</th>
+                <th>職缺名稱</th>
+                <th class='width100'>薪資</th>
                 <th>地址</th>
-                <th>職缺數</th>
+                <th>公司</th>
+                <th class='width100'>員工人數</th>
+                <th>資本額</th>
             </tr>
 
             @foreach ($rows as $row)
             <tr>
+                <td>
+                    <a href='{{ App\Library\Lib::get_104_job_url($row->j_code) }}' target='_blank'>
+                        {{ $row->title }}
+                    </a>
+                </td>
+                <td class='center'>
+                    {{ App\Library\Lib::convert_pay($row->sal_month_low, $row->sal_month_high) }}
+                </td>
+                <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                 <td>
                     <a href='{{ App\Library\Lib::get_104_company_url($row->c_code) }}' target='_blank'>
                         {{ $row->name }}
@@ -41,12 +52,6 @@
                 </td>
                 <td class='center'>{{ number_format($row->employees) }}</td>
                 <td class='center'>{{ App\Library\Lib::number2capital($row->capital) }}</td>
-                <td class='center'>{{ $row->addr_no_descript }}</td>
-                <td class='center'>
-                    <a href='/job/test/?companyID={{ $row->companyID }}&page_size=999' target='_blank'>
-                        {{ $row->job_count }}
-                    </a>
-                </td>
             </tr>
             @endforeach
         </table>
