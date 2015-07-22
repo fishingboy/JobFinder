@@ -20,8 +20,12 @@ Route::get('/', function(){return view('link');});
 // 工作列表
 Route::get('/list', 'ListController@index');
 Route::get('/list/{source}', 'ListController@index');
-Route::get('/update', 'ListController@update');
-Route::get('/update/{source}', 'ListController@update');
+
+// 資料更新
+Route::get('/update', 'UpdateController@update');
+Route::get('/update/{source}', 'UpdateController@update');
+Route::get('/old_list', 'UpdateController@index');
+Route::get('/old_list/{source}', 'UpdateController@index');
 
 // 爬蟲
 Route::get('/crawler/company/get/{companyID}', 'CrawlerController@get_company');
@@ -44,6 +48,5 @@ Route::get('/company/get/{format}', 'CompanyController@get');
 Route::get('/truncate', 'ToolController@truncate');
 
 // test
-Route::get('/db_test', 'ListController@db_test');
 Route::get('/plugin/firephp', 'PluginController@firephp');
 
