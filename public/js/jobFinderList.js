@@ -18,11 +18,25 @@ JOBFINDER.namespace = function(ns_string) {
 	return parent;
 };
 
-var jobList = JOBFINDER.namespace('JOBFINDER.jobList');
+var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 
 // console.log(jobList === JOBFINDER.jobList);
-jobList.listJobs = function() {
-	$.ajax
+jobList.listJobs = function(renderView) {
+	$.ajax({
+		url: "job/",
+		method: "GET",
+		dataType: "JSON"
+	}).done(function(res) {
+		console.log(res);
+		renderView(res);
+	});
 };
 
-JOBFINDER.jobList.listJobs();
+jobList.renderView = function(data) {
+	var template = $('#jobListTmpl').html();
+	Mustache.parse(template);
+	var rendered = Mustache.render(template, data);
+	$('#jobListBody').append(rendered);
+};
+
+JOBFINDER.jobList.listJobs(JOBFINDER.jobList.renderView);

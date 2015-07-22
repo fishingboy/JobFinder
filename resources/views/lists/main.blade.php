@@ -35,6 +35,7 @@
 	</header>
 		@yield('content')
 	<script src="../js/jquery-2.1.4.min.js" charset="utf-8"></script>
+	<script src="../js/mustache.min.js" charset="utf-8"></script>
 	<script src="../js/jobFinderList.js" charset="utf-8"></script>
 </body>
 </html>
