@@ -29,9 +29,13 @@ Route::get('/crawler/company/get', 'CrawlerController@get_company');
 Route::get('/crawler/company/update', 'CrawlerController@update_company');
 
 // API
+Route::get('/job', 'JobController@get');
+Route::get('/job/{format}', 'JobController@get');
 Route::get('/job/get', 'JobController@get');
 Route::get('/job/get/{format}', 'JobController@get');
-Route::get('/company/get', 'CompanyController@get');
+Route::get('/company', 'CompanyController@get');
+Route::get('/company/{format}', 'CompanyController@get');
+Route::get('/company/get/{format}', 'CompanyController@get');
 Route::get('/company/get/{format}', 'CompanyController@get');
 
 

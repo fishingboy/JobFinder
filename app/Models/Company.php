@@ -95,7 +95,7 @@ class Company extends Model
                 GROUP BY `companyID`
                 $orderby
                 LIMIT $page_start, $page_size";
-        echo "<pre>sql = " . print_r($sql, TRUE). "</pre>";
+        // echo "<pre>sql = " . print_r($sql, TRUE). "</pre>";
         $rows  = DB::select($sql);
         $count = DB::select("SELECT FOUND_ROWS() as cnt")[0]->cnt;
         $total_page = ceil($count / $page_size);

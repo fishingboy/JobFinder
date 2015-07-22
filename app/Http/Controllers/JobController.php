@@ -27,6 +27,6 @@ class JobController extends Controller
         if ($format == 'json')
             return response()->json($data);
         else
-            var_dump($data);
+            return "<pre>data = " . print_r($data, TRUE). "</pre>";
     }
 }
