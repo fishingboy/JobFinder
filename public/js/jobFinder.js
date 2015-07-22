@@ -38,5 +38,3 @@ jobList.renderView = function(data) {
 	var rendered = Mustache.render(template, data);
 	$('#jobListBody').append(rendered);
 };
-
-JOBFINDER.jobList.listJobs(JOBFINDER.jobList.renderView);
