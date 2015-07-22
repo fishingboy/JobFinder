@@ -15,19 +15,49 @@ use App\Library\Debug;
 
 class CompanyController extends Controller
 {
+    private $_allow_param = [
+        'page_size',
+        'page',
+        'orderby'
+    ];
 
-    public function get(Request $request, $format = 'json')
+    /**
+     * 取得 get 查詢欄位
+     *
+     * @param  array $search_field 可查詢欄位
+     * @return array               查詢參數
+     */
+    private function _get_param(Request $request)
     {
-        // 查詢參數(先寫死)
+        // 預設值
         $search_param = [
             'page_size' => 10,
-            'page'      => 3,
+            'page'      => 1,
             'orderby' => [
                 'employees' => 'DESC',
                 'job_count' => 'DESC',
                 'capital'   => 'DESC'
             ]
         ];
+
+        // 取得參數
+        foreach ($this->_allow_param as $field)
+        {
+            $value = $request->input($field);
+            if ($value)
+            {
+                $search_param[$field] = $value;
+            }
+        }
+
+        return $search_param;
+    }
+
+
+    public function get(Request $request, $format = 'json')
+    {
+        // 查詢參數(先寫死)
+        $search_param = $this->_get_param($request);
 
         // 取得查詢資料
         $data = Company::search($search_param);
@@ -37,7 +67,9 @@ class CompanyController extends Controller
         }
 
         if ($format == 'json')
+        {
             return response()->json($data);
+        }
         else
         {
             Debug::fblog($data);
