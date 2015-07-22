@@ -76,7 +76,7 @@ class Job extends Model
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
                  ->select('company.*', 'job.*')
-                 ->limit(50);
+                 ->limit(10);
 
         $rows       = $obj->get();
         $count      = $obj->count();

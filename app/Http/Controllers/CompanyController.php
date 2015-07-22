@@ -20,7 +20,7 @@ class CompanyController extends Controller
     {
         // 查詢參數(先寫死)
         $search_param = [
-            'page_size' => 50,
+            'page_size' => 10,
             'page'      => 3,
             'orderby' => [
                 'employees' => 'DESC',

@@ -14,8 +14,16 @@ class JobController extends Controller
 {
     public function get(Request $request, $format = 'json')
     {
-        // 取得查詢參數
-        $search_param = [];
+        // 查詢參數(先寫死)
+        $search_param = [
+            'page_size' => 10,
+            'page'      => 3,
+            // 'orderby' => [
+            //     'employees' => 'DESC',
+            //     'job_count' => 'DESC',
+            //     'capital'   => 'DESC'
+            // ]
+        ];
 
         // 取得查詢資料
         $data = Job::search($search_param);
