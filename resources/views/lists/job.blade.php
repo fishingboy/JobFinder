@@ -13,10 +13,11 @@
 				<th>所在地</th>
 				<th>總人數</th>
 				<th>經歷需求</th>
+				<th>職缺數</th>
 				<th>資本額</th>
 			</tr>
 		</thead>
 	<tbody id="jobListBody">
 	</tbody>
 	</table>
-</section><script id="jobListTmpl" type="x-tmpl-mustache">		@{{#rows}}		<tr>			<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>			<td>@{{created_at}}</td>			<td><div class="fixword">@{{title}}</td>			<td><div class="fixword">@{{name}}</div></td>			<td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>			<td>@{{job_addr_no_descript}}</td>			<td>5000</td>			<td>10年</td>			<td>10億5千萬</td>		</tr>		@{{/rows}}</script>@stop
+</section><script id="jobListTmpl" type="x-tmpl-mustache">		@{{#rows}}		<tr>			<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>			<td>@{{created_at}}</td>			<td><div class="fixword">@{{title}}</td>			<td><div class="fixword">@{{name}}</div></td>			<td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>			<td>@{{job_addr_no_descript}}</td>			<td>@{{employees}}</td>			<td>@{{period}}</td>			<td>@{{job_count}}</td>			<td>@{{capital}}</td>		</tr>		@{{/rows}}</script>@stop
