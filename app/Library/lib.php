@@ -55,14 +55,14 @@ class Lib
         $e = 10000 * 10000;
         $w = 10000;
 
-        if ($number > $e)
+        if ($number >= $e)
         {
             $n = intval($number / $e);
             $number -= $n * $e;
             $money .= $n . '億';
         }
 
-        if ($number > $w)
+        if ($number >= $w)
         {
             $n = intval($number / $w);
             $money .= $n . '萬';

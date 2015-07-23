@@ -135,16 +135,16 @@ class JobController extends Controller
         $data['url'] = [
             'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
             'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
-            'pay_low_desc_url'   => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'DESC', 'employees' => 'DESC']]),
-            'pay_low_asc_url'    => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
-            'pay_high_desc_url'  => $this->_get_url($search_param, ['orderby' => ['sal_month_high' => 'DESC', 'employees' => 'DESC']]),
-            'pay_high_asc_url'   => $this->_get_url($search_param, ['orderby' => ['sal_month_high' => 'ASC', 'employees' => 'DESC']]),
-            'employees_desc_url' => $this->_get_url($search_param, ['orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
-            'employees_asc_url'  => $this->_get_url($search_param, ['orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
-            'capital_desc_url'   => $this->_get_url($search_param, ['orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
-            'capital_asc_url'    => $this->_get_url($search_param, ['orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
-            'time_desc_url'      => $this->_get_url($search_param, ['orderby' => ['job.created_at' => 'DESC', 'employees' => 'DESC']]),
-            'time_asc_url'       => $this->_get_url($search_param, ['orderby' => ['job.created_at' => 'ASC', 'employees' => 'DESC']]),
+            'pay_low_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_low' => 'DESC', 'employees' => 'DESC']]),
+            'pay_low_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
+            'pay_high_desc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'DESC', 'employees' => 'DESC']]),
+            'pay_high_asc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'ASC', 'employees' => 'DESC']]),
+            'employees_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
+            'employees_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
+            'capital_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
+            'capital_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
+            'time_desc_url'      => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'DESC', 'employees' => 'DESC']]),
+            'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
         // echo "<pre>data = " . print_r($data, TRUE). "</pre>";

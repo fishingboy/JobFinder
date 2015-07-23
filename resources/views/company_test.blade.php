@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>Company API 測試</title>
 <style>
-    body {background: #000; color:#FFF;}
-    a {text-decoration:none; color:#AAF;}
+    body {background: #000; color:#fff;}
+    a {text-decoration:none; color:#9CF;}
     a:hover{color:#AFA;}
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
