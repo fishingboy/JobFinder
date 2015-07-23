@@ -32,14 +32,15 @@
     <a href='{{ $url['job_count_asc_url'] }}'>職缺數 ▲</a> |
     <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
     <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
-    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a>
-    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a>
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a> |
+    <a href='{{ $url['time_desc_url'] }}'>同步時間 ▼</a> |
+    <a href='{{ $url['time_asc_url'] }}'>同步時間 ▲</a>
 
     {{-- 分頁 --}}
     分頁:
-    <a href='{{ $url['prev_url'] }}'>上一頁</a> |
-    <a href='{{ $url['next_url'] }}'>下一頁</a>
-
+    <a href='{{ $url['prev_url'] }}'>上一頁 ▲</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁 ▼</a>
 
     {{-- 列表 --}}
     <div class='tableBox'>
@@ -63,7 +64,7 @@
                 <td class='center'>{{ App\Library\Lib::number2capital($row->capital) }}</td>
                 <td class='center'>{{ $row->addr_no_descript }}</td>
                 <td class='center'>
-                    <a href='/job/test/?companyID={{ $row->companyID }}&page_size=999' target='_blank'>
+                    <a href='/job/test/?companyID={{ $row->companyID }}&page_size=100' target='_blank'>
                         {{ $row->job_count }}
                     </a>
                 </td>
@@ -78,13 +79,15 @@
     <a href='{{ $url['job_count_asc_url'] }}'>職缺數 ▲</a> |
     <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
     <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
-    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a>
-    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a>
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a> |
+    <a href='{{ $url['time_desc_url'] }}'>同步時間 ▼</a> |
+    <a href='{{ $url['time_asc_url'] }}'>同步時間 ▲</a>
 
     {{-- 分頁 --}}
     分頁:
-    <a href='{{ $url['prev_url'] }}'>上一頁</a> |
-    <a href='{{ $url['next_url'] }}'>下一頁</a>
+    <a href='{{ $url['prev_url'] }}'>上一頁 ▲</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁 ▼</a>
 
 </div>
 </body>

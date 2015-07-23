@@ -13,9 +13,15 @@ use App\Models\Company;
 use App\Library\Curl;
 use App\Library\Debug;
 
-
+/**
+ * Company API
+ */
 class CompanyController extends Controller
 {
+    /**
+     * 允許查詢的參數
+     * @var array
+     */
     private $_allow_param = [
         'page_size',
         'page',
@@ -32,7 +38,7 @@ class CompanyController extends Controller
     {
         // 預設值
         $search_param = [
-            'page_size' => 10,
+            'page_size' => 20,
             'page'      => 1,
             'orderby' => [
                 'employees' => 'DESC',
@@ -54,7 +60,12 @@ class CompanyController extends Controller
         return $search_param;
     }
 
-
+    /**
+     * Job API 入口
+     * @param  Request $request
+     * @param  string  $format  回應格式
+     * @return Response
+     */
     public function get(Request $request, $format = 'json')
     {
         // 查詢參數(先寫死)
@@ -112,6 +123,12 @@ class CompanyController extends Controller
         return "/company/test?" . implode('&', $param);
     }
 
+    /**
+     * API 測試頁面
+     * @param  Request $request Request
+     * @param  string  $format  回應格式
+     * @return Response
+     */
     public function test(Request $request)
     {
         // 查詢參數(先寫死)
@@ -122,20 +139,26 @@ class CompanyController extends Controller
 
         // 取得網址
         $data['url'] = [
-            'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
-            'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
+            'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
+            'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
             'job_count_desc_url' => $this->_get_url($search_param, ['orderby' => ['job_count' => 'DESC', 'employees' => 'DESC']]),
             'job_count_asc_url'  => $this->_get_url($search_param, ['orderby' => ['job_count' => 'ASC', 'employees' => 'DESC']]),
             'employees_desc_url' => $this->_get_url($search_param, ['orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
             'employees_asc_url'  => $this->_get_url($search_param, ['orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
             'capital_desc_url'   => $this->_get_url($search_param, ['orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
             'capital_asc_url'    => $this->_get_url($search_param, ['orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
+            'time_desc_url'      => $this->_get_url($search_param, ['orderby' => ['company.created_at' => 'DESC', 'employees' => 'DESC']]),
+            'time_asc_url'       => $this->_get_url($search_param, ['orderby' => ['company.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
         // 輸出
         return view('company_test', $data);
     }
 
+    /**
+     * 測試 post 呼叫
+     * TODO: 解決 LARAVEL 呼叫 POST 的問題(可能是 CRSF 安全性問題)
+     */
     public function post_test()
     {
         $param = ['page' => 10, '_token' => csrf_token()];

@@ -26,6 +26,23 @@
     </div>
     <br>
 
+    <div >
+    {{-- 排序 --}}
+    排序:
+    <a href='{{ $url['pay_desc_url'] }}'>最低薪資 ▼</a> |
+    <a href='{{ $url['pay_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
+    <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a> |
+    <a href='{{ $url['time_desc_url'] }}'>同步時間 ▼</a> |
+    <a href='{{ $url['time_asc_url'] }}'>同步時間 ▲</a>
+
+    {{-- 分頁 --}}
+    分頁:
+    <a href='{{ $url['prev_url'] }}'>上一頁 ▲</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁 ▼</a>
+
     <div class='tableBox'>
         <table>
             <tr>
@@ -59,6 +76,22 @@
             @endforeach
         </table>
     </div>
+
+    {{-- 排序 --}}
+    排序:
+    <a href='{{ $url['pay_desc_url'] }}'>最低薪資 ▼</a> |
+    <a href='{{ $url['pay_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
+    <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
+    <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |
+    <a href='{{ $url['capital_asc_url'] }}'>資本額 ▲</a> |
+    <a href='{{ $url['time_desc_url'] }}'>同步時間 ▼</a> |
+    <a href='{{ $url['time_asc_url'] }}'>同步時間 ▲</a>
+
+    {{-- 分頁 --}}
+    分頁:
+    <a href='{{ $url['prev_url'] }}'>上一頁 ▲</a> |
+    <a href='{{ $url['next_url'] }}'>下一頁 ▼</a>
 </div>
 </body>
 </html>
