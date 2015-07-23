@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <title>Company API 測試</title>
 <style>
+    a {text-decoration:none;}
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
+    .readed a {color:#999;}
     table {width: 100%; border-collapse: collapse;}
     table tr:hover{background: #DDF}
     table tr th {background: #DFD}
@@ -52,8 +54,8 @@
 
             @foreach ($rows as $row)
             <tr>
-                <td>
-                    <a href='{{ App\Library\Lib::get_104_company_url($row->c_code) }}' target='_blank'>
+                <td  {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
+                    <a href='/go/company/{{ $row->c_code }}' target='_blank'>
                         {{ $row->name }}
                     </a>
                 </td>

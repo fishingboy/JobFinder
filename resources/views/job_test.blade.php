@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <title>Job API 測試</title>
 <style>
+    a {text-decoration:none;}
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
     .width100 {width:100px;}
+    .readed a {color:#999;}
     table {width: 100%; border-collapse: collapse;}
     table tr:hover{background: #DDF}
     table tr th {background: #DFD}
@@ -37,8 +39,8 @@
 
             @foreach ($rows as $row)
             <tr>
-                <td>
-                    <a href='{{ App\Library\Lib::get_104_job_url($row->j_code) }}' target='_blank'>
+                <td {!! ($row->job_readed == 1) ? "class='readed'" : '' !!}>
+                    <a href='/go/job/{{ $row->j_code }}' target='_blank'>
                         {{ $row->title }}
                     </a>
                 </td>
@@ -46,8 +48,8 @@
                     {{ App\Library\Lib::convert_pay($row->sal_month_low, $row->sal_month_high) }}
                 </td>
                 <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
-                <td>
-                    <a href='{{ App\Library\Lib::get_104_company_url($row->c_code) }}' target='_blank'>
+                <td {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
+                    <a href='/go/company/{{ $row->c_code }}' target='_blank'>
                         {{ $row->name }}
                     </a>
                 </td>

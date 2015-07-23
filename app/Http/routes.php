@@ -46,6 +46,9 @@ Route::match(['get', 'post'], '/company/{format}', 'CompanyController@get');
 Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
 Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
 
+// 轉址器
+Route::get('/go/job/{j_code}', 'GoController@job');
+Route::get('/go/company/{j_code}', 'GoController@company');
 
 // 資料庫操作
 Route::get('/truncate', 'ToolController@truncate');
