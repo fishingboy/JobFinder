@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <title>Job API 測試</title>
 <style>
-    a {text-decoration:none;}
+    body {background: #000; color:#FFF;}
+    a {text-decoration:none; color:#AAF;}
+    a:hover{color:#AFA;}
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
-    .width100 {width:100px;}
     .readed a, a:visited {color:#999;}
     table {width: 100%; border-collapse: collapse;}
-    table tr:hover{background: #DDF}
-    table tr th {background: #DFD}
+    table tr:hover{background: #666}
+    table tr th {background: #696}
     table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
 </style>
 </head>

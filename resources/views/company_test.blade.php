@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <title>Company API 測試</title>
 <style>
-    a {text-decoration:none;}
+    body {background: #000; color:#FFF;}
+    a {text-decoration:none; color:#AAF;}
+    a:hover{color:#AFA;}
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
     .readed a, a:visited {color:#999;}
     table {width: 100%; border-collapse: collapse;}
-    table tr:hover{background: #DDF}
-    table tr th {background: #DFD}
+    table tr:hover{background: #666}
+    table tr th {background: #696}
     table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
 </style>
 </head>
@@ -46,15 +48,20 @@
     <div class='tableBox'>
         <table>
             <tr>
+                <th>職缺數</th>
                 <th>公司名稱</th>
                 <th>員工人數</th>
                 <th>資本額</th>
                 <th>地址</th>
-                <th>職缺數</th>
             </tr>
 
             @foreach ($rows as $row)
             <tr>
+                <td class='center'>
+                    <a href='/job/test/?companyID={{ $row->companyID }}&page_size=100' target='_blank'>
+                        <div>{{ $row->job_count }}</div>
+                    </a>
+                </td>
                 <td  {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
                     <a href='/go/company/{{ $row->c_code }}' target='_blank'>
                         {{ $row->name }}
@@ -63,11 +70,6 @@
                 <td class='center'>{{ number_format($row->employees) }}</td>
                 <td class='center'>{{ App\Library\Lib::number2capital($row->capital) }}</td>
                 <td class='center'>{{ $row->addr_no_descript }}</td>
-                <td class='center'>
-                    <a href='/job/test/?companyID={{ $row->companyID }}&page_size=100' target='_blank'>
-                        {{ $row->job_count }}
-                    </a>
-                </td>
             </tr>
             @endforeach
         </table>
