@@ -135,8 +135,10 @@ class JobController extends Controller
         $data['url'] = [
             'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
             'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
-            'pay_desc_url'       => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'DESC', 'employees' => 'DESC']]),
-            'pay_asc_url'        => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
+            'pay_low_desc_url'   => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'DESC', 'employees' => 'DESC']]),
+            'pay_low_asc_url'    => $this->_get_url($search_param, ['orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
+            'pay_high_desc_url'  => $this->_get_url($search_param, ['orderby' => ['sal_month_high' => 'DESC', 'employees' => 'DESC']]),
+            'pay_high_asc_url'   => $this->_get_url($search_param, ['orderby' => ['sal_month_high' => 'ASC', 'employees' => 'DESC']]),
             'employees_desc_url' => $this->_get_url($search_param, ['orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
             'employees_asc_url'  => $this->_get_url($search_param, ['orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
             'capital_desc_url'   => $this->_get_url($search_param, ['orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),

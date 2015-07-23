@@ -8,7 +8,7 @@
     .base {margin: 0 auto; width:95%;}
     .tableBox {}
     .center   {text-align: center;}
-    .readed a {color:#999;}
+    .readed a, a:visited {color:#999;}
     table {width: 100%; border-collapse: collapse;}
     table tr:hover{background: #DDF}
     table tr th {background: #DFD}
