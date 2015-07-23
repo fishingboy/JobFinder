@@ -6,9 +6,9 @@ namespace App\Library;
  */
 class Curl
 {
-    public static function get_json_data($url)
+    public static function get_json_data($url, $param = [], $method='GET')
     {
-        $data = self::get_response($url);
+        $data = self::get_response($url, $param);
         if ($data['status'])
         {
             return json_decode($data['data'], TRUE);
@@ -25,7 +25,7 @@ class Curl
      * @param  string url
      * @return string data
      */
-    public static function get_response($url)
+    public static function get_response($url, $param = [], $method='GET')
     {
         $timeout = 100;
         $curl = curl_init($url);
@@ -39,9 +39,18 @@ class Curl
         {
             @ curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
         }
+
+        // 傳遞資料
+        if (count($param))
+        {
+            @ curl_setopt($curl, CURLOPT_CUSTOMREQUEST,  $method);
+            @ curl_setopt($curl, CURLOPT_POSTFIELDS, $param);
+        }
+
         @ curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         @ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         @ curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+
 
         $data = curl_exec($curl);
 
