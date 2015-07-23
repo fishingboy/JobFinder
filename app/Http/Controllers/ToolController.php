@@ -25,4 +25,20 @@ class ToolController extends Controller
 
         return "Table job, company is truncated.<br>";
     }
+
+    /**
+     * 清除已讀狀態
+     *
+     * @return Response
+     */
+    public function clear_readed()
+    {
+        // 清空 Job
+        DB::table('job')->update(['job_readed' => 0]);
+
+        // 清空 Company
+        DB::table('company')->update(['company_readed' => 0]);
+
+        return "Table job, company is clear readed.<br>";
+    }
 }
