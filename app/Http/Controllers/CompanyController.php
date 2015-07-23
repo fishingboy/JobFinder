@@ -10,6 +10,7 @@ use App\Classes\Job104;
 use App\Classes\JobPtt;
 use App\Models\Job;
 use App\Models\Company;
+use App\Library\Curl;
 use App\Library\Debug;
 
 
@@ -133,5 +134,19 @@ class CompanyController extends Controller
 
         // 輸出
         return view('company_test', $data);
+    }
+
+    public function post_test()
+    {
+        $param = ['page' => 10, '_token' => csrf_token()];
+        echo "<pre>param = " . print_r($param, TRUE). "</pre>";
+
+        // GET 呼叫
+        $data = Curl::get_response("http://jobfinder/company", $param, 'GET');
+        echo "<pre>data = " . print_r($data, TRUE). "</pre>";
+
+        // POST 呼叫
+        $data = Curl::get_response("http://jobfinder/company", $param, 'POST');
+        echo "<pre>data = " . print_r($data, TRUE). "</pre>";
     }
 }
