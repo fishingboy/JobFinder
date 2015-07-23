@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Library\Curl;
+use App\Library\Lib;
 use App\Models\Company;
 
 use App\Classes\Crawler104;
@@ -27,7 +28,7 @@ class CrawlerController extends Controller
         if ($row)
         {
             echo "<pre>row = " . print_r($row, TRUE). "</pre>";
-            echo Crawler104::number2capital($row->capital);
+            echo Lib::number2capital($row->capital);
 
             $c_code = $row->c_code;
 
@@ -40,7 +41,7 @@ class CrawlerController extends Controller
             }
             else
             {
-                return 'Crawler No Response!';
+                return '[$c_code] Crawler No Response!';
             }
         }
         else
@@ -78,7 +79,7 @@ class CrawlerController extends Controller
 
             // 取得爬蟲資訊
             $company_data['employees'] = $data['employees'];
-            $company_data['capital']   = Crawler104::number2capital($data['capital']);
+            $company_data['capital']   = Lib::number2capital($data['capital']);
             $company_data['url']       = $data['url'];
         }
         else

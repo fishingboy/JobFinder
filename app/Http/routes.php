@@ -20,8 +20,12 @@ Route::get('/', function(){return view('link');});
 // 工作列表
 Route::get('/list', 'ListController@index');
 Route::get('/list/{source}', 'ListController@index');
-Route::get('/update', 'ListController@update');
-Route::get('/update/{source}', 'ListController@update');
+
+// 資料更新
+Route::get('/update', 'UpdateController@update');
+Route::get('/update/{source}', 'UpdateController@update');
+Route::get('/old_list', 'UpdateController@index');
+Route::get('/old_list/{source}', 'UpdateController@index');
 
 // 爬蟲
 Route::get('/crawler/company/get/{companyID}', 'CrawlerController@get_company');
@@ -29,20 +33,26 @@ Route::get('/crawler/company/get', 'CrawlerController@get_company');
 Route::get('/crawler/company/update', 'CrawlerController@update_company');
 
 // API
-Route::get('/job', 'JobController@get');
-Route::get('/job/{format}', 'JobController@get');
-Route::get('/job/get', 'JobController@get');
-Route::get('/job/get/{format}', 'JobController@get');
-Route::get('/company', 'CompanyController@get');
-Route::get('/company/{format}', 'CompanyController@get');
-Route::get('/company/get/{format}', 'CompanyController@get');
-Route::get('/company/get/{format}', 'CompanyController@get');
+Route::match(['get', 'post'], '/job', 'JobController@get');
+Route::match(['get', 'post'], '/job/test', 'JobController@test');
+Route::match(['get', 'post'], '/job/{format}', 'JobController@get');
+Route::match(['get', 'post'], '/job/get', 'JobController@get');
+Route::match(['get', 'post'], '/job/get/{format}', 'JobController@get');
 
+Route::match(['get', 'post'], '/company', 'CompanyController@get');
+Route::match(['get', 'post'], '/company/test', 'CompanyController@test');
+Route::match(['get', 'post'], '/company/post_test', 'CompanyController@post_test');
+Route::match(['get', 'post'], '/company/{format}', 'CompanyController@get');
+Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
+Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
+
+// 轉址器
+Route::get('/go/job/{j_code}', 'GoController@job');
+Route::get('/go/company/{j_code}', 'GoController@company');
 
 // 資料庫操作
 Route::get('/truncate', 'ToolController@truncate');
 
 // test
-Route::get('/db_test', 'ListController@db_test');
 Route::get('/plugin/firephp', 'PluginController@firephp');
 

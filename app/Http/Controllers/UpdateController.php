@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 
 use DB;
 
-class ListController extends Controller
+class UpdateController extends Controller
 {
     /**
      * 建立 job 實體
@@ -126,17 +126,5 @@ class ListController extends Controller
         }
 
         return view('update_report', $job_data);
-    }
-
-    /**
-     * 資料庫測試
-     *
-     * @return Response
-     */
-    public function db_test($id=1)
-    {
-        $rows = User::query();
-
-        echo "<pre>rows = " . print_r($rows, TRUE). "</pre>";
     }
 }
