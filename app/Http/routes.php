@@ -52,6 +52,7 @@ Route::get('/go/company/{j_code}', 'GoController@company');
 
 // 資料庫操作
 Route::get('/truncate', 'ToolController@truncate');
+Route::get('/clear_readed', 'ToolController@clear_readed');
 
 // test
 Route::get('/plugin/firephp', 'PluginController@firephp');

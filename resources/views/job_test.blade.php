@@ -3,18 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Job API 測試</title>
-<style>
-    a {text-decoration:none;}
-    .base {margin: 0 auto; width:95%;}
-    .tableBox {}
-    .center   {text-align: center;}
-    .width100 {width:100px;}
-    .readed a {color:#999;}
-    table {width: 100%; border-collapse: collapse;}
-    table tr:hover{background: #DDF}
-    table tr th {background: #DFD}
-    table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
-</style>
+<style type="text/css">@import url(/css/test.css);</style>
 </head>
 <body>
 <div class='base'>
@@ -29,8 +18,10 @@
     <div >
     {{-- 排序 --}}
     排序:
-    <a href='{{ $url['pay_desc_url'] }}'>最低薪資 ▼</a> |
-    <a href='{{ $url['pay_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['pay_low_desc_url'] }}'>最低薪資 ▼</a> |
+    <a href='{{ $url['pay_low_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['pay_high_desc_url'] }}'>最高薪資 ▼</a> |
+    <a href='{{ $url['pay_high_asc_url'] }}'>最高薪資 ▲</a> |
     <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
     <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
     <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |
@@ -79,8 +70,10 @@
 
     {{-- 排序 --}}
     排序:
-    <a href='{{ $url['pay_desc_url'] }}'>最低薪資 ▼</a> |
-    <a href='{{ $url['pay_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['pay_low_desc_url'] }}'>最低薪資 ▼</a> |
+    <a href='{{ $url['pay_low_asc_url'] }}'>最低薪資 ▲</a> |
+    <a href='{{ $url['pay_high_desc_url'] }}'>最高薪資 ▼</a> |
+    <a href='{{ $url['pay_high_asc_url'] }}'>最高薪資 ▲</a> |
     <a href='{{ $url['employees_desc_url'] }}'>員工人數 ▼</a> |
     <a href='{{ $url['employees_asc_url'] }}'>員工人數 ▲</a> |
     <a href='{{ $url['capital_desc_url'] }}'>資本額 ▼</a> |

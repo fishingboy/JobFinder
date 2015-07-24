@@ -141,14 +141,14 @@ class CompanyController extends Controller
         $data['url'] = [
             'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
             'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
-            'job_count_desc_url' => $this->_get_url($search_param, ['orderby' => ['job_count' => 'DESC', 'employees' => 'DESC']]),
-            'job_count_asc_url'  => $this->_get_url($search_param, ['orderby' => ['job_count' => 'ASC', 'employees' => 'DESC']]),
-            'employees_desc_url' => $this->_get_url($search_param, ['orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
-            'employees_asc_url'  => $this->_get_url($search_param, ['orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
-            'capital_desc_url'   => $this->_get_url($search_param, ['orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
-            'capital_asc_url'    => $this->_get_url($search_param, ['orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
-            'time_desc_url'      => $this->_get_url($search_param, ['orderby' => ['company.created_at' => 'DESC', 'employees' => 'DESC']]),
-            'time_asc_url'       => $this->_get_url($search_param, ['orderby' => ['company.created_at' => 'ASC', 'employees' => 'DESC']]),
+            'job_count_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job_count' => 'DESC', 'employees' => 'DESC']]),
+            'job_count_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job_count' => 'ASC', 'employees' => 'DESC']]),
+            'employees_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
+            'employees_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
+            'capital_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
+            'capital_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
+            'time_desc_url'      => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['company.created_at' => 'DESC', 'employees' => 'DESC']]),
+            'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['company.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
         // 輸出
