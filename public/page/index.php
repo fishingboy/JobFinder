@@ -60,35 +60,35 @@
 					</div>
 				</td>
 			</tr>
-			<?php 
-				for ($x = 0; $x <= 5; $x++) {
-				echo '
-					<tr>
-						<!-- <td></td> -->
-						<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>
-						<td>2015/07/07</td>
-						<td><div class="fixword">又帥又強清潔人員</td>
-						<td><div class="fixword">ROFL股份有限公司</div></td>
-						<td>100,000 ~ 100,000</td>
-						<td>台北市信義區</td>
-						<td>5000</td>
-						<td>10年</td>
-						<td>10億5千萬</td>
-					</tr>
-					<tr>
-						<!-- <td></td> -->
-						<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>
-						<td>2015/07/07</td>
-						<td><div class="fixword">又帥又強清潔人員</td>
-						<td><div class="fixword">ROFL股份有限公司</div></td>
-						<td>100,000 ~ 100,000</td>
-						<td>台北市信義區</td>
-						<td>5000</td>
-						<td>10年</td>
-						<td>10億5千萬</td>
-					</tr>
-				';
-				}
+			<?php
+				// for ($x = 0; $x <= 5; $x++) {
+				// echo '
+				// 	<tr>
+				// 		<!-- <td></td> -->
+				// 		<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>
+				// 		<td>2015/07/07</td>
+				// 		<td><div class="fixword">又帥又強清潔人員</td>
+				// 		<td><div class="fixword">ROFL股份有限公司</div></td>
+				// 		<td>100,000 ~ 100,000</td>
+				// 		<td>台北市信義區</td>
+				// 		<td>5000</td>
+				// 		<td>10年</td>
+				// 		<td>10億5千萬</td>
+				// 	</tr>
+				// 	<tr>
+				// 		<!-- <td></td> -->
+				// 		<td><button class="btn-detail" title="詳細內容"><i class="fa fa-search"></i></button></td>
+				// 		<td>2015/07/07</td>
+				// 		<td><div class="fixword">又帥又強清潔人員</td>
+				// 		<td><div class="fixword">ROFL股份有限公司</div></td>
+				// 		<td>100,000 ~ 100,000</td>
+				// 		<td>台北市信義區</td>
+				// 		<td>5000</td>
+				// 		<td>10年</td>
+				// 		<td>10億5千萬</td>
+				// 	</tr>
+				// ';
+				// }
 			?> 
 		</tbody>
 	</table>

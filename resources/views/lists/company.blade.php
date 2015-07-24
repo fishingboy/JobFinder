@@ -1,0 +1,22 @@
+@extends('lists/main')
+
+@section('content')
+<section class="content">
+	<table class="jobtable">
+		<thead>
+			<tr>
+				<th>職缺列表</th>
+				<th>刊登日期</th>
+				<th>公司名稱<button class="table-sort"><i class="fa fa-chevron-down"></i></button></th>
+				<th>公司類型</th>
+				<th>所在地</th>
+				<th>總人數</th>
+				<th>經歷需求</th>
+				<th>職缺數</th>
+				<th>資本額</th>
+			</tr>
+		</thead>
+	<tbody id="jobListBody">
+	</tbody>
+	</table>
+</section><script id="jobListTmpl" type="x-tmpl-mustache">		@{{#rows}}		<tr>			<td><button data-name="cId_@{{companyID}}" title="詳細內容" class="btn-detail toggle-detail"><i class="fa fa-search"></i></button></td>			<td>@{{created_at}}</td>			<td><div class="fixword">@{{name}}</div></td>			// <td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>			<td>@{{addr_no_descript}} @{{address}}</td>			<td>@{{employees}}</td>			<td>@{{period}}</td>			<td>@{{job_count}}</td>			<td>@{{capital}}</td>		</tr>		@{{#jobs}}		<tr name="cId_@{{companyID}}" class="job-detail">			<td colspan="10">				<div class="detail-content">					<table class="jobtable">						<thead>							<tr>								<!-- <th><input type="checkbox" class="checkbox-orders" name="checkbox-orders"></th> -->								<th>職稱</th>								<th>新資範圍<button class="table-sort"><i class="fa fa-chevron-up"></i></button></th>								<th>年資需求</th>								<th>職務描述</th>							</tr>						</thead>						<tbody>							<tr>								<!-- <td></td> -->								<td><div class="fixword">@{{title}}</td>								<td>@{{sal_month_low}} ~ @{{sal_month_high}}</td>								<td>@{{period}}</td>								<td>@{{description}}</td>							</tr>						</tbody>					</table>				</div>			</td>		</tr>		@{{/jobs}}		@{{/rows}}</script>@stop@section('customJs')	<script src="{{ URL::asset('/js/lists/company.js') }}" charset="utf-8"></script>@stop

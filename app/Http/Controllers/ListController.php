@@ -14,4 +14,9 @@ class ListController extends Controller
 	{
 		return view('lists/job');
 	}
+
+	public function listCompany()
+	{
+		return view('lists/company');
+	}
 }
