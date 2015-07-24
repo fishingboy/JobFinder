@@ -53,7 +53,7 @@
                     </a>
                 </td>
                 <td class='center'>
-                    {{ App\Library\Lib::convert_pay($row->sal_month_low, $row->sal_month_high) }}
+                    {{ $row->pay }}
                 </td>
                 <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                 <td {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
@@ -61,8 +61,8 @@
                         {{ $row->name }}
                     </a>
                 </td>
-                <td class='center'>{{ number_format($row->employees) }}</td>
-                <td class='center'>{{ App\Library\Lib::number2capital($row->capital) }}</td>
+                <td class='center'>{{ $row->employees }}</td>
+                <td class='center'>{{ $row->capital }}</td>
             </tr>
             @endforeach
         </table>

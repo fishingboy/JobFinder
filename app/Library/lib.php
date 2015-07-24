@@ -27,8 +27,8 @@ class Lib
     }
     /**
      * 將資本額轉成數字
-     * @param  string $str 資料額
-     * @return Integer     資料額的數字
+     * @param  string $str 資本額中文
+     * @return Integer     資本額的數字
      */
     public static function capital2number($str)
     {
@@ -44,6 +44,11 @@ class Lib
         return $money;
     }
 
+    /**
+     * 將資本額數字轉成中文
+     * @param  integer $number 數字資本額
+     * @return string          中文資本額
+     */
     public static function number2capital($number)
     {
         if ($number == 0)
@@ -87,7 +92,17 @@ class Lib
         {
             $low    = number_format($low / 1000) . 'K';
             $height = number_format($height / 1000) . 'K';
-            return "{$low} ~ {$height}";
+            return ($low == $height) ? $low : "{$low} ~ {$height}";
         }
+    }
+
+    /**
+     * 轉換員工人數
+     * @param  integer $employees 員工人數
+     * @return string             易於閱讀的格式
+     */
+    public static function convert_employees($employees)
+    {
+        return ($employees == 0) ? '暫不提供' : number_format($employees);
     }
 }

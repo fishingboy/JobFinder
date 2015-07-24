@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Library\Lib;
 use DB;
 
 /**
@@ -100,9 +101,22 @@ class Job extends Model
             }
         }
 
+        // 取得資料
         $rows       = $obj->get();
         $count      = $obj->count();
         $total_page = ceil($count / $page_size);
+
+        /* 轉換資料格式 */
+        foreach ($rows as $key => $row)
+        {
+            // 員人工數
+            $row->employees = Lib::convert_employees($row->employees);
+            // 資本額
+            $row->capital   = Lib::number2capital($row->capital);
+            // 薪資
+            $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
+        }
+
 
         return [
             'count'      => $count,
