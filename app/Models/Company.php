@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Library\Lib;
 use DB;
 
 /**
@@ -109,8 +110,20 @@ class Company extends Model
             $jobs = DB::table('job')
                          ->join('company', 'job.companyID', '=', 'company.companyID')
                          ->where('job.companyID', $row->companyID)
+                         ->select('job.*')
                          ->get();
             $row->jobs = $jobs;
+
+            /* 轉換資料格式 */
+            // 員人工數
+            $row->employees = Lib::convert_employees($row->employees);
+            // 資本額
+            $row->capital   = Lib::number2capital($row->capital);
+            // 薪資
+            foreach ($jobs as $key => $job_row)
+            {
+                $job_row->pay = Lib::convert_pay($job_row->sal_month_low, $job_row->sal_month_high);
+            }
         }
 
         return [

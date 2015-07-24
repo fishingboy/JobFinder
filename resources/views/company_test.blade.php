@@ -55,8 +55,8 @@
                         {{ $row->name }}
                     </a>
                 </td>
-                <td class='center'>{{ number_format($row->employees) }}</td>
-                <td class='center'>{{ App\Library\Lib::number2capital($row->capital) }}</td>
+                <td class='center'>{{ $row->employees }}</td>
+                <td class='center'>{{ $row->capital }}</td>
                 <td class='center'>{{ $row->addr_no_descript }}</td>
             </tr>
             @endforeach
