@@ -3,19 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Job API 測試</title>
-<style>
-    body {background: #000; color:#fff;}
-    a {text-decoration:none; color:#9CF;}
-    a:hover{color:#AFA;}
-    .base {margin: 0 auto; width:95%;}
-    .tableBox {}
-    .center   {text-align: center;}
-    .readed a, a:visited {color:#999;}
-    table {width: 100%; border-collapse: collapse;}
-    table tr:hover{background: #666}
-    table tr th {background: #696}
-    table tr td, table tr th{border:1px solid #CCC; padding: 3px;}
-</style>
+<style type="text/css">@import url(/css/test.css);</style>
 </head>
 <body>
 <div class='base'>
