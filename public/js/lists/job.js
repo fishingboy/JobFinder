@@ -1,1 +1,3 @@
-JOBFINDER.jobList.listJobs(JOBFINDER.jobList.renderView);
+$(function() {
+	JOBFINDER.jobList.listJobs({}, JOBFINDER.jobList.renderView);
+});

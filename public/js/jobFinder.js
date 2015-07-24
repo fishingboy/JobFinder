@@ -21,13 +21,19 @@ JOBFINDER.namespace = function(ns_string) {
 var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 
 // console.log(jobList === JOBFINDER.jobList);
-jobList.listJobs = function(renderView) {
+jobList.listJobs = function(options, renderView) {
+	var settings = $.extend({
+		page: 1,
+		page_size: 30
+	}, options || {});
+
 	$.ajax({
 		url: "job/",
 		method: "GET",
-		dataType: "JSON"
+		dataType: "JSON",
+		data: settings
 	}).done(function(res) {
-		// console.log(res);
+		console.log(res);
 		if (res.status === true) {
 			renderView(res);
 		} else {
