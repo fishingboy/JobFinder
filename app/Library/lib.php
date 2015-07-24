@@ -92,7 +92,7 @@ class Lib
         {
             $low    = number_format($low / 1000) . 'K';
             $height = number_format($height / 1000) . 'K';
-            return "{$low} ~ {$height}";
+            return ($low == $height) ? $low : "{$low} ~ {$height}";
         }
     }
 
