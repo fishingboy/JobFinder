@@ -3,7 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Job API 測試</title>
+<script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
+<script src='http://johnny.github.io/jquery-sortable/js/jquery-sortable.js'></script>
 <style type="text/css">@import url(/css/test.css);</style>
+<style type="text/css">@import url(/css/sorted_table.css);</style>
+<script type="text/javascript">
+$(function()
+{
+    $('.sorted_table').sortable(
+    {
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>'
+    });
+});
+</script>
 </head>
 <body>
 <div class='base'>
@@ -35,7 +50,7 @@
     <a href='{{ $url['next_url'] }}'>下一頁 ▼</a>
 
     <div class='tableBox'>
-        <table>
+        <table class='sorted_table'>
             <tr>
                 <th>職缺名稱</th>
                 <th class='width100'>薪資</th>

@@ -1,0 +1,73 @@
+body.dragging, body.dragging *
+{
+  cursor: move !important;
+}
+
+.dragged
+{
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+.sorted_table tr
+{
+    cursor: pointer;
+}
+.sorted_table tr.placeholder
+{
+    background: red none repeat scroll 0 0;
+    border: medium none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.sorted_table tr.placeholder::before
+{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent -moz-use-text-color transparent red;
+    border-image: none;
+    border-style: solid none solid solid;
+    border-width: 5px medium 5px 5px;
+    content: "";
+    height: 0;
+    left: -5px;
+    margin-top: -5px;
+    position: absolute;
+    width: 0;
+}
+.sorted_head th
+{
+    cursor: pointer;
+}
+.sorted_head th.placeholder
+{
+    background: red none repeat scroll 0 0;
+    display: block;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 0;
+}
+.sorted_head th.placeholder::before
+{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: red transparent -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 5px 5px medium;
+    content: "";
+    height: 0;
+    margin-left: -5px;
+    position: absolute;
+    top: -6px;
+    width: 0;
+}

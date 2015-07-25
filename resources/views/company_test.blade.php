@@ -3,7 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Company API 測試</title>
+<script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
+<script src='http://johnny.github.io/jquery-sortable/js/jquery-sortable.js'></script>
+<style type="text/css">@import url(/css/sorted_table.css);</style>
 <style type="text/css">@import url(/css/test.css);</style>
+<script type="text/javascript">
+$(function()
+{
+    $('.sorted_table').sortable(
+    {
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>'
+    });
+});
+</script>
 </head>
 <body>
 <div class='base'>
@@ -34,7 +49,7 @@
 
     {{-- 列表 --}}
     <div class='tableBox'>
-        <table>
+        <table class='sorted_table'>
             <tr>
                 <th>職缺數</th>
                 <th>公司名稱</th>

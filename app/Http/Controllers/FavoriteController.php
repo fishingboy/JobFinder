@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,22 +10,32 @@ use App\Classes\Job104;
 use App\Classes\JobPtt;
 use App\Models\Job;
 use App\Models\Company;
+use App\Models\Favorite;
+use App\Library\Curl;
+use App\Library\Debug;
 
-/**
- * Job API
- */
-class JobController extends Controller
+class FavoriteController extends Controller
 {
     /**
      * 允許查詢的參數
      * @var array
      */
     private $_allow_param = [
+        'type',
         'page_size',
         'page',
-        'companyID',
         'orderby'
     ];
+
+    public function add(Request $request)
+    {
+        $data = [
+            'type'  => $request->input('type', 1),
+            'resID' => $request->input('resID', 1),
+        ];
+        $r = Favorite::insert($data);
+        echo "<pre>r = " . print_r($r, TRUE). "</pre>";
+    }
 
     /**
      * 取得 get 查詢欄位
@@ -71,16 +82,21 @@ class JobController extends Controller
         $search_param = $this->_get_param($request);
 
         // 取得查詢資料
-        $data = Job::search($search_param);
+        $data = Favorite::search($search_param);
         if ($data)
         {
             $data = array_merge(['status' => TRUE], $data);
         }
 
         if ($format == 'json')
+        {
             return response()->json($data);
+        }
         else
+        {
+            Debug::fblog($data);
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
+        }
     }
 
     /**
@@ -114,7 +130,7 @@ class JobController extends Controller
             }
         }
 
-        return "/job/test?" . implode('&', $param);
+        return "/favorite/test?" . implode('&', $param);
     }
 
     /**
@@ -129,7 +145,7 @@ class JobController extends Controller
         $search_param = $this->_get_param($request);
 
         // 取得查詢資料
-        $data = Job::search($search_param);
+        $data = Favorite::search($search_param);
 
         // 取得網址
         $data['url'] = [
@@ -139,17 +155,24 @@ class JobController extends Controller
             'pay_low_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
             'pay_high_desc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'DESC', 'employees' => 'DESC']]),
             'pay_high_asc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'ASC', 'employees' => 'DESC']]),
+            'job_count_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job_count' => 'DESC', 'employees' => 'DESC']]),
+            'job_count_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job_count' => 'ASC', 'employees' => 'DESC']]),
             'employees_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
             'employees_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
             'capital_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
             'capital_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
-            'time_desc_url'      => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'DESC', 'employees' => 'DESC']]),
-            'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'ASC', 'employees' => 'DESC']]),
+            'time_desc_url'      => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['company.created_at' => 'DESC', 'employees' => 'DESC']]),
+            'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['company.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
-        // echo "<pre>data = " . print_r($data, TRUE). "</pre>";
-
         // 輸出
-        return view('job_test', $data);
+        if (isset($search_param['type']) && $search_param['type'] == 1)
+        {
+            return view('job_test', $data);
+        }
+        else
+        {
+            return view('company_test', $data);
+        }
     }
 }
