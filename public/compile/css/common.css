@@ -117,9 +117,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-  background-color: #fefefe;
-  background-image: url("../../img/bg.jpg");
-  background-size: cover;
+  background-color: #528037;
+  background-image: url("../../img/bg_bll.jpg");
+  background-repeat: repeat;
   min-width: 300px;
   overflow-x: hidden;
   color: #333;
@@ -158,7 +158,7 @@ button {
 }
 
 .header, .content {
-  width: 980px;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -169,6 +169,7 @@ button {
   font-size: 1.8em;
   font-style: italic;
   text-align: center;
+  text-shadow: rgba(51, 51, 51, 0.2) 1px 1px 0, rgba(51, 51, 51, 0.2) 2px 2px 0, rgba(51, 51, 51, 0.2) 3px 3px 0;
 }
 
 .jobtable {
@@ -177,18 +178,12 @@ button {
   border-collapse: collapse;
   table-layout: fixed;
 }
-.jobtable tr:hover {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333333), color-stop(100%, #222222));
-  background-image: -webkit-linear-gradient(#333333, #222222);
-  background-image: -moz-linear-gradient(#333333, #222222);
-  background-image: -o-linear-gradient(#333333, #222222);
-  background-image: linear-gradient(#333333, #222222);
-}
 .jobtable th, .jobtable td {
-  padding: 8px 10px;
+  padding: 8px 5px;
   color: #eee;
   text-align: center;
-  line-height: 1.2;
+  font-size: .9em;
+  line-height: 1.4;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #555555), color-stop(100%, #444444));
   background-image: -webkit-linear-gradient(#555555, #444444);
   background-image: -moz-linear-gradient(#555555, #444444);
@@ -197,22 +192,26 @@ button {
   -webkit-box-shadow: #333333 1px 1px 5px;
   -moz-box-shadow: #333333 1px 1px 5px;
   box-shadow: #333333 1px 1px 5px;
+  vertical-align: middle;
 }
 .jobtable thead th {
   color: #fff;
   font-weight: 500;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9b84a), color-stop(100%, #ff9547));
-  background-image: -webkit-linear-gradient(#f9b84a, #ff9547);
-  background-image: -moz-linear-gradient(#f9b84a, #ff9547);
-  background-image: -o-linear-gradient(#f9b84a, #ff9547);
-  background-image: linear-gradient(#f9b84a, #ff9547);
+  white-space: nowrap;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9b84a), color-stop(100%, #f9892c));
+  background-image: -webkit-linear-gradient(#f9b84a, #f9892c);
+  background-image: -moz-linear-gradient(#f9b84a, #f9892c);
+  background-image: -o-linear-gradient(#f9b84a, #f9892c);
+  background-image: linear-gradient(#f9b84a, #f9892c);
+}
+.jobtable tr:hover td {
+  background: #333;
+  border-top: 1px solid #ff9547;
+  border-bottom: 1px solid #ff9547;
 }
 .jobtable .fixword {
-  width: 110px;
-  height: 20px;
   margin: 0 auto;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
 }
 .jobtable .table-sort {
@@ -253,4 +252,42 @@ button {
 .job-detail .detail-content {
   max-height: 300px;
   overflow: auto;
+}
+
+.pagenavi {
+  margin: 20px 0 40px;
+  text-align: center;
+}
+.pagenavi li {
+  display: inline-block;
+  vertical-align: middle;
+  color: white;
+  text-align: center;
+  font-size: .8em;
+  background-color: rgba(51, 51, 51, 0.5);
+}
+.pagenavi li a {
+  display: block;
+  color: #fff;
+  padding: 8px 13px;
+  cursor: pointer;
+}
+.pagenavi li:hover {
+  background-color: #333;
+}
+.pagenavi li.active {
+  -webkit-box-shadow: #ff9547 0 0 10px;
+  -moz-box-shadow: #ff9547 0 0 10px;
+  box-shadow: #ff9547 0 0 10px;
+}
+.pagenavi li.active a {
+  color: #ffe08c;
+}
+.pagenavi .prev, .pagenavi .next {
+  border: none;
+  background: rgba(0, 149, 249, 0.7);
+}
+.pagenavi .prev:hover, .pagenavi .next:hover {
+  border: none;
+  background-color: #036cb2;
 }
