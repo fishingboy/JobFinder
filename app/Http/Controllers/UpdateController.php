@@ -98,12 +98,12 @@ class UpdateController extends Controller
 
         // 取得查詢條件(之後可以改成用資料庫或其他方式取得)
         $conditions = [
-            'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
+            'cat'  => ['2013001006'],
             'area' => ['6001001000', '6001002000'],
             'role' => [1, 4],
             // 'pgsz' => 100,
-            'exp'  => 7,
-            'kws'  => 'php python',
+            'exp'  => 4,
+            'kws'  => 'UI',
             'kwop' => 3,
         ];
 
