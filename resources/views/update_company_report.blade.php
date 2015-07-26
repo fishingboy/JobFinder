@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>更新 Company 資訊(人數、資本額)</title>
+<style type="text/css">@import url(/css/test.css);</style>
 </head>
 <body>
 {{-- 顯示更新標題 --}}

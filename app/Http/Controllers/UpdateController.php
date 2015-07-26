@@ -96,16 +96,29 @@ class UpdateController extends Controller
         // 取得 job 實體
         $job = $this->_create_job($source);
 
-        // 取得查詢條件(之後可以改成用資料庫或其他方式取得)
+        // 查詢條件預設值
         $conditions = [
             'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
             'area' => ['6001001000', '6001002000'],
             'role' => [1, 4],
-            // 'pgsz' => 100,
             'exp'  => 7,
             'kws'  => 'php python',
             'kwop' => 3,
         ];
+
+        // 從 json 取得查詢條件
+        $json_file = "../resources/json/condition.json";
+        $condition_file = '';
+        if (file_exists($json_file))
+        {
+            $json = file_get_contents($json_file);
+            $data = json_decode($json, TRUE);
+            if ($data)
+            {
+                $conditions = $data;
+                $condition_file = $json_file;
+            }
+        }
 
         // 取得分頁
         $conditions['page'] = $request->input('page', NULL);
@@ -116,6 +129,13 @@ class UpdateController extends Controller
         // 更新資料庫
         $job_data = $job->update($conditions);
         Debug::fblog('$job_data', $job_data);
+
+        // 將查詢條件塞到 view 顯示
+        if ( ! isset($job_data['condition']) || ! $job_data['condition'])
+        {
+            $job_data['condition'] = json_encode($conditions);
+            $job_data['condition_file'] = $condition_file;
+        }
 
         // 判斷更新是否要自動跳轉下一頁
         $job_data['go_next_page_js'] = '';
