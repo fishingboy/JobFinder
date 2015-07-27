@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,22 +10,45 @@ use App\Classes\Job104;
 use App\Classes\JobPtt;
 use App\Models\Job;
 use App\Models\Company;
+use App\Models\Favorite;
+use App\Library\Curl;
+use App\Library\Debug;
 
-/**
- * Job API
- */
-class JobController extends Controller
+class FavoriteController extends Controller
 {
     /**
      * 允許查詢的參數
      * @var array
      */
     private $_allow_param = [
-        'page_size',
-        'page',
-        'companyID',
-        'orderby'
+        'type',
     ];
+
+    /**
+     * 加入最愛
+     */
+    public function add(Request $request)
+    {
+        $data = [
+            'type'  => $request->input('type', 1),
+            'resID' => $request->input('resID', 1),
+        ];
+        $r = Favorite::insert($data);
+        return response()->json(['status' => $r]);
+    }
+
+    /**
+     * 調整順序
+     */
+    public function sort(Request $request)
+    {
+        $data = [
+            'id'   => $request->input('id'),
+            'sn'   => $request->input('sn'),
+        ];
+        $r = Favorite::sort($data);
+        return response()->json(['status' => $r]);
+    }
 
     /**
      * 取得 get 查詢欄位
@@ -36,14 +60,9 @@ class JobController extends Controller
     {
         // 預設值
         $search_param = [
-            'page_size' => 20,
+            'page_size' => 9999,
             'page'      => 1,
-            'orderby' => [
-                'sal_month_high'       => 'DESC',
-                'sal_month_low'        => 'DESC',
-                'period'               => 'DESC',
-                'job_addr_no_descript' => 'ASC',
-            ]
+            'orderby'   => ['sn' => 'ASC']
         ];
 
         // 取得參數
@@ -71,16 +90,21 @@ class JobController extends Controller
         $search_param = $this->_get_param($request);
 
         // 取得查詢資料
-        $data = Job::search($search_param);
+        $data = Favorite::search($search_param);
         if ($data)
         {
             $data = array_merge(['status' => TRUE], $data);
         }
 
         if ($format == 'json')
+        {
             return response()->json($data);
+        }
         else
+        {
+            Debug::fblog($data);
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
+        }
     }
 
     /**
@@ -114,7 +138,7 @@ class JobController extends Controller
             }
         }
 
-        return "/job/test?" . implode('&', $param);
+        return "/favorite/test?" . implode('&', $param);
     }
 
     /**
@@ -129,28 +153,25 @@ class JobController extends Controller
         $search_param = $this->_get_param($request);
 
         // 取得查詢資料
-        $data = Job::search($search_param);
+        $data = Favorite::search($search_param);
 
         // 取得網址
         $data['url'] = [
             'prev_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] - 1]),
             'next_url'           => $this->_get_url($search_param, ['page' => $data['curr_page'] + 1]),
-            'pay_low_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_low' => 'DESC', 'employees' => 'DESC']]),
-            'pay_low_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_low' => 'ASC', 'employees' => 'DESC']]),
-            'pay_high_desc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'DESC', 'employees' => 'DESC']]),
-            'pay_high_asc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['sal_month_high' => 'ASC', 'employees' => 'DESC']]),
-            'employees_desc_url' => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'DESC', 'capital' => 'DESC']]),
-            'employees_asc_url'  => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['employees' => 'ASC', 'capital' => 'DESC']]),
-            'capital_desc_url'   => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'DESC', 'employees' => 'DESC']]),
-            'capital_asc_url'    => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['capital' => 'ASC', 'employees' => 'DESC']]),
-            'time_desc_url'      => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'DESC', 'employees' => 'DESC']]),
-            'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
         // 傳入 controller 名稱
         $data['controller'] = self::class;
 
         // 輸出
-        return view('test/job', $data);
+        if (isset($search_param['type']) && $search_param['type'] == 1)
+        {
+            return view('test/job', $data);
+        }
+        else
+        {
+            return view('test/company', $data);
+        }
     }
 }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>更新 {{ $source }}</title>
+<style type="text/css">@import url(/css/test.css);</style>
 </head>
 <body>
 {{-- 顯示更新標題 --}}
@@ -17,6 +18,9 @@
 
 {{-- 顯示求職條件(僅預灠模式) --}}
 @if ($preview_mode)
+<div>104 求職條件: {{ $condition }}</div>
+@else
+<div>求職條件檔案: {{ $condition_file }}</div>
 <div>求職條件: {{ $condition }}</div>
 @endif
 

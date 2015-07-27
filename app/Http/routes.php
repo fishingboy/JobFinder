@@ -33,18 +33,30 @@ Route::get('/crawler/company/get', 'CrawlerController@get_company');
 Route::get('/crawler/company/update', 'CrawlerController@update_company');
 
 // API
+// job
 Route::match(['get', 'post'], '/job', 'JobController@get');
 Route::match(['get', 'post'], '/job/test', 'JobController@test');
 Route::match(['get', 'post'], '/job/{format}', 'JobController@get');
 Route::match(['get', 'post'], '/job/get', 'JobController@get');
 Route::match(['get', 'post'], '/job/get/{format}', 'JobController@get');
 
+// company
 Route::match(['get', 'post'], '/company', 'CompanyController@get');
 Route::match(['get', 'post'], '/company/test', 'CompanyController@test');
 Route::match(['get', 'post'], '/company/post_test', 'CompanyController@post_test');
 Route::match(['get', 'post'], '/company/{format}', 'CompanyController@get');
 Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
 Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
+
+// favorite
+Route::match(['get', 'post'], '/favorite', 'FavoriteController@add');
+Route::match(['get', 'post'], '/favorite/add', 'FavoriteController@add');
+Route::match(['get', 'post'], '/favorite/sort', 'FavoriteController@sort');
+Route::match(['get', 'post'], '/favorite/test', 'FavoriteController@test');
+Route::match(['get', 'post'], '/favorite/post_test', 'FavoriteController@post_test');
+Route::match(['get', 'post'], '/favorite/{format}', 'FavoriteController@get');
+Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
+Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 
 // 轉址器
 Route::get('/go/job/{j_code}', 'GoController@job');

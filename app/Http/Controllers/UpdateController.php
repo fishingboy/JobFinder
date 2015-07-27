@@ -96,19 +96,32 @@ class UpdateController extends Controller
 		// 取得 job 實體
 		$job = $this->_create_job($source);
 
-		// 取得查詢條件(之後可以改成用資料庫或其他方式取得)
-		$conditions = [
-			'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
-			'area' => ['6001001000', '6001002000'],
-			'role' => [1, 4],
-			// 'pgsz' => 100,
-			'exp'  => 7,
-			'kws'  => 'php python',
-			'kwop' => 3,
-		];
+        // 查詢條件預設值
+        $conditions = [
+            'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
+            'area' => ['6001001000', '6001002000'],
+            'role' => [1, 4],
+            'exp'  => 7,
+            'kws'  => 'php python',
+            'kwop' => 3,
+        ];
 
-		// 取得分頁
-		$conditions['page'] = $request->input('page', NULL);
+        // 從 json 取得查詢條件
+        $json_file = "../resources/json/condition.json";
+        $condition_file = '';
+        if (file_exists($json_file))
+        {
+            $json = file_get_contents($json_file);
+            $data = json_decode($json, TRUE);
+            if ($data)
+            {
+                $conditions = $data;
+                $condition_file = $json_file;
+            }
+        }
+
+        // 取得分頁
+        $conditions['page'] = $request->input('page', NULL);
 
 		// 是否為預灠
 		$conditions['preview'] = $request->input('preview', NULL);
@@ -117,13 +130,20 @@ class UpdateController extends Controller
 		$job_data = $job->update($conditions);
 		Debug::fblog('$job_data', $job_data);
 
-		// 判斷更新是否要自動跳轉下一頁
-		$job_data['go_next_page_js'] = '';
-		if ( ! $conditions['preview'] && $job_data['page'] != $job_data['total_page'])
-		{
-			$next_url = "/update/{$source}?page=" . ($job_data['page'] + 1);
-			$job_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
-		}
+        // 將查詢條件塞到 view 顯示
+        if ( ! isset($job_data['condition']) || ! $job_data['condition'])
+        {
+            $job_data['condition'] = json_encode($conditions);
+            $job_data['condition_file'] = $condition_file;
+        }
+
+        // 判斷更新是否要自動跳轉下一頁
+        $job_data['go_next_page_js'] = '';
+        if ( ! $conditions['preview'] && $job_data['page'] != $job_data['total_page'])
+        {
+            $next_url = "/update/{$source}?page=" . ($job_data['page'] + 1);
+            $job_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
+        }
 
 		return view('update_report', $job_data);
 	}
