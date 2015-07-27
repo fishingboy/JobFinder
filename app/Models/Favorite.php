@@ -30,20 +30,27 @@ class Favorite extends Model
         $param = (array) $param;
 
         // 查詢 company 是否已存在
-        $rows = DB::table('favorite')->where('resID', $param['resID'])->get();
+        $rows = DB::table('favorite')
+                    ->where('resID', $param['resID'])
+                    ->where('type', $param['type'])
+                    ->get();
         $row = ($rows) ? $rows[0] : NULL;
 
         // 新增/更新
         if ($row)
         {
-            return $row->favoriteID;
+            $id = $row->favoriteID;
         }
         else
         {
             $param['created_at'] = DB::raw('NOW()');
             $param['updated_at'] = DB::raw('NOW()');
-            return DB::table('favorite')->insertGetId($param);
+            $id = DB::table('favorite')->insertGetId($param);
+
+            // 重整順序
+            self::rebuild_sn($param['type']);
         }
+        return $id;
     }
 
     /**
@@ -243,8 +250,8 @@ class Favorite extends Model
                        ) as SN
                 SET F.sn = SN.rownum
                 WHERE F.favoriteID=SN.favoriteID";
-        Debug::fblog('rebuild_sn.sql', $sql, [':type' => $type]);
-        DB::update($sql, [':type' => $type]);
+        Debug::fblog('rebuild_sn.sql', $sql, ['type' => $type]);
+        DB::update($sql, ['type' => $type]);
         return TRUE;
     }
 }

@@ -6,6 +6,7 @@
 <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
 <script src='http://johnny.github.io/jquery-sortable/js/jquery-sortable.js'></script>
 <script src='/js/test/sort.js' type="text/javascript"></script>
+<script src='/js/test/like.js'></script>
 <style type="text/css">@import url(/css/sorted_table.css);</style>
 <style type="text/css">@import url(/css/test.css);</style>
 </head>
@@ -48,6 +49,11 @@
                         </a>
                     </td>
                     <td  {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
+                        {{-- 加入最愛按鈕 --}}
+                        @if ($controller != 'App\Http\Controllers\FavoriteController')
+                        <img id='like_2_{{ $row->companyID }}' class='like' title='加入最愛' src='/img/like_white.png'>
+                        @endif
+
                         <a href='/go/company/{{ $row->c_code }}' target='_blank'>
                             {{ $row->name }}
                         </a>

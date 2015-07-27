@@ -24,6 +24,9 @@ class FavoriteController extends Controller
         'type',
     ];
 
+    /**
+     * 加入最愛
+     */
     public function add(Request $request)
     {
         $data = [
@@ -31,9 +34,12 @@ class FavoriteController extends Controller
             'resID' => $request->input('resID', 1),
         ];
         $r = Favorite::insert($data);
-        echo "<pre>r = " . print_r($r, TRUE). "</pre>";
+        return response()->json(['status' => $r]);
     }
 
+    /**
+     * 調整順序
+     */
     public function sort(Request $request)
     {
         $data = [
