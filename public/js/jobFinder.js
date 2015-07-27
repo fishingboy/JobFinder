@@ -101,3 +101,29 @@ companyList.renderView = function(data) {
 	// 	});
 	// });
 };
+
+JOBFINDER.createPager = function(options) {
+	var settings = $.extend({
+		currentPage: 52,
+		minPage: 1,
+		totalPage: 51,
+		rangeScope: 2
+	}, options || {});
+
+	var startPage = settings.currentPage;
+	var endPage = settings.totalPage;
+
+	if (settings.currentPage - settings.rangeScope <= 0) {
+		endPage = settings.minPage + (settings.rangeScope * 2);
+	} else if ((settings.currentPage + settings.rangeScope) >= settings.totalPage) {
+		startPage = settings.totalPage - (settings.rangeScope * 2);
+	} else {
+		startPage = settings.currentPage - settings.rangeScope;
+		endPage = settings.currentPage + settings.rangeScope;
+	}
+	for (var page = startPage; page <= endPage; page++) {
+		console.log(page);
+	}
+};
+
+JOBFINDER.createPager();
