@@ -18,8 +18,8 @@ Route::get('/welcome', function(){return view('welcome'); });
 Route::get('/', function(){return view('link');});
 
 // 工作列表
-Route::get('/list', 'ListController@index');
-Route::get('/list/{source}', 'ListController@index');
+Route::get('/list', 'ListController@listJob');
+Route::get('/list/company', 'ListController@listCompany');
 
 // 資料更新
 Route::get('/update', 'UpdateController@update');
@@ -68,4 +68,3 @@ Route::get('/clear_readed', 'ToolController@clear_readed');
 
 // test
 Route::get('/plugin/firephp', 'PluginController@firephp');
-

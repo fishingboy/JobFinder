@@ -16,85 +16,85 @@ use DB;
 
 class UpdateController extends Controller
 {
-    /**
-     * 建立 job 實體
-     * @param  string $source 來源
-     * @return object         job 實體
-     */
-    private function _create_job($source = '104')
-    {
-        switch ($source)
-        {
-            case 'ptt':
-                $job = new JobPtt();
-                break;
+	/**
+	 * 建立 job 實體
+	 * @param  string $source 來源
+	 * @return object         job 實體
+	 */
+	private function _create_job($source = '104')
+	{
+		switch ($source)
+		{
+			case 'ptt':
+				$job = new JobPtt();
+				break;
 
-            case '104':
-            default:
-                $job = new Job104();
-                break;
-        }
-        return $job;
-    }
+			case '104':
+			default:
+				$job = new Job104();
+				break;
+		}
+		return $job;
+	}
 
-    /**
-     * 取得 get 查詢欄位
-     *
-     * @param  array $search_field 可查詢欄位
-     * @return array               查詢參數
-     */
-    private function _get_param(Request $request, $search_field = [])
-    {
-        $search_param = [];
-        foreach ($search_field as $field)
-        {
-            $value = $request->input($field);
-            if ($value)
-            {
-                $search_param[$field] = $value;
-            }
-        }
-        return $search_param;
-    }
+	/**
+	 * 取得 get 查詢欄位
+	 *
+	 * @param  array $search_field 可查詢欄位
+	 * @return array               查詢參數
+	 */
+	private function _get_param(Request $request, $search_field = [])
+	{
+		$search_param = [];
+		foreach ($search_field as $field)
+		{
+			$value = $request->input($field);
+			if ($value)
+			{
+				$search_param[$field] = $value;
+			}
+		}
+		return $search_param;
+	}
 
-    /**
-     * 顯示工作列表
-     *
-     * @return Response
-     */
-    public function index(Request $request, $source = '104')
-    {
-        // 取得 job 實體
-        $job = $this->_create_job($source);
+	/**
+	 * 顯示工作列表
+	 *
+	 * @return Response
+	 */
+	public function index(Request $request, $source = '104')
+	{
+		// 取得 job 實體
+		$job = $this->_create_job($source);
 
-        // 取得可查詢欄位
-        $search_field = $job->get_allow_search_field();
+		// 取得可查詢欄位
+		$search_field = $job->get_allow_search_field();
 
-        // 取得查詢參數
-        $search_param = $this->_get_param($request, $search_field);
+		// 取得查詢參數
+		$search_param = $this->_get_param($request, $search_field);
 
-        // 取得查詢資料
-        $data = $job->search($search_param);
+		// 取得查詢資料
+		$data = $job->search($search_param);
 
-        // 畫面輸出
-        $view_data = [
-            'url'          => '/list/' . $source,
-            'data'         => $data,
-            'search_field' => $search_field,
-            'search_param' => $search_param
-        ];
-        return view('joblist', $view_data);
-    }
+		// 畫面輸出
+		$view_data = [
+			'url'          => '/list/' . $source,
+			'data'         => $data,
+			'search_field' => $search_field,
+			'search_param' => $search_param
+		];
+		return view('joblist', $view_data);
+	}
 
-    /**
-     * 從來源更新工作資料庫
-     * @param  string $source 來源類別
-     * @return Response
-     */
-    public function update(Request $request, $source = '104')
-    {
-        // 取得 job 實體
-        $job = $this->_create_job($source);
+	/**
+	 * 從來源更新工作資料庫
+	 * @param  string $source 來源類別
+	 * @return Response
+	 */
+	public function update(Request $request, $source = '104')
+	{
+		// 取得 job 實體
+		$job = $this->_create_job($source);
 
         // 查詢條件預設值
         $conditions = [
@@ -123,12 +123,12 @@ class UpdateController extends Controller
         // 取得分頁
         $conditions['page'] = $request->input('page', NULL);
 
-        // 是否為預灠
-        $conditions['preview'] = $request->input('preview', NULL);
+		// 是否為預灠
+		$conditions['preview'] = $request->input('preview', NULL);
 
-        // 更新資料庫
-        $job_data = $job->update($conditions);
-        Debug::fblog('$job_data', $job_data);
+		// 更新資料庫
+		$job_data = $job->update($conditions);
+		Debug::fblog('$job_data', $job_data);
 
         // 將查詢條件塞到 view 顯示
         if ( ! isset($job_data['condition']) || ! $job_data['condition'])
@@ -145,6 +145,6 @@ class UpdateController extends Controller
             $job_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
         }
 
-        return view('update_report', $job_data);
-    }
+		return view('update_report', $job_data);
+	}
 }
