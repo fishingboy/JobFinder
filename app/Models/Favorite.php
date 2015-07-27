@@ -73,13 +73,16 @@ class Favorite extends Model
             $orderby = 'ORDER BY ' . implode(',', $orderby);
 
             // 查詢 company 資料
-            //                     WHERE `favorite`.`type` = 2
-            $sql = "SELECT SQL_CALC_FOUND_ROWS `job`.*, `company`.*
+            $sql = "SELECT SQL_CALC_FOUND_ROWS
+                           `favorite`.`favoriteID`,
+                           `job`.*,
+                           `company`.*
                     FROM  `favorite`
                           INNER JOIN `job`
                                 ON `favorite`.`resID` = `job`.`jobID`
                           INNER JOIN `company`
                                 ON `job`.`companyID` = `company`.`companyID`
+                    WHERE `favorite`.`type` = 1
                     $orderby
                     LIMIT $page_start, $page_size";
             // echo "<pre>sql = " . print_r($sql, TRUE). "</pre>";
@@ -113,12 +116,16 @@ class Favorite extends Model
 
             // 查詢 company 資料
             //                     WHERE `favorite`.`type` = 2
-            $sql = "SELECT SQL_CALC_FOUND_ROWS `company`.*, count(*) AS `job_count`
+            $sql = "SELECT SQL_CALC_FOUND_ROWS
+                           `favorite`.`favoriteID`,
+                           `company`.*,
+                           count(*) AS `job_count`
                     FROM  `favorite`
                           INNER JOIN `company`
                                 ON `favorite`.`resID` = `company`.`companyID`
                           INNER JOIN `job`
                                 ON `job`.`companyID` = `company`.`companyID`
+                    WHERE `favorite`.`type` = 2
                     GROUP BY companyID
                     $orderby
                     LIMIT $page_start, $page_size";
@@ -162,36 +169,82 @@ class Favorite extends Model
         ];
     }
 
+
     /**
-     * 取得 Company 資料
-     * @param  Integer $companyID companyID
-     * @return object             data
+     * 排序
      */
-    public static function get($companyID)
+    public static function sort($param = [])
     {
-        $rows = DB::table('company')->where('companyID', $companyID)->get();
-        return ($rows) ? $rows[0] : NULL;
+        if ( ! isset($param['id']) || ! isset($param['sn']))
+        {
+            Debug::fblog('Sort Param Error!!!');
+            return FALSE;
+        }
+
+        $id = $param['id'];
+        $sn = $param['sn'];
+        $type = 1;
+
+        // 查詢 favorite
+        $rows = DB::table('favorite')->where('favoriteID', $id)->get();
+        if (count($rows) == 0)
+        {
+            Debug::fblog("No Such Record (favorite.favoriteID={$id})!!!");
+            return FALSE;
+        }
+        $row = $rows[0];
+        Debug::fblog('favorite.sort.row', $row);
+
+        $type = $row->type;
+
+        // 如果是往後排序的話，sn 要加 1
+        Debug::fblog("({$sn} * 10) > {$row->sn}");
+        if (($sn * 10) > $row->sn)
+        {
+            Debug::fblog("sn = sn +1");
+            $sn++;
+        }
+
+        // 插入到兩點之間
+        Debug::fblog('sort', "sort({$id}, {$sn})");
+
+        $sn = intval($sn . '0') + 5;
+        $sql = "UPDATE `favorite`
+                SET sn=:sn
+                WHERE favoriteID=:id
+                      AND type=:type";
+        $data = [
+            'sn'   => $sn,
+            'id'   => $id,
+            'type' => $type
+        ];
+        $r = DB::update($sql, $data);
+
+        Debug::fblog('sort.sql', $sql);
+        Debug::fblog('sort.data', $data);
+        Debug::fblog('sort.r', $r);
+
+        // 重整順序
+        self::rebuild_sn($type);
+        return TRUE;
     }
 
     /**
-     * 取得 1 筆員工人數為 NULL 的公司
+     * 重新整理順序
      */
-    public static function get_null_employees()
+    public static function rebuild_sn($type = 1)
     {
-        $count      = DB::table('company')->count();
-        $null_count = DB::table('company')->whereNull('employees')->count();
-        $rows       = DB::table('company')->whereNull('employees')->limit(1)->get();
-        if ($count)
-        {
-            return [
-                'count'      => $count,
-                'null_count' => $null_count,
-                'row'        => (count($rows)) ? $rows[0] : NULL
-            ];
-        }
-        else
-        {
-            return NULL;
-        }
+        $sql = "UPDATE favorite as F,
+                       (
+                            SELECT favoriteID, (@rownum := @rownum + 10) as rownum
+                            FROM favorite, (SELECT @rownum :=0) as R
+                            WHERE type=:type
+                            ORDER BY sn ASC, favoriteID ASC
+                       ) as SN
+                SET F.sn = SN.rownum
+                WHERE F.favoriteID=SN.favoriteID";
+        Debug::fblog('rebuild_sn.sql', $sql, [':type' => $type]);
+        DB::update($sql, [':type' => $type]);
+        return TRUE;
     }
 }

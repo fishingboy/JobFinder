@@ -151,8 +151,11 @@ class CompanyController extends Controller
             'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['company.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
+        // 傳入 controller 名稱
+        $data['controller'] = self::class;
+
         // 輸出
-        return view('company_test', $data);
+        return view('test.company', $data);
     }
 
     /**

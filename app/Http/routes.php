@@ -51,6 +51,7 @@ Route::match(['get', 'post'], '/company/get/{format}', 'CompanyController@get');
 // favorite
 Route::match(['get', 'post'], '/favorite', 'FavoriteController@add');
 Route::match(['get', 'post'], '/favorite/add', 'FavoriteController@add');
+Route::match(['get', 'post'], '/favorite/sort', 'FavoriteController@sort');
 Route::match(['get', 'post'], '/favorite/test', 'FavoriteController@test');
 Route::match(['get', 'post'], '/favorite/post_test', 'FavoriteController@post_test');
 Route::match(['get', 'post'], '/favorite/{format}', 'FavoriteController@get');

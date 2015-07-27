@@ -147,9 +147,10 @@ class JobController extends Controller
             'time_asc_url'       => $this->_get_url($search_param, ['page' => 1, 'orderby' => ['job.created_at' => 'ASC', 'employees' => 'DESC']]),
         ];
 
-        // echo "<pre>data = " . print_r($data, TRUE). "</pre>";
+        // 傳入 controller 名稱
+        $data['controller'] = self::class;
 
         // 輸出
-        return view('job_test', $data);
+        return view('test/job', $data);
     }
 }
