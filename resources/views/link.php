@@ -31,7 +31,7 @@
 	<li><a target='_blank' href='/company'>Company API</a></li>
 	<li><a target='_blank' href='/company/test?page_size=50'>Company API 測試</a></li>
 	<li><a target='_blank' href='/job'>Job API</a></li>
-	<li><a target='_blank' href='/job/test'>Job API 測試</a></li>
+	<li><a target='_blank' href='/job/test?page_size=50'>Job API 測試</a></li>
     <li><a target='_blank' href='/job'>Favorite API</a></li>
     <li><a target='_blank' href='/favorite/test?type=1'>Favorite API 測試(工作)</a></li>
     <li><a target='_blank' href='/favorite/test?type=2'>Favorite API 測試(公司)</a></li>
