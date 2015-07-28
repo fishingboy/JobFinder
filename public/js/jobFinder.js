@@ -44,9 +44,10 @@ jobList.listJobs = function(options, renderView) {
 };
 
 jobList.renderView = function(data) {
-	var template = $("#jobListTmpl").html();
-	Mustache.parse(template);
-	var rendered = Mustache.render(template, data);
+	var source = $("#jobListTmpl").html();
+	// Mustache.parse(template);
+	var template = Handlebars.compile(source);
+	var rendered = template(data);
 	$("#jobListBody").append(rendered);
 };
 
@@ -103,12 +104,13 @@ companyList.renderView = function(data) {
 };
 
 JOBFINDER.createPager = function(options) {
-	// var settings = $.extend({
-	// 	currentPage: 52,
-	// 	minPage: 1,
-	// 	totalPage: 51,
-	// 	rangeScope: 2
-	// }, options || {});
+	var settings = $.extend({
+		currentPage: 10,
+		minPage: 1,
+		totalPage: 20,
+		rangeScope: 2,
+		pagination: []
+	}, options || {});
 	//
 	// var startPage = settings.currentPage;
 	// var endPage = settings.totalPage;
@@ -122,17 +124,31 @@ JOBFINDER.createPager = function(options) {
 	// 	endPage = settings.currentPage + settings.rangeScope;
 	// }
 
-	var pageRange = JOBFINDER.pageRangeCalculate(options);
+
+	var pageRange = JOBFINDER.pageRangeCalculate(settings);
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
-		console.log(page);
+		settings.pagination.push(page);
 	}
+
+	settings.isActive = function() {
+		console.dir(this);
+	};
+
+	// var template = $("#pagerTmpl").html();
+	// Mustache.parse(template);
+	// var rendered = Mustache.render(template, settings);
+	// $('#pagerBody').append(rendered);
+	var source = $("#pagerTmpl").html();
+	var template = Handlebars.compile(source);
+	var rendered = template(settings);
+	$('#pagerBody').append(rendered);
 };
 
 JOBFINDER.pageRangeCalculate = function(options) {
 	var settings = $.extend({
-			currentPage: 45,
+			currentPage: 10,
 			minPage: 1,
-			totalPage: 51,
+			totalPage: 20,
 			rangeScope: 2
 		}, options || {}),
 		startPage = settings.currentPage,
@@ -152,5 +168,13 @@ JOBFINDER.pageRangeCalculate = function(options) {
 		end: endPage
 	};
 };
+
+Handlebars.registerHelper('isActive', function(context, options) {
+	if (context === options.data.root.currentPage) {
+		return options.fn(this);
+	} else {
+		return options.inverse(this);
+	}
+});
 
 JOBFINDER.createPager();
