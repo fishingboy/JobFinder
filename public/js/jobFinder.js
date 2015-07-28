@@ -20,6 +20,7 @@ JOBFINDER.namespace = function(ns_string) {
 
 var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 var companyList = JOBFINDER.namespace("JOBFINDER.companyList");
+var pagination = JOBFINDER.namespace("JOBFINDER.pagination");
 
 // console.log(jobList === JOBFINDER.jobList);
 jobList.listJobs = function(options, renderView) {
@@ -34,8 +35,15 @@ jobList.listJobs = function(options, renderView) {
 		dataType: "JSON",
 		data: settings
 	}).done(function(res) {
-		console.log(res);
+		// console.log(res);
 		if (res.status === true) {
+			$("#jobListBody").empty();
+			var stateData = History.getState();
+			if (!stateData.data) {
+				History.pushState({
+					state: page
+				}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+			}
 			renderView(res);
 		} else {
 			alert("取得資料失敗");
@@ -63,7 +71,7 @@ companyList.listJobs = function(options, renderView) {
 		dataType: "JSON",
 		data: settings
 	}).done(function(res) {
-		console.log(res);
+		// console.log(res);
 		if (res.status === true) {
 			renderView(res);
 		} else {
@@ -103,29 +111,16 @@ companyList.renderView = function(data) {
 	// });
 };
 
-JOBFINDER.createPager = function(options) {
+pagination.createPager = function(options) {
 	var settings = $.extend({
-		currentPage: 10,
+		currentPage: 1,
 		minPage: 1,
 		totalPage: 20,
 		rangeScope: 2,
 		pagination: []
 	}, options || {});
-	//
-	// var startPage = settings.currentPage;
-	// var endPage = settings.totalPage;
-	//
-	// if (settings.currentPage - settings.rangeScope <= 0) {
-	// 	endPage = settings.minPage + (settings.rangeScope * 2);
-	// } else if ((settings.currentPage + settings.rangeScope) >= settings.totalPage) {
-	// 	startPage = settings.totalPage - (settings.rangeScope * 2);
-	// } else {
-	// 	startPage = settings.currentPage - settings.rangeScope;
-	// 	endPage = settings.currentPage + settings.rangeScope;
-	// }
 
-
-	var pageRange = JOBFINDER.pageRangeCalculate(settings);
+	var pageRange = pagination.pageRangeCalculate(settings);
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
 		settings.pagination.push(page);
 	}
@@ -134,19 +129,15 @@ JOBFINDER.createPager = function(options) {
 		console.dir(this);
 	};
 
-	// var template = $("#pagerTmpl").html();
-	// Mustache.parse(template);
-	// var rendered = Mustache.render(template, settings);
-	// $('#pagerBody').append(rendered);
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
 	var rendered = template(settings);
 	$('#pagerBody').append(rendered);
 };
 
-JOBFINDER.pageRangeCalculate = function(options) {
+pagination.pageRangeCalculate = function(options) {
 	var settings = $.extend({
-			currentPage: 10,
+			currentPage: 1,
 			minPage: 1,
 			totalPage: 20,
 			rangeScope: 2
@@ -169,6 +160,16 @@ JOBFINDER.pageRangeCalculate = function(options) {
 	};
 };
 
+pagination.reloadPage = function() {
+	var stateData = History.getState();
+	console.log(stateData);
+	var options = {
+		"page": stateData.data.state,
+		"page_size": 30
+	};
+	JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+};
+
 Handlebars.registerHelper('isActive', function(context, options) {
 	if (context === options.data.root.currentPage) {
 		return options.fn(this);
@@ -177,4 +178,10 @@ Handlebars.registerHelper('isActive', function(context, options) {
 	}
 });
 
-JOBFINDER.createPager();
+pagination.createPager();
+
+// window.onpopstate = pagination.reloadPage(event);
+
+window.onstatechange = function(event) {
+	JOBFINDER.pagination.reloadPage();
+};
