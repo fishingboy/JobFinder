@@ -74,8 +74,8 @@ class Job extends Model
      */
     public static function search($param = [])
     {
-        $page_size = (isset($param['page_size'])) ? $param['page_size'] : 50;
-        $page      = (isset($param['page'])) ? $param['page'] : 1;
+        $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
+        $page      = (isset($param['page'])) ? intval($param['page']) : 1;
         $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
 
         $obj = DB::table('job')
