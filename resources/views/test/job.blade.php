@@ -29,9 +29,9 @@
             <thead>
                 <tr>
                     <th>職缺名稱</th>
+                    <th>公司</th>
                     <th class='width100'>薪資</th>
                     <th>地址</th>
-                    <th>公司</th>
                     <th class='width100'>員工人數</th>
                     <th>資本額</th>
                 </tr>
@@ -54,15 +54,15 @@
                             {{ $row->title }}
                         </a>
                     </td>
-                    <td class='center'>
-                        {{ $row->pay }}
-                    </td>
-                    <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                     <td {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
                         <a href='/go/company/{{ $row->c_code }}' target='_blank'>
                             {{ $row->name }}
                         </a>
                     </td>
+                    <td class='center'>
+                        {{ $row->pay }}
+                    </td>
+                    <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                     <td class='center'>{{ $row->employees }}</td>
                     <td class='center'>{{ $row->capital }}</td>
                 </tr>
