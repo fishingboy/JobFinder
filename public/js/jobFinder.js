@@ -45,6 +45,15 @@ jobList.listJobs = function(options, renderView) {
 				}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
 			}
 			renderView(res);
+
+			var pagerArgs = {
+				currentPage: res.curr_page,
+				minPage: 1,
+				totalPage: res.totalPage,
+				rangeScope: 2
+			};
+
+			pagination.createPager(pagerArgs);
 		} else {
 			alert("取得資料失敗");
 		}
@@ -112,11 +121,8 @@ companyList.renderView = function(data) {
 };
 
 pagination.createPager = function(options) {
+	// var settings = options || {};
 	var settings = $.extend({
-		currentPage: 1,
-		minPage: 1,
-		totalPage: 20,
-		rangeScope: 2,
 		pagination: []
 	}, options || {});
 
@@ -125,14 +131,23 @@ pagination.createPager = function(options) {
 		settings.pagination.push(page);
 	}
 
-	settings.isActive = function() {
-		console.dir(this);
-	};
-
+	console.log(settings);
+	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
 	var rendered = template(settings);
 	$('#pagerBody').append(rendered);
+
+	$("#pagerUl a[name='goToPage']").click(function(e) {
+		e.preventDefault();
+		var page = $(this).attr("href");
+
+		History.pushState({
+			state: page
+		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+
+		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+	});
 };
 
 pagination.pageRangeCalculate = function(options) {
@@ -178,7 +193,6 @@ Handlebars.registerHelper('isActive', function(context, options) {
 	}
 });
 
-pagination.createPager();
 
 // window.onpopstate = pagination.reloadPage(event);
 
