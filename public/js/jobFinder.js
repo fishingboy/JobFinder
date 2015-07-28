@@ -22,9 +22,9 @@ var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 var companyList = JOBFINDER.namespace("JOBFINDER.companyList");
 var pagination = JOBFINDER.namespace("JOBFINDER.pagination");
 
-// console.log(jobList === JOBFINDER.jobList);
 jobList.listJobs = function(options, renderView) {
 	var settings = $.extend({
+		apiUrl: '/job/',
 		page: 1,
 		page_size: 30
 	}, options || {});
@@ -44,6 +44,7 @@ jobList.listJobs = function(options, renderView) {
 					state: page
 				}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
 			}
+
 			renderView(res);
 
 			var pagerArgs = {
@@ -162,19 +163,21 @@ pagination.pageRangeCalculate = function(options) {
 
 	if (settings.currentPage - settings.rangeScope <= 0) {
 		endPage = settings.minPage + (settings.rangeScope * 2);
+		startPage = settings.minPage;
 	} else if ((settings.currentPage + settings.rangeScope) >= settings.totalPage) {
 		startPage = settings.totalPage - (settings.rangeScope * 2);
 	} else {
 		startPage = settings.currentPage - settings.rangeScope;
 		endPage = settings.currentPage + settings.rangeScope;
 	}
-
+	console.log(startPage);
 	return {
 		start: startPage,
 		end: endPage
 	};
 };
 
+/*重新刷新工作列表內容*/
 pagination.reloadPage = function() {
 	var stateData = History.getState();
 	console.log(stateData);
@@ -183,8 +186,10 @@ pagination.reloadPage = function() {
 		"page_size": 30
 	};
 	JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+	window.scrollTo(0, 0);
 };
 
+/* Handlebars helper 判斷分頁元素是否為當前頁面 */
 Handlebars.registerHelper('isActive', function(context, options) {
 	if (context === options.data.root.currentPage) {
 		return options.fn(this);
@@ -193,9 +198,7 @@ Handlebars.registerHelper('isActive', function(context, options) {
 	}
 });
 
-
-// window.onpopstate = pagination.reloadPage(event);
-
+//監聽並觸發 popstate 動作
 window.onstatechange = function(event) {
 	JOBFINDER.pagination.reloadPage();
 };
