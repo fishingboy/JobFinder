@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>JobFinder - 功能列表</title>
+<style type="text/css">@import url(/css/test.css);</style>
 </head>
 <body>
 <ul>
