@@ -22,6 +22,10 @@ var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 var companyList = JOBFINDER.namespace("JOBFINDER.companyList");
 var pagination = JOBFINDER.namespace("JOBFINDER.pagination");
 
+/*
+ * 取得工作資訊
+ * @todo 預計重構為 取得工作資訊,公司資訊共用。
+ */
 JOBFINDER.listJobs = function(options, renderView) {
 	var settings = $.extend({
 		apiUrl: '/job/',
@@ -58,10 +62,10 @@ JOBFINDER.listJobs = function(options, renderView) {
 			var pagerArgs = {
 				currentPage: res.curr_page,
 				minPage: 1,
-				totalPage: res.totalPage,
+				totalPage: res.total_page,
 				rangeScope: 2
 			};
-
+			// console.log(pagerArgs);
 			pagination.createPager(pagerArgs);
 		} else {
 			alert("取得資料失敗");
@@ -69,6 +73,7 @@ JOBFINDER.listJobs = function(options, renderView) {
 	});
 };
 
+/*render 工作列表*/
 jobList.renderView = function(data) {
 	var source = $("#jobListTmpl").html();
 	// Mustache.parse(template);
@@ -129,13 +134,17 @@ companyList.renderView = function(data) {
 	// });
 };
 
+/*建立分頁元素*/
 pagination.createPager = function(options) {
 	// var settings = options || {};
 	var settings = $.extend({
 		pagination: []
 	}, options || {});
+	console.log('pager');
+	console.log(settings);
 
 	var pageRange = pagination.pageRangeCalculate(settings);
+
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
 		settings.pagination.push(page);
 	}
@@ -147,6 +156,7 @@ pagination.createPager = function(options) {
 	var rendered = template(settings);
 	$('#pagerBody').append(rendered);
 
+	/* bind 分頁標籤 event */
 	$("#pagerUl a[name='goToPage']").click(function(e) {
 		e.preventDefault();
 		var page = $(this).attr("href");
@@ -157,8 +167,44 @@ pagination.createPager = function(options) {
 
 		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
 	});
+
+	$("#goToPrev").click(function(e) {
+		e.preventDefault();
+		var urlParams = getUrlParams();
+		var page = urlParams.page;
+		if (page-- <= 0) {
+			page = 1;
+		} else {
+			page--;
+		}
+
+		History.pushState({
+			state: page
+		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+
+		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+	});
+
+	$("#goToNext").click(function(e) {
+		e.preventDefault();
+		var urlParams = getUrlParams();
+		var page = urlParams.page;
+		if (page++ >= 0) {
+			page = 1;
+		} else {
+			page--;
+		}
+
+		History.pushState({
+			state: page
+		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+
+		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+	});
+
 };
 
+/* 計算分頁範圍 */
 pagination.pageRangeCalculate = function(options) {
 	var settings = $.extend({
 			currentPage: 1,
@@ -198,7 +244,7 @@ pagination.refreshPage = function() {
 	window.scrollTo(0, 0);
 };
 
-/* Handlebars helper 判斷分頁元素是否為當前頁面 */
+/* Handlebars helper 判斷分頁元素是否為當前頁面  顯示為highlight*/
 Handlebars.registerHelper('isActive', function(context, options) {
 	if (context === options.data.root.currentPage) {
 		return options.fn(this);
