@@ -22,22 +22,30 @@ var jobList = JOBFINDER.namespace("JOBFINDER.jobList");
 var companyList = JOBFINDER.namespace("JOBFINDER.companyList");
 var pagination = JOBFINDER.namespace("JOBFINDER.pagination");
 
-jobList.listJobs = function(options, renderView) {
+JOBFINDER.listJobs = function(options, renderView) {
 	var settings = $.extend({
 		apiUrl: '/job/',
 		page: 1,
 		page_size: 30
 	}, options || {});
 
+	var sendData = {
+		page: settings.page,
+		page_size: settings.page_size
+	};
+
+	// console.log(sendData);
+
 	$.ajax({
-		url: "/job/",
+		url: settings.apiUrl,
 		method: "GET",
 		dataType: "JSON",
-		data: settings
+		data: sendData
 	}).done(function(res) {
 		// console.log(res);
 		if (res.status === true) {
 			$("#jobListBody").empty();
+
 			var stateData = History.getState();
 			if (!stateData.data) {
 				History.pushState({
@@ -69,26 +77,26 @@ jobList.renderView = function(data) {
 	$("#jobListBody").append(rendered);
 };
 
-companyList.listJobs = function(options, renderView) {
-	var settings = $.extend({
-		page: 1,
-		page_size: 5
-	}, options || {});
-
-	$.ajax({
-		url: "/company/",
-		method: "GET",
-		dataType: "JSON",
-		data: settings
-	}).done(function(res) {
-		// console.log(res);
-		if (res.status === true) {
-			renderView(res);
-		} else {
-			alert("取得資料失敗");
-		}
-	});
-};
+// companyList.listJobs = function(options, renderView) {
+// 	var settings = $.extend({
+// 		page: 1,
+// 		page_size: 5
+// 	}, options || {});
+//
+// 	$.ajax({
+// 		url: "/company/",
+// 		method: "GET",
+// 		dataType: "JSON",
+// 		data: settings
+// 	}).done(function(res) {
+// 		// console.log(res);
+// 		if (res.status === true) {
+// 			renderView(res);
+// 		} else {
+// 			alert("取得資料失敗");
+// 		}
+// 	});
+// };
 
 companyList.renderView = function(data) {
 	var template = $("#jobListTmpl").html();
@@ -132,7 +140,7 @@ pagination.createPager = function(options) {
 		settings.pagination.push(page);
 	}
 
-	console.log(settings);
+	// console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
@@ -170,7 +178,7 @@ pagination.pageRangeCalculate = function(options) {
 		startPage = settings.currentPage - settings.rangeScope;
 		endPage = settings.currentPage + settings.rangeScope;
 	}
-	console.log(startPage);
+	// console.log(startPage);
 	return {
 		start: startPage,
 		end: endPage
@@ -178,14 +186,15 @@ pagination.pageRangeCalculate = function(options) {
 };
 
 /*重新刷新工作列表內容*/
-pagination.reloadPage = function() {
-	var stateData = History.getState();
-	console.log(stateData);
+pagination.refreshPage = function() {
+	var urlParams = getUrlParams();
+	// console.log(urlParams);
+	// var stateData = History.getState();
 	var options = {
-		"page": stateData.data.state,
+		"page": urlParams.page,
 		"page_size": 30
 	};
-	JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
+	JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
 	window.scrollTo(0, 0);
 };
 
@@ -200,5 +209,5 @@ Handlebars.registerHelper('isActive', function(context, options) {
 
 //監聽並觸發 popstate 動作
 window.onstatechange = function(event) {
-	JOBFINDER.pagination.reloadPage();
+	JOBFINDER.pagination.refreshPage();
 };
