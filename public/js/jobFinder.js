@@ -30,7 +30,7 @@ JOBFINDER.listJobs = function(options, renderView) {
 	var settings = $.extend({
 		apiUrl: '/job/',
 		page: 1,
-		page_size: 30
+		page_size: 50
 	}, options || {});
 
 	var sendData = {
@@ -149,7 +149,7 @@ pagination.createPager = function(options) {
 		settings.pagination.push(page);
 	}
 
-	// console.log(settings);
+	console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
@@ -172,7 +172,7 @@ pagination.createPager = function(options) {
 		e.preventDefault();
 		var urlParams = getUrlParams();
 		var page = urlParams.page;
-		if (page-- <= 0) {
+		if (page - 1 <= 0) {
 			page = 1;
 		} else {
 			page--;
@@ -189,10 +189,10 @@ pagination.createPager = function(options) {
 		e.preventDefault();
 		var urlParams = getUrlParams();
 		var page = urlParams.page;
-		if (page++ >= 0) {
-			page = 1;
+		if (page >= settings.totalPage) {
+			page = settings.totalPage;
 		} else {
-			page--;
+			page++;
 		}
 
 		History.pushState({
@@ -237,8 +237,7 @@ pagination.refreshPage = function() {
 	// console.log(urlParams);
 	// var stateData = History.getState();
 	var options = {
-		"page": urlParams.page,
-		"page_size": 30
+		"page": urlParams.page
 	};
 	JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
 	window.scrollTo(0, 0);
@@ -254,6 +253,8 @@ Handlebars.registerHelper('isActive', function(context, options) {
 });
 
 //監聽並觸發 popstate 動作
-window.onstatechange = function(event) {
-	JOBFINDER.pagination.refreshPage();
+jobList.onstatechange = function() {
+	window.onstatechange = function() {
+		JOBFINDER.pagination.refreshPage();
+	};
 };
