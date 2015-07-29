@@ -5,10 +5,12 @@
 <title>Company API 測試</title>
 <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
 <script src='http://johnny.github.io/jquery-sortable/js/jquery-sortable.js'></script>
-<script src='/js/test/sort.js' type="text/javascript"></script>
-<script src='/js/test/like.js'></script>
-<style type="text/css">@import url(/css/sorted_table.css);</style>
 <style type="text/css">@import url(/css/test.css);</style>
+@if ($controller == 'App\Http\Controllers\FavoriteController')
+    <script src='/js/test/sort.js' type="text/javascript"></script>
+    <script src='/js/test/like.js'></script>
+    <style type="text/css">@import url(/css/sorted_table.css);</style>
+@endif
 </head>
 <body>
 <div class='base'>
