@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Library\Lib;
+use App\Library\Debug;
 use DB;
 
 /**
@@ -82,6 +83,9 @@ class Job extends Model
                  ->join('company', 'job.companyID', '=', 'company.companyID')
                  ->select('company.*', 'job.*');
 
+        // 取得總筆數
+        $count = $obj->count();
+
         // 分頁
         $obj->skip(($page -1) * $page_size)
             ->take($page_size);
@@ -103,7 +107,6 @@ class Job extends Model
 
         // 取得資料
         $rows       = $obj->get();
-        $count      = $obj->count();
         $total_page = ceil($count / $page_size);
 
         /* 轉換資料格式 */
