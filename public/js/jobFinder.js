@@ -30,12 +30,17 @@ JOBFINDER.listJobs = function(options, renderView) {
 	var settings = $.extend({
 		apiUrl: '/job/',
 		page: 1,
-		page_size: 50
+		page_size: 50,
+		orderby: {
+			sal_month_high: 'DESC',
+			sal_month_low: 'DESC'
+		}
 	}, options || {});
 
 	var sendData = {
 		page: settings.page,
-		page_size: settings.page_size
+		page_size: settings.page_size,
+		orderby: settings.orderby
 	};
 
 	// console.log(sendData);
@@ -140,8 +145,6 @@ pagination.createPager = function(options) {
 	var settings = $.extend({
 		pagination: []
 	}, options || {});
-	console.log('pager');
-	console.log(settings);
 
 	var pageRange = pagination.pageRangeCalculate(settings);
 
@@ -149,7 +152,7 @@ pagination.createPager = function(options) {
 		settings.pagination.push(page);
 	}
 
-	console.log(settings);
+	// console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
@@ -161,9 +164,12 @@ pagination.createPager = function(options) {
 		e.preventDefault();
 		var page = $(this).attr("href");
 
-		History.pushState({
-			state: page
-		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+		// History.pushState({
+		// 	state: page
+		// }, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+		JOBFINDER.pushState({
+			page: page
+		});
 
 		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
 	});
@@ -178,9 +184,12 @@ pagination.createPager = function(options) {
 			page--;
 		}
 
-		History.pushState({
-			state: page
-		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+		JOBFINDER.pushState({
+			page: page
+		});
+		// History.pushState({
+		// 	state: page
+		// }, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
 
 		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
 	});
@@ -195,12 +204,17 @@ pagination.createPager = function(options) {
 			page++;
 		}
 
-		History.pushState({
-			state: page
-		}, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
+		JOBFINDER.pushState({
+			page: page
+		});
+
+		// History.pushState({
+		// 	state: page
+		// }, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
 
 		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
 	});
+
 
 };
 
@@ -257,4 +271,65 @@ jobList.onstatechange = function() {
 	window.onstatechange = function() {
 		JOBFINDER.pagination.refreshPage();
 	};
+};
+
+JOBFINDER.bindOrderCompany = function() {
+	$('#btnSortCompany, #btnSortSalary').click(function() {
+		var urlParams = getUrlParams();
+		var page = urlParams.page || 1;
+		var salarySort = urlParams.salarySort;
+		var companySort = urlParams.companySort;
+
+		var iElement = $(this).find('i').eq(0);
+		// 	iElement.removeClass("fa-chevron-up").addClass("fa-chevron-down");
+		// } else if (iElement.hasClass("fa-chevron-down")) {
+		// 	iElement.removeClass("fa-chevron-down").addClass("fa-chevron-up");
+		// }
+
+		var btnId = $(this).attr("id");
+		var pushStateData = {
+			page: page
+		};
+
+		switch (btnId) {
+			case 'btnSortCompany':
+				pushStateData.companySort = companySort == "DESC" ? "ASC" :
+					"DESC";
+				if (pushStateData.companySort === "DESC") {
+					iElement.addClass("fa-chevron-down");
+					iElement.removeClass("fa-chevron-up");
+				} else {
+					iElement.addClass("fa-chevron-up");
+					iElement.removeClass("fa-chevron-down");
+				}
+				JOBFINDER.pushState(pushStateData);
+				break;
+			case 'btnSortSalary':
+				pushStateData.salarySort = salarySort == "DESC" ? "ASC" :
+					"DESC";
+				if (pushStateData.salarySort === "DESC") {
+					iElement.addClass("fa-chevron-down");
+					iElement.removeClass("fa-chevron-up");
+				} else {
+					iElement.addClass("fa-chevron-up");
+					iElement.removeClass("fa-chevron-down");
+				}
+				JOBFINDER.pushState(pushStateData);
+				break;
+		}
+	});
+};
+
+JOBFINDER.pushState = function(options) {
+	var qs = "";
+	qs = "?page=" + options.page;
+	if (typeof options.salarySort !== "undefined") {
+		qs += "&salarySort=" + options.salarySort;
+	}
+	if (typeof options.companySort !== "undefined") {
+		qs += "&companySort=" + options.companySort;
+	}
+	History.pushState({
+		state: options.page
+	}, "JOBFINDER", qs); // logs {state:1}, "State 1", "?state=1"
 };

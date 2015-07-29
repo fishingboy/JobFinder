@@ -9,6 +9,6 @@ var getUrlParams = function() {
 	urlParams = {};
 	while ((match = search.exec(query)) !== null)
 		urlParams[decode(match[1])] = decode(match[2]);
-	console.log(urlParams);
+	// console.log(urlParams);
 	return urlParams;
 };
