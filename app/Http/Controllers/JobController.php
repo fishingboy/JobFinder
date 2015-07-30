@@ -23,7 +23,8 @@ class JobController extends Controller
         'page_size',
         'page',
         'companyID',
-        'orderby'
+        'orderby',
+        'keyword'
     ];
 
     /**
@@ -110,7 +111,7 @@ class JobController extends Controller
             }
             else
             {
-                $param[] = "{$key}={$search_param[$key]}";
+                $param[] = "{$key}=" . urlencode($search_param[$key]);
             }
         }
 

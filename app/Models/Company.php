@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Library\Lib;
+use App\Library\Debug;
 use DB;
 
 /**
@@ -74,6 +75,8 @@ class Company extends Model
      */
     public static function search($param = [])
     {
+        Debug::fblog('Models\Company.param', $param);
+
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
 
@@ -89,17 +92,31 @@ class Company extends Model
                 $orderby[] = "{$key} {$asc}";
             }
         }
-        $orderby = 'ORDER BY ' . implode(',', $orderby);
+        $orderby_sql = 'ORDER BY ' . implode(',', $orderby);
+
+        // 搜尋
+        $where_sql = '1=1';
+        if (isset($param['keyword']) && $param['keyword'])
+        {
+            $where_sql = "(
+                            `company`.`name` LIKE '%{$param['keyword']}%'
+                            OR `company`.`product` LIKE '%{$param['keyword']}%'
+                            OR `company`.`profile` LIKE '%{$param['keyword']}%'
+                            OR `company`.`welfare` LIKE '%{$param['keyword']}%'
+                          )";
+        }
 
         // 查詢 company 資料
         $sql = "SELECT SQL_CALC_FOUND_ROWS `company`.*, count(*) AS `job_count`
                 FROM `company`
                       INNER JOIN `job`
                       ON `job`.`companyID` = `company`.`companyID`
+                WHERE {$where_sql}
                 GROUP BY `companyID`
-                $orderby
-                LIMIT $page_start, $page_size";
-        // echo "<pre>sql = " . print_r($sql, TRUE). "</pre>";
+                {$orderby_sql}
+                LIMIT {$page_start}, {$page_size}";
+        Debug::fblog('Models\Company.sql', $sql);
+
         $rows  = DB::select($sql);
         $count = DB::select("SELECT FOUND_ROWS() as cnt")[0]->cnt;
         $total_page = ceil($count / $page_size);
@@ -132,6 +149,7 @@ class Company extends Model
             'curr_page'  => $page,
             'total_page' => $total_page,
             'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
+            'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
             'rows'       => $rows
         ];
     }
