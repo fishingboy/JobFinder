@@ -99,7 +99,8 @@ class Company extends Model
         if (isset($param['keyword']) && $param['keyword'])
         {
             $where_sql = "(
-                            `company`.`product` LIKE '%{$param['keyword']}%'
+                            `company`.`name` LIKE '%{$param['keyword']}%'
+                            OR `company`.`product` LIKE '%{$param['keyword']}%'
                             OR `company`.`profile` LIKE '%{$param['keyword']}%'
                             OR `company`.`welfare` LIKE '%{$param['keyword']}%'
                           )";
@@ -148,6 +149,7 @@ class Company extends Model
             'curr_page'  => $page,
             'total_page' => $total_page,
             'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
+            'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
             'rows'       => $rows
         ];
     }

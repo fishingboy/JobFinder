@@ -23,6 +23,10 @@
     </div>
     <br>
 
+    {{-- 表單 --}}
+    @include('test/search_form')
+
+    {{-- 排序 & 分頁 --}}
     @include('test/navi')
 
     {{-- 列表 --}}
@@ -69,6 +73,7 @@
         </table>
     </div>
 
+    {{-- 排序 & 分頁 --}}
     @include('test/navi')
 
 </div>

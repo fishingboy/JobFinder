@@ -88,7 +88,8 @@ class Job extends Model
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
-            $obj->where('job.description', 'like', "%{$param['keyword']}%");
+            $obj->where('job.title', 'like', "%{$param['keyword']}%");
+            $obj->orWhere('job.description', 'like', "%{$param['keyword']}%");
             $obj->orWhere('job.others', 'like', "%{$param['keyword']}%");
         }
 
@@ -135,6 +136,8 @@ class Job extends Model
             'page_size'  => $page_size,
             'curr_page'  => $page,
             'total_page' => $total_page,
+            'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
+            'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
             'rows'       => $rows,
         ];
     }
