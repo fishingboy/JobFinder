@@ -25,7 +25,8 @@ class CompanyController extends Controller
     private $_allow_param = [
         'page_size',
         'page',
-        'orderby'
+        'orderby',
+        'keyword'
     ];
 
     /**

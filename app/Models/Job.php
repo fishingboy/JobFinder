@@ -75,6 +75,8 @@ class Job extends Model
      */
     public static function search($param = [])
     {
+        Debug::fblog('Models\Job.param', $param);
+
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
         $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
@@ -82,6 +84,13 @@ class Job extends Model
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
                  ->select('company.*', 'job.*');
+
+        // 搜尋
+        if (isset($param['keyword']) && $param['keyword'])
+        {
+            $obj->where('job.description', 'like', "%{$param['keyword']}%");
+            $obj->orWhere('job.others', 'like', "%{$param['keyword']}%");
+        }
 
         // 取得總筆數
         $count = $obj->count();
