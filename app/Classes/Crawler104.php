@@ -36,7 +36,11 @@ class Crawler104
         }
         else
         {
-            return NULL;
+            return [
+                'employees' => -1,
+                'capital'   => -1,
+                'url'       => NULL,
+            ];
         }
     }
 }
