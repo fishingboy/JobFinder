@@ -85,13 +85,18 @@ button{
     //         border-bottom:1px solid #ff9547;
     //     }
     // }
+    // tr:nth-child(odd) td{
+    //     background: #333;
+    // }
     .fixword{
-        // width:110px;
+        // width:200px;
         // height:20px;
         margin: 0 auto;
-        overflow: hidden;
+        // overflow: hidden;
         // white-space: nowrap;
-        text-overflow: ellipsis;
+        // text-overflow: ellipsis;
+        word-break:break-word;
+        word-wrap:break-word;
     }
     .table-sort{
         color:#fff;

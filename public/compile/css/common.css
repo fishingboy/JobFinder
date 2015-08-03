@@ -206,8 +206,8 @@ button {
 }
 .jobtable .fixword {
   margin: 0 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 .jobtable .table-sort {
   color: #fff;
