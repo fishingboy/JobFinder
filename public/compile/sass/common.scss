@@ -78,13 +78,13 @@ button{
             @include background-image(linear-gradient(#F9B84A, #f9892c));
         }
     }
-    tr{
-        &:hover td{
-            background: #333;
-            border-top:1px solid #ff9547;
-            border-bottom:1px solid #ff9547;
-        }
-    }
+    // tr{
+    //     &:hover td{
+    //         background: #333;
+    //         border-top:1px solid #ff9547;
+    //         border-bottom:1px solid #ff9547;
+    //     }
+    // }
     .fixword{
         // width:110px;
         // height:20px;
@@ -107,13 +107,12 @@ button{
         height:30px;
         border:1px solid #ff9547;
     }
-
 }
 .job-detail{
     > td{
         padding:0;
-        background:#444;
-        border-bottom:#ff9547 3px solid;
+        background:#111;
+        // border-bottom:#ff9547 3px solid;
         // border-top:none;
         @include box-shadow(inset #111 0 1px 5px)
     }
@@ -121,17 +120,12 @@ button{
         min-width:99%;
         margin:5px;
         th{
-            background: #555;
+            background: #3b4a63;
         }
     }
     .detail-content{
         max-height:300px;
         overflow:auto;
-        tr{
-            &:hover td{
-                border:none;
-            }
-        }
     }
 }
 .pagenavi{
