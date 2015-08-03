@@ -88,14 +88,14 @@ JOBFINDER.jobList.renderView = function(data) {
 };
 
 JOBFINDER.companyList.renderView = function(data) {
-	var template = $("#jobListTmpl").html();
-	Mustache.parse(template);
-	var rendered = Mustache.render(template, data);
+	var source = $("#jobListTmpl").html();
+	// console.log(source);
+	var template = Handlebars.compile(source);
+	var rendered = template(data);
 	$("#jobListBody").append(rendered);
-
 	$('.job-detail').hide();
-
-	// show/hide job detail
+	//
+	// // show/hide job detail
 	$(".toggle-detail").each(function() {
 		$(this).click(function() {
 			$("tr[name='" + $(this).data('name') + "']").toggle();
@@ -232,7 +232,6 @@ JOBFINDER.pagination.refreshPage = function() {
 		page: urlParams.page,
 		orderby: orderby
 	};
-	console.log(options);
 	JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
 };
 
@@ -256,42 +255,21 @@ JOBFINDER.jobList.onstatechange = function() {
 JOBFINDER.bindOrder = function() {
 	$('#btnSortCompany, #btnSortSalary').click(function() {
 		var urlParams = JOBFINDER.getUrlParams();
-		var page = urlParams.page;
-		var salarySort = urlParams.salarySort || "DESC";
-		var Capitalsort = urlParams.capitalSort || "DESC";
 		var iElement = $(this).find('i').eq(0);
 		var btnId = $(this).attr("id");
+
 		var pushStateData = {
-			page: page
+			page: urlParams.page
 		};
 
-		// pushStateData.btnSortJobOpen = companySort == "DESC" ? "ASC" :
-		// 	"DESC";
-		pushStateData.salarySort = salarySort == "DESC" ? "ASC" :
-			"DESC";
-
-		console.log(pushStateData);
-
+		/*change sort button class*/
 		switch (btnId) {
-			case 'btnSortCompany':
-				if (pushStateData.companySort === "DESC") {
-					iElement.addClass("fa-chevron-down");
-					iElement.removeClass("fa-chevron-up");
-				} else {
-					iElement.addClass("fa-chevron-up");
-					iElement.removeClass("fa-chevron-down");
-				}
-				break;
 			case 'btnSortSalary':
-				if (pushStateData.salarySort === "DESC") {
-					iElement.addClass("fa-chevron-down");
-					iElement.removeClass("fa-chevron-up");
-				} else {
-					iElement.addClass("fa-chevron-up");
-					iElement.removeClass("fa-chevron-down");
-				}
+				pushStateData.salarySort = JOBFINDER.toggleSort(urlParams.salarySort);
+				JOBFINDER.changeBtnSortClass(iElement, pushStateData.salarySort);
 				break;
 		}
+
 		JOBFINDER.pushState(pushStateData);
 	});
 };
@@ -323,4 +301,18 @@ JOBFINDER.getOrderBy = function() {
 	orderby.sal_month_high = urlParams.salarySort;
 	orderby.sal_month_low = urlParams.salarySort;
 	return orderby;
+};
+
+JOBFINDER.changeBtnSortClass = function(obj, sort) {
+	if (sort === "DESC") {
+		obj.addClass("fa-chevron-down");
+		obj.removeClass("fa-chevron-up");
+	} else {
+		obj.addClass("fa-chevron-up");
+		obj.removeClass("fa-chevron-down");
+	}
+};
+
+JOBFINDER.toggleSort = function(sort) {
+	return sort === "DESC" ? "ASC" : "DESC";
 };
