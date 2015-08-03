@@ -127,6 +127,11 @@ button{
     .detail-content{
         max-height:300px;
         overflow:auto;
+        tr{
+            &:hover td{
+                border:none;
+            }
+        }
     }
 }
 .pagenavi{

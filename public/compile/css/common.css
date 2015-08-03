@@ -253,6 +253,9 @@ button {
   max-height: 300px;
   overflow: auto;
 }
+.job-detail .detail-content tr:hover td {
+  border: none;
+}
 
 .pagenavi {
   margin: 20px 0 40px;
