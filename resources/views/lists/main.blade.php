@@ -36,7 +36,7 @@
 		<h1 class="title">JobFinder</h1>
 	</header>
 	@yield('content')
-	<script src="{{ URL::asset('js/jquery-2.1.4.min.js') }}" charset="utf-8"></script>
+	<script src="{{ URL::asset('js/3rd-party/jquery-2.1.4.min.js') }}" charset="utf-8"></script>
 	@include('lists/common_js')
 	@section('customJs')
 	@show
