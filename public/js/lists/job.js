@@ -1,14 +1,15 @@
 $(function() {
 	(function() {
-		var urlParams = JOBFINDER.getUrlParams();
-		var orderby = JOBFINDER.getOrderBy();
+		var urlParams = JOBFINDER.getUrlParams(),
+			orderby = JOBFINDER.getOrderBy(),
+			options = {
+				apiUrl: '/job/',
+				page: urlParams.page,
+				page_size: 50,
+				orderby: orderby
+			};
 		JOBFINDER.bindOrder();
-		JOBFINDER.jobList.onstatechange();
-		JOBFINDER.listJobs({
-			apiUrl: '/job/',
-			page: urlParams.page,
-			page_size: 50,
-			orderby: orderby
-		}, JOBFINDER.jobList.renderView);
+		JOBFINDER.jobList.onstatechange(options, JOBFINDER.jobList.renderView);
+		JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
 	}());
 });

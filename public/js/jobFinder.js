@@ -224,15 +224,18 @@ JOBFINDER.pagination.pageRangeCalculate = function(options) {
 };
 
 /*重新刷新工作列表內容*/
-JOBFINDER.pagination.refreshPage = function() {
+JOBFINDER.pagination.refreshPage = function(options, renderView) {
 	var urlParams = JOBFINDER.getUrlParams();
 	var orderby = JOBFINDER.getOrderBy();
 
-	var options = {
+	var settings = {
+		apiUrl: options.apiUrl,
+		page_size: options.page_size,
 		page: urlParams.page,
 		orderby: orderby
 	};
-	JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
+	// JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
+	JOBFINDER.listJobs(settings, renderView);
 };
 
 /* Handlebars helper 判斷分頁元素是否為當前頁面  顯示為highlight*/
@@ -245,9 +248,9 @@ Handlebars.registerHelper('isActive', function(context, options) {
 });
 
 //監聽並觸發 popstate 動作
-JOBFINDER.jobList.onstatechange = function() {
+JOBFINDER.jobList.onstatechange = function(options, renderView) {
 	window.onstatechange = function() {
-		JOBFINDER.pagination.refreshPage();
+		JOBFINDER.pagination.refreshPage(options, renderView);
 	};
 };
 
