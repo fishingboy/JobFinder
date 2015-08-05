@@ -6,9 +6,9 @@
 <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
 <script src='http://johnny.github.io/jquery-sortable/js/jquery-sortable.js'></script>
 <style type="text/css">@import url(/css/test.css);</style>
+<script src='/js/test/like.js'></script>
 @if ($controller == 'App\Http\Controllers\FavoriteController')
     <script src='/js/test/sort.js' type="text/javascript"></script>
-    <script src='/js/test/like.js'></script>
     <style type="text/css">@import url(/css/sorted_table.css);</style>
 @endif
 </head>
@@ -24,7 +24,9 @@
     <br>
 
     {{-- 表單 --}}
-    @include('test/search_form')
+    @if ($controller != 'App\Http\Controllers\FavoriteController')
+        @include('test/search_form')
+    @endif
 
     {{-- 排序 & 分頁 --}}
     @include('test/navi')
