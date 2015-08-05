@@ -24,7 +24,6 @@ var pagination = JOBFINDER.namespace("JOBFINDER.pagination");
 
 /*
  * 取得工作資訊
- * @todo 預計重構為 取得工作資訊,公司資訊共用。
  */
 JOBFINDER.listJobs = function(options, renderView) {
 	var settings = $.extend({
@@ -65,13 +64,13 @@ JOBFINDER.listJobs = function(options, renderView) {
 
 			renderView(res);
 
+			JOBFINDER.currentPage = res.curr_page;
+			JOBFINDER.total_page = res.total_page;
 			var pagerArgs = {
-				currentPage: res.curr_page,
 				minPage: 1,
-				totalPage: res.total_page,
+				currentPage: res.curr_page,
 				rangeScope: 2
 			};
-			// console.log(pagerArgs);
 			pagination.createPager(pagerArgs);
 			window.scrollTo(0, 0);
 		} else {
@@ -102,28 +101,14 @@ JOBFINDER.companyList.renderView = function(data) {
 			$("tr[name='" + $(this).data('name') + "']").toggle();
 		});
 	});
-
-	// $('.toggle-detail').each(function() {
-	// 	var trBgColor = $(this).parent('td').css('background-color');
-	// 	$(this).click(function() {
-	// 		$('#' + $(this).data('name')).toggle();
-	// 	});
-	// });
-
-	// job detail switch
-	// $('.toggle-detail').each(function() {
-	// 	$(this).click(function() {
-	// 		$(this).parents('.job-detail').find('.detail-content').hide();
-	// 		$(this).parents('.job-detail').find('.' + $(this).data('name')).show();
-	// 	});
-	// });
 };
 
 /*建立分頁元素*/
 JOBFINDER.pagination.createPager = function(options) {
 	// var settings = options || {};
 	var settings = $.extend({
-		pagination: []
+		pagination: [],
+
 	}, options || {});
 	var pageRange = pagination.pageRangeCalculate(settings);
 
@@ -170,20 +155,45 @@ JOBFINDER.pagination.pageRangeCalculate = function(options) {
 JOBFINDER.pagination.refreshPage = function(options, renderView) {
 	var urlParams = JOBFINDER.getUrlParams();
 	var orderby = {};
+
 	if (options.apiUrl === "/job/") {
 		orderby = JOBFINDER.getOrderBy();
 	} else {
 		orderby = JOBFINDER.companyList.getOrderBy();
 	}
-	console.log(orderby);
+
 	var settings = {
 		apiUrl: options.apiUrl,
 		page_size: options.page_size,
 		page: urlParams.page,
 		orderby: orderby
 	};
-	// JOBFINDER.listJobs(options, JOBFINDER.jobList.renderView);
+
 	JOBFINDER.listJobs(settings, renderView);
+};
+
+JOBFINDER.pagination.getNextPage = function() {
+	// e.preventDefault();
+	var urlParams = getUrlParams();
+	var page = urlParams.page || 1;
+
+	if (page >= JOBFINDER.totalPage) {
+		page = JOBFINDER.totalPage;
+	} else {
+		page++;
+	}
+	return page;
+};
+
+JOBFINDER.pagination.getPrevPage = function() {
+	var urlParams = getUrlParams();
+	var page = urlParams.page || 1;
+	if (page - 1 <= 0) {
+		page = 1;
+	} else {
+		page--;
+	}
+	return page;
 };
 
 /* Handlebars helper 判斷分頁元素是否為當前頁面  顯示為highlight*/
@@ -225,76 +235,33 @@ JOBFINDER.bindOrder = function() {
 	});
 };
 
-
-JOBFINDER.bindOrder = function() {
-	$('#btnSortCompany, #btnSortSalary').click(function() {
-		var urlParams = JOBFINDER.getUrlParams();
-		var iElement = $(this).find('i').eq(0);
-		var btnId = $(this).attr("id");
-
-		var pushStateData = {
-			page: urlParams.page
-		};
-
-		/*change sort button class*/
-		switch (btnId) {
-			case 'btnSortSalary':
-				pushStateData.salarySort = JOBFINDER.toggleSort(urlParams.salarySort);
-				JOBFINDER.changeBtnSortClass(iElement, pushStateData.salarySort);
-				break;
-		}
-
-		JOBFINDER.pushState(pushStateData);
-	});
-};
-
-
-JOBFINDER.bindCompanyOrder = function() {
-	// $('#btnSortCompany').click(function() {
-	// 	var urlParams = JOBFINDER.getUrlParams();
-	// 	var iElement = $(this).find('i').eq(0);
-	// 	var btnId = $(this).attr("id");
-	//
-	// 	var pushStateData = {
-	// 		page: urlParams.page
-	// 	};
-	//
-	// 	/*change sort button class*/
-	// 	switch (btnId) {
-	// 		case 'btnSortSalary':
-	// 			pushStateData.salarySort = JOBFINDER.toggleSort(urlParams.salarySort);
-	// 			JOBFINDER.changeBtnSortClass(iElement, pushStateData.salarySort);
-	// 			break;
-	// 	}
-	//
-	// 	JOBFINDER.pushState(pushStateData);
-	// });
-};
-
 JOBFINDER.pushState = function(options) {
+	var urlParams = JOBFINDER.getUrlParams();
 	var qs = "";
 	qs = "?page=" + options.page;
-	if (typeof options.salarySort !== "undefined") {
-		qs += "&salarySort=" + options.salarySort;
-	}
+	var salarySort = options.salarySort || urlParams.salarySort || "DESC";
+	qs += "&salarySort=" + salarySort;
+	// if (typeof options.salarySort !== "undefined") {}
 	History.pushState({
 		state: options.page
-	}, "JobFinder", qs); // logs {state:1}, "State 1", "?state=1"
+	}, "JobFinder", qs);
 };
 
 JOBFINDER.companyList.pushState = function(options) {
+	var urlParams = JOBFINDER.companyList.getUrlParams();
+	var page = options.page || urlParams.page || 1;
 	var qs = "";
-	qs = "?page=" + options.page;
-	if (typeof options.capitalSort !== "undefined") {
-		qs += "&capitalSort=" + options.capitalSort;
-	}
-	console.log(qs);
+	qs = "?page=" + page;
+
+	var capitalSort = options.capitalSort || urlParams.capitalSort || "DESC";
+	qs += "&capitalSort=" + capitalSort;
+
 	History.pushState({
 		state: options.page
-	}, "JobFinder", qs); // logs {state:1}, "State 1", "?state=1"
+	}, "JobFinder", qs);
 };
 
-/* 取得網址列參數並做處理 */
+/* 取得網址列參數並做處理(job) */
 JOBFINDER.getUrlParams = function() {
 	var urlParams = window.getUrlParams();
 	var result = urlParams;
@@ -303,6 +270,7 @@ JOBFINDER.getUrlParams = function() {
 	return result;
 };
 
+/* 取得參數並整理為orderby參數處理(job) */
 JOBFINDER.getOrderBy = function() {
 	var urlParams = JOBFINDER.getUrlParams();
 	var orderby = {};
@@ -311,7 +279,7 @@ JOBFINDER.getOrderBy = function() {
 	return orderby;
 };
 
-/* 取得網址列參數並做處理 */
+/* 取得網址列參數並做處理(company) */
 JOBFINDER.companyList.getUrlParams = function() {
 	var urlParams = window.getUrlParams();
 	var result = urlParams;
@@ -320,6 +288,7 @@ JOBFINDER.companyList.getUrlParams = function() {
 	return result;
 };
 
+/* 取得參數並整理為orderby參數處理(company) */
 JOBFINDER.companyList.getOrderBy = function() {
 	var urlParams = JOBFINDER.getUrlParams();
 	var orderby = {};

@@ -6,7 +6,7 @@
 		<thead>
 			<tr>
 				<th>職缺列表</th>
-				<th>公司名稱<button class="table-sort"><i class="fa fa-chevron-down"></i></button></th>
+				<th>公司名稱</th>
 				<th>所在地</th>
 				<th>總人數</th>
 				<th>職缺數</th>

@@ -26,46 +26,31 @@ $(function() {
 		});
 	});
 
+	//todo 重構為共用funciton
 	$("body").on("click", "#goToPrev", function(e) {
 		e.preventDefault();
-		var urlParams = getUrlParams();
-		var page = urlParams.page;
-		if (page - 1 <= 0) {
-			page = 1;
-		} else {
-			page--;
-		}
-
+		var page = JOBFINDER.pagination.getPrevPage();
 		JOBFINDER.companyList.pushState({
 			page: page
 		});
 	});
 
+	//todo 重構為共用funciton
 	$("body").on("click", "#goToNext", function(e) {
 		e.preventDefault();
-		var urlParams = getUrlParams();
-		var page = urlParams.page;
-		if (page >= settings.totalPage) {
-			page = settings.totalPage;
-		} else {
-			page++;
-		}
 
+		var page = JOBFINDER.pagination.getNextPage();
 		JOBFINDER.companyList.pushState({
 			page: page
 		});
 	});
 
-
 	$('#btnSortCapital').click(function() {
-		var urlParams = JOBFINDER.getUrlParams();
-		console.log(urlParams);
+		var urlParams = JOBFINDER.companyList.getUrlParams();
 		var iElement = $(this).find('i').eq(0);
 		var btnId = $(this).attr("id");
 
-		var pushStateData = {
-			page: urlParams.page
-		};
+		var pushStateData = {};
 
 		/*change sort button class*/
 		switch (btnId) {
