@@ -12,9 +12,11 @@
  */
 
 // elixir(function(mix) {
-// 	mix.sass('app.scss');
+// 	mix.sass('common.scss');
 // });
-
+// elixir(function(mix) {
+// 	mix.rubysass("common.scss");
+// });
 
 /*
  |--------------------------------------------------------------------------
@@ -53,6 +55,15 @@ gulp.task('projectScripts', function() {
 		.pipe(notify({
 			message: "projectScripts done!!"
 		}));
+});
+
+/*css*/
+gulp.task('sass', function() {
+	return sass('public/compile/sass/common.scss', {
+		style: 'expanded'
+	}).on('error', function(err) {
+		console.error('Error!', err.message);
+	}).pipe(gulp.dest('public/assets/css'));
 });
 
 gulp.task('clean', function(cb) {

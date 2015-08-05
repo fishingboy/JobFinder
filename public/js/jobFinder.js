@@ -175,7 +175,7 @@ JOBFINDER.pagination.refreshPage = function(options, renderView) {
 	} else {
 		orderby = JOBFINDER.companyList.getOrderBy();
 	}
-
+	console.log(orderby);
 	var settings = {
 		apiUrl: options.apiUrl,
 		page_size: options.page_size,
@@ -285,9 +285,10 @@ JOBFINDER.pushState = function(options) {
 JOBFINDER.companyList.pushState = function(options) {
 	var qs = "";
 	qs = "?page=" + options.page;
-	// if (typeof options.salarySort !== "undefined") {
-	// 	qs += "&salarySort=" + options.salarySort;
-	// }
+	if (typeof options.capitalSort !== "undefined") {
+		qs += "&capitalSort=" + options.capitalSort;
+	}
+	console.log(qs);
 	History.pushState({
 		state: options.page
 	}, "JobFinder", qs); // logs {state:1}, "State 1", "?state=1"
@@ -296,7 +297,7 @@ JOBFINDER.companyList.pushState = function(options) {
 /* 取得網址列參數並做處理 */
 JOBFINDER.getUrlParams = function() {
 	var urlParams = window.getUrlParams();
-	var result = {};
+	var result = urlParams;
 	result.page = urlParams.page || 1;
 	result.salarySort = urlParams.salarySort || "DESC";
 	return result;
@@ -310,9 +311,19 @@ JOBFINDER.getOrderBy = function() {
 	return orderby;
 };
 
+/* 取得網址列參數並做處理 */
+JOBFINDER.companyList.getUrlParams = function() {
+	var urlParams = window.getUrlParams();
+	var result = urlParams;
+	result.page = urlParams.page || 1;
+	result.capitalSort = urlParams.capitalSort || "DESC";
+	return result;
+};
+
 JOBFINDER.companyList.getOrderBy = function() {
 	var urlParams = JOBFINDER.getUrlParams();
 	var orderby = {};
+	orderby.capital = urlParams.capitalSort;
 	return orderby;
 };
 
