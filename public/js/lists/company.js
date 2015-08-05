@@ -26,7 +26,6 @@ $(function() {
 		});
 	});
 
-	//todo 重構為共用funciton
 	$("body").on("click", "#goToPrev", function(e) {
 		e.preventDefault();
 		var page = JOBFINDER.pagination.getPrevPage();
@@ -35,10 +34,8 @@ $(function() {
 		});
 	});
 
-	//todo 重構為共用funciton
 	$("body").on("click", "#goToNext", function(e) {
 		e.preventDefault();
-
 		var page = JOBFINDER.pagination.getNextPage();
 		JOBFINDER.companyList.pushState({
 			page: page

@@ -28,7 +28,6 @@ $(function() {
 		});
 	});
 
-	/* bind 分頁標籤 event */
 	$("body").on("click", "#goToPrev", function(e) {
 		e.preventDefault();
 		var page = JOBFINDER.pagination.getPrevPage();
