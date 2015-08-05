@@ -36,6 +36,7 @@ var gulp = require('gulp'),
 	cache = require('gulp-cache'),
 	livereload = require('gulp-livereload'),
 	del = require('del');
+
 /*jobFinder相關scripts 不含套件 */
 gulp.task('projectScripts', function() {
 	return gulp.src(['./public/js/jobFinder.js', './public/js/urlParams.js']) //src js路徑 可用字串、陣列傳遞。
@@ -63,5 +64,7 @@ gulp.task('default', ['clean'], function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch('./public/js/**/*.js', ['projectScripts']);
+	gulp.watch(['./public/js/jobFinder.js', './public/js/urlParams.js'], [
+		'projectScripts'
+	]);
 });

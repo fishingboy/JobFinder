@@ -10,7 +10,7 @@
 				<th>所在地</th>
 				<th>總人數</th>
 				<th>職缺數</th>
-				<th>資本額</th>
+				<th>資本額<button id="btnSortSalary" class="table-sort"><i class="fa fa-chevron-down"></i></button></th>
 				<th>同步時間</th>
 			</tr>
 		</thead>

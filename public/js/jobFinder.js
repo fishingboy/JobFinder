@@ -56,6 +56,7 @@ JOBFINDER.listJobs = function(options, renderView) {
 			$("#jobListBody").empty();
 
 			var stateData = History.getState();
+			/*如果是進入首頁 網址列無參數 預設塞入第一頁的pushState值*/
 			if (!stateData.data) {
 				History.pushState({
 					state: page
@@ -130,69 +131,11 @@ JOBFINDER.pagination.createPager = function(options) {
 		settings.pagination.push(page);
 	}
 
-	// console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
 	var rendered = template(settings);
 	$('#pagerBody').append(rendered);
-
-	/* bind 分頁標籤 event */
-	$("#pagerUl a[name='goToPage']").click(function(e) {
-		e.preventDefault();
-		var page = $(this).attr("href");
-
-		JOBFINDER.pushState({
-			page: page,
-			salarySort: urlParams.salarySort
-		});
-
-		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
-	});
-
-	$("#goToPrev").click(function(e) {
-		e.preventDefault();
-		var urlParams = getUrlParams();
-		var page = urlParams.page;
-		if (page - 1 <= 0) {
-			page = 1;
-		} else {
-			page--;
-		}
-
-		JOBFINDER.pushState({
-			page: page,
-			salarySort: urlParams.salarySort
-		});
-		// History.pushState({
-		// 	state: page
-		// }, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
-
-		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
-	});
-
-	$("#goToNext").click(function(e) {
-		e.preventDefault();
-		var urlParams = getUrlParams();
-		var page = urlParams.page;
-		if (page >= settings.totalPage) {
-			page = settings.totalPage;
-		} else {
-			page++;
-		}
-
-		JOBFINDER.pushState({
-			page: page,
-			salarySort: urlParams.salarySort
-		});
-
-		// History.pushState({
-		// 	state: page
-		// }, "Page" + page, "?page=" + page); // logs {state:1}, "State 1", "?state=1"
-
-		// JOBFINDER.jobList.listJobs(options, JOBFINDER.jobList.renderView);
-	});
-
 
 };
 
@@ -226,7 +169,12 @@ JOBFINDER.pagination.pageRangeCalculate = function(options) {
 /*重新刷新工作列表內容*/
 JOBFINDER.pagination.refreshPage = function(options, renderView) {
 	var urlParams = JOBFINDER.getUrlParams();
-	var orderby = JOBFINDER.getOrderBy();
+	var orderby = {};
+	if (options.apiUrl === "/job/") {
+		orderby = JOBFINDER.getOrderBy();
+	} else {
+		orderby = JOBFINDER.companyList.getOrderBy();
+	}
 
 	var settings = {
 		apiUrl: options.apiUrl,
@@ -277,6 +225,52 @@ JOBFINDER.bindOrder = function() {
 	});
 };
 
+
+JOBFINDER.bindOrder = function() {
+	$('#btnSortCompany, #btnSortSalary').click(function() {
+		var urlParams = JOBFINDER.getUrlParams();
+		var iElement = $(this).find('i').eq(0);
+		var btnId = $(this).attr("id");
+
+		var pushStateData = {
+			page: urlParams.page
+		};
+
+		/*change sort button class*/
+		switch (btnId) {
+			case 'btnSortSalary':
+				pushStateData.salarySort = JOBFINDER.toggleSort(urlParams.salarySort);
+				JOBFINDER.changeBtnSortClass(iElement, pushStateData.salarySort);
+				break;
+		}
+
+		JOBFINDER.pushState(pushStateData);
+	});
+};
+
+
+JOBFINDER.bindCompanyOrder = function() {
+	// $('#btnSortCompany').click(function() {
+	// 	var urlParams = JOBFINDER.getUrlParams();
+	// 	var iElement = $(this).find('i').eq(0);
+	// 	var btnId = $(this).attr("id");
+	//
+	// 	var pushStateData = {
+	// 		page: urlParams.page
+	// 	};
+	//
+	// 	/*change sort button class*/
+	// 	switch (btnId) {
+	// 		case 'btnSortSalary':
+	// 			pushStateData.salarySort = JOBFINDER.toggleSort(urlParams.salarySort);
+	// 			JOBFINDER.changeBtnSortClass(iElement, pushStateData.salarySort);
+	// 			break;
+	// 	}
+	//
+	// 	JOBFINDER.pushState(pushStateData);
+	// });
+};
+
 JOBFINDER.pushState = function(options) {
 	var qs = "";
 	qs = "?page=" + options.page;
@@ -288,6 +282,16 @@ JOBFINDER.pushState = function(options) {
 	}, "JobFinder", qs); // logs {state:1}, "State 1", "?state=1"
 };
 
+JOBFINDER.companyList.pushState = function(options) {
+	var qs = "";
+	qs = "?page=" + options.page;
+	// if (typeof options.salarySort !== "undefined") {
+	// 	qs += "&salarySort=" + options.salarySort;
+	// }
+	History.pushState({
+		state: options.page
+	}, "JobFinder", qs); // logs {state:1}, "State 1", "?state=1"
+};
 
 /* 取得網址列參數並做處理 */
 JOBFINDER.getUrlParams = function() {
@@ -303,6 +307,12 @@ JOBFINDER.getOrderBy = function() {
 	var orderby = {};
 	orderby.sal_month_high = urlParams.salarySort;
 	orderby.sal_month_low = urlParams.salarySort;
+	return orderby;
+};
+
+JOBFINDER.companyList.getOrderBy = function() {
+	var urlParams = JOBFINDER.getUrlParams();
+	var orderby = {};
 	return orderby;
 };
 
