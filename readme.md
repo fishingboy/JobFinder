@@ -1,5 +1,6 @@
 ## 找工作小工具
 
+<<<<<<< HEAD
     因為覺得 104 的求職條件只能設 5 組不太夠用
     而且無法根據公司來做收合，無法快速瀏灠符合條件的公司有哪些？
     也無法依照公司人數或資本額或其他欄位進行排序
@@ -15,9 +16,35 @@
     後來和前公司的朋友分享這個工具
     他們覺得很有趣，所以也加入了
     目前是四個人的專案在進行
+=======
+	因為覺得 104 的求職條件只能設 5 組不太夠用
+	而且無法根據公司來做收合，無法快速瀏灠符合條件的公司有哪些？
+	也無法依照公司人數或其他欄位進行排序
+
+	所以寫了一個工具來給自己找工作使用！
+	順便練習一下 Laravel
+	不過目前只有用到皮毛而以
+	直接把 Laravel 拿來當 CodeIgniter 使用
+>>>>>>> 將gulp說明加入readme
 
 註：
 * 使用 Laravel PHP Framework
 * 使用 104 API : http://www.104.com.tw/i/api_doc/jobsearch/
 
 安裝步驟：請參考 install.txt
+
+
+### 開始在專案中使用gulp
+
+1. 安裝 [node.js](https://nodejs.org/)
+
+2. 在command line 切到專案目錄 (ex: /JobFinder) 輸入:
+> npm install
+
+3. 執行gulp的工作
+> gulp {task name}
+
+4. 讓gulp開始監看檔案，執行後請勿關閉command line
+> gulp watch
+
+5. gulp watch 執行後 只要有監看到的檔案，儲存後都會自動佈署

@@ -5,8 +5,9 @@ var getUrlParams = function() {
 		decode = function(s) {
 			return decodeURIComponent(s.replace(pl, " "));
 		},
-		query = window.location.search.substring(1);
-	urlParams = {};
+		query = window.location.search.substring(1),
+		urlParams = {};
+
 	while ((match = search.exec(query)) !== null)
 		urlParams[decode(match[1])] = decode(match[2]);
 	// console.log(urlParams);

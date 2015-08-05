@@ -204,15 +204,10 @@ button {
   background-image: -o-linear-gradient(#f9b84a, #f9892c);
   background-image: linear-gradient(#f9b84a, #f9892c);
 }
-.jobtable tr:hover td {
-  background: #333;
-  border-top: 1px solid #ff9547;
-  border-bottom: 1px solid #ff9547;
-}
 .jobtable .fixword {
   margin: 0 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 .jobtable .table-sort {
   color: #fff;
@@ -236,8 +231,7 @@ button {
 
 .job-detail > td {
   padding: 0;
-  background: #444;
-  border-bottom: #ff9547 3px solid;
+  background: #111;
   -webkit-box-shadow: inset #111111 0 1px 5px;
   -moz-box-shadow: inset #111111 0 1px 5px;
   box-shadow: inset #111111 0 1px 5px;
@@ -247,7 +241,7 @@ button {
   margin: 5px;
 }
 .job-detail .jobtable th {
-  background: #555;
+  background: #3b4a63;
 }
 .job-detail .detail-content {
   max-height: 300px;

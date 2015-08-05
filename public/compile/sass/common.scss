@@ -78,20 +78,25 @@ button{
             @include background-image(linear-gradient(#F9B84A, #f9892c));
         }
     }
-    tr{
-        &:hover td{
-            background: #333;
-            border-top:1px solid #ff9547;
-            border-bottom:1px solid #ff9547;
-        }
-    }
+    // tr{
+    //     &:hover td{
+    //         background: #333;
+    //         border-top:1px solid #ff9547;
+    //         border-bottom:1px solid #ff9547;
+    //     }
+    // }
+    // tr:nth-child(odd) td{
+    //     background: #333;
+    // }
     .fixword{
-        // width:110px;
+        // width:200px;
         // height:20px;
         margin: 0 auto;
-        overflow: hidden;
+        // overflow: hidden;
         // white-space: nowrap;
-        text-overflow: ellipsis;
+        // text-overflow: ellipsis;
+        word-break:break-word;
+        word-wrap:break-word;
     }
     .table-sort{
         color:#fff;
@@ -107,13 +112,12 @@ button{
         height:30px;
         border:1px solid #ff9547;
     }
-
 }
 .job-detail{
     > td{
         padding:0;
-        background:#444;
-        border-bottom:#ff9547 3px solid;
+        background:#111;
+        // border-bottom:#ff9547 3px solid;
         // border-top:none;
         @include box-shadow(inset #111 0 1px 5px)
     }
@@ -121,7 +125,7 @@ button{
         min-width:99%;
         margin:5px;
         th{
-            background: #555;
+            background: #3b4a63;
         }
     }
     .detail-content{

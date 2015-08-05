@@ -309,3 +309,18 @@ JOBFINDER.changeBtnSortClass = function(obj, sort) {
 JOBFINDER.toggleSort = function(sort) {
 	return sort === "DESC" ? "ASC" : "DESC";
 };
+
+var getUrlParams = function() {
+	var match,
+		pl = /\+/g, // Regex for replacing addition symbol with a space
+		search = /([^&=]+)=?([^&]*)/g,
+		decode = function(s) {
+			return decodeURIComponent(s.replace(pl, " "));
+		},
+		query = window.location.search.substring(1);
+	urlParams = {};
+	while ((match = search.exec(query)) !== null)
+		urlParams[decode(match[1])] = decode(match[2]);
+	// console.log(urlParams);
+	return urlParams;
+};
