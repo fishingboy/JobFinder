@@ -2,8 +2,7 @@
 @import "define/__init.scss";
 @import "frame/_reset.scss";
 @import url(http://fonts.googleapis.com/css?family=Nobile:700,400);
-$primary: #c40606;
-$slider:#F38630;
+
 .hide{
     display:none;
 }
@@ -129,8 +128,11 @@ button{
         }
     }
     .detail-content{
-        max-height:300px;
-        overflow:auto;
+        // max-height:300px;
+        // overflow:auto;
+        // @include box-shadow(0px 0 5px #f9b84a);
+        border-left:2px outset #f9b84a;
+        border-right:2px outset #f9b84a;
     }
 }
 .pagenavi{
@@ -200,28 +202,28 @@ button{
 // -------------------------------------------------
 
 // media query
-@media only screen and(min-width: 1750px){
+// @media only screen and(min-width: 1750px){
 
-}
-@media (min-width: 1239px) and (max-width: 1749px){
+// }
+// @media (min-width: 1239px) and (max-width: 1749px){
 
-}
-@media (min-width: 999px) and (max-width: 1238px){
+// }
+// @media (min-width: 999px) and (max-width: 1238px){
 
-}
-@include RWD(pad-mobile){
+// }
+// @include RWD(pad-mobile){
 
-}
-@include RWD(pad){
+// }
+// @include RWD(pad){
 
-}
-@include RWD(mobile){
+// }
+// @include RWD(mobile){
 
-}
-@media only screen and(max-width: 480px){
+// }
+// @media only screen and(max-width: 480px){
 
-}
+// }
 
-@media only screen and(max-width: 518px){
+// @media only screen and(max-width: 518px){
 
-}
+// }

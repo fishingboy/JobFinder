@@ -244,8 +244,8 @@ button {
   background: #3b4a63;
 }
 .job-detail .detail-content {
-  max-height: 300px;
-  overflow: auto;
+  border-left: 2px outset #f9b84a;
+  border-right: 2px outset #f9b84a;
 }
 
 .pagenavi {
