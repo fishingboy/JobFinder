@@ -309,3 +309,5 @@ JOBFINDER.changeBtnSortClass = function(obj, sort) {
 JOBFINDER.toggleSort = function(sort) {
 	return sort === "DESC" ? "ASC" : "DESC";
 };
+
+//# sourceMappingURL=jobFinder.js.map
