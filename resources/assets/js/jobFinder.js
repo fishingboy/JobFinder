@@ -69,7 +69,8 @@ JOBFINDER.listJobs = function(options, renderView) {
 			var pagerArgs = {
 				minPage: 1,
 				currentPage: res.curr_page,
-				rangeScope: 2
+				rangeScope: 4,
+				totalPage: JOBFINDER.total_page
 			};
 			pagination.createPager(pagerArgs);
 			window.scrollTo(0, 0);
@@ -115,7 +116,7 @@ JOBFINDER.pagination.createPager = function(options) {
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
 		settings.pagination.push(page);
 	}
-
+	console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
@@ -176,12 +177,13 @@ JOBFINDER.pagination.getNextPage = function() {
 	// e.preventDefault();
 	var urlParams = getUrlParams();
 	var page = urlParams.page || 1;
-
-	if (page >= JOBFINDER.totalPage) {
-		page = JOBFINDER.totalPage;
+	if (page >= JOBFINDER.total_page) {
+		page = JOBFINDER.total_page;
 	} else {
 		page++;
 	}
+	console.log(JOBFINDER.total_page);
+	console.log(page);
 	return page;
 };
 
@@ -308,19 +310,4 @@ JOBFINDER.changeBtnSortClass = function(obj, sort) {
 
 JOBFINDER.toggleSort = function(sort) {
 	return sort === "DESC" ? "ASC" : "DESC";
-};
-
-var getUrlParams = function() {
-	var match,
-		pl = /\+/g, // Regex for replacing addition symbol with a space
-		search = /([^&=]+)=?([^&]*)/g,
-		decode = function(s) {
-			return decodeURIComponent(s.replace(pl, " "));
-		},
-		query = window.location.search.substring(1);
-	urlParams = {};
-	while ((match = search.exec(query)) !== null)
-		urlParams[decode(match[1])] = decode(match[2]);
-	// console.log(urlParams);
-	return urlParams;
 };

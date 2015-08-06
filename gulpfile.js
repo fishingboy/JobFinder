@@ -1,4 +1,4 @@
-// var elixir = require('laravel-elixir');
+var elixir = require('laravel-elixir');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,12 +11,9 @@
  |
  */
 
-// elixir(function(mix) {
-// 	mix.sass('common.scss');
-// });
-// elixir(function(mix) {
-// 	mix.rubysass("common.scss");
-// });
+elixir(function(mix) {
+	mix.scripts(['jobFinder.js', 'urlParams.js'], 'public/js/jobFinderMain.js');
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -24,7 +21,7 @@
  |--------------------------------------------------------------------------
  |
  */
-
+/*
 var gulp = require('gulp'),
 	sass = require('gulp-ruby-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -39,7 +36,6 @@ var gulp = require('gulp'),
 	livereload = require('gulp-livereload'),
 	del = require('del');
 
-/*jobFinder相關scripts 不含套件 */
 gulp.task('projectScripts', function() {
 	return gulp.src(['./public/js/jobFinder.js', './public/js/urlParams.js']) //src js路徑 可用字串、陣列傳遞。
 		.pipe(jshint())
@@ -57,7 +53,6 @@ gulp.task('projectScripts', function() {
 		}));
 });
 
-/*css*/
 gulp.task('sass', function() {
 	return sass('public/compile/sass/common.scss', {
 		style: 'expanded'
@@ -79,3 +74,4 @@ gulp.task('watch', function() {
 		'projectScripts'
 	]);
 });
+*/
