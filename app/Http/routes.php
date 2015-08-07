@@ -35,6 +35,8 @@ Route::get('/crawler/company/update', 'CrawlerController@update_company');
 // API
 // job
 Route::match(['get', 'post'], '/job', 'JobController@get');
+Route::match(['get', 'post'], '/job/position', 'JobController@get_position');
+Route::match(['get', 'post'], '/job/position/{format}', 'JobController@get_position');
 Route::match(['get', 'post'], '/job/test', 'JobController@test');
 Route::match(['get', 'post'], '/job/{format}', 'JobController@get');
 Route::match(['get', 'post'], '/job/get', 'JobController@get');

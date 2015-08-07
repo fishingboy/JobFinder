@@ -132,6 +132,72 @@ class Job extends Model
 
 
         return [
+            'companyID'  => $companyID,
+            'count'      => $count,
+            'page_size'  => $page_size,
+            'curr_page'  => $page,
+            'total_page' => $total_page,
+            'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
+            'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
+            'rows'       => $rows,
+        ];
+    }
+
+    /**
+     * 取得工作地點
+     * @param  array  $param 搜尋條件
+     * @return array         工作地點資料
+     */
+    public static function position($param = [])
+    {
+        Debug::fblog('Models\Job.param', $param);
+
+        $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
+        $page      = (isset($param['page'])) ? intval($param['page']) : 1;
+        $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
+
+        $obj = DB::table('job')
+                 ->join('company', 'job.companyID', '=', 'company.companyID')
+                 ->groupBy('job.lat', 'job.lat')
+                 ->select(DB::raw('count(*) as job_count, job.lat, job.lon, company.*'));
+                 // ->select('count(*)', 'job.lat', 'job.lon', 'company.*');
+
+        // 搜尋
+        if (isset($param['keyword']) && $param['keyword'])
+        {
+            $obj->where('job.title', 'like', "%{$param['keyword']}%");
+            $obj->orWhere('job.description', 'like', "%{$param['keyword']}%");
+            $obj->orWhere('job.others', 'like', "%{$param['keyword']}%");
+        }
+
+        // 取得總筆數
+        $count = $obj->count();
+
+        // 分頁
+        $obj->skip(($page -1) * $page_size)
+            ->take($page_size);
+
+        // 過瀘公司
+        if ($companyID)
+        {
+            $obj->where('job.companyID', $companyID);
+        }
+
+        // 排序
+        if (isset($param['orderby']))
+        {
+            foreach ($param['orderby'] as $key => $asc)
+            {
+                $obj->orderBy($key, $asc);
+            }
+        }
+
+        // 取得資料
+        $rows       = $obj->get();
+        $total_page = ceil($count / $page_size);
+
+        return [
+            'companyID'  => $companyID,
             'count'      => $count,
             'page_size'  => $page_size,
             'curr_page'  => $page,
