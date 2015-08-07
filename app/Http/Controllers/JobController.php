@@ -85,6 +85,30 @@ class JobController extends Controller
     }
 
     /**
+     * Job API (取得職缺位置)
+     * @param  Request $request
+     * @param  string  $format  回應格式
+     * @return Response
+     */
+    public function get_position(Request $request, $format = 'json')
+    {
+        // 查詢參數(先寫死)
+        $search_param = $this->_get_param($request);
+
+        // 取得查詢資料
+        $data = Job::position($search_param);
+        if ($data)
+        {
+            $data = array_merge(['status' => TRUE], $data);
+        }
+
+        if ($format == 'json')
+            return response()->json($data);
+        else
+            return "<pre>data = " . print_r($data, TRUE). "</pre>";
+    }
+
+    /**
      * 取得網址
      * @param  array  $search_param 查詢參數
      * @param  array  $diff_param   要修改的參數
