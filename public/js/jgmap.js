@@ -1,5 +1,6 @@
 var JGMAP = (function(google, $) {
 	var myLocation = {};
+	var map = {};
 
 	var myStorage = localStorage;
 
@@ -41,17 +42,20 @@ var JGMAP = (function(google, $) {
 			zoom: 16
 		};
 
-		var map = new google.maps.Map(document.getElementById(
+		map = new google.maps.Map(document.getElementById(
 				'map-canvas'),
 			mapOptions);
 		markJob(map);
 	}
 
-	var markJob = function(map) {
+	var markJob = function() {
 		$.ajax({
 			method: "GET",
 			url: "/job/position",
-			dataType: "json"
+			dataType: "json",
+			data: {
+				page_size: 200
+			}
 		}).done(function(res) {
 
 			res.rows.forEach(function(jobValue, jobKey) {
@@ -87,13 +91,23 @@ var JGMAP = (function(google, $) {
 		var source = $("#mrt-template").html();
 		var template = Handlebars.compile(source);
 		var html = template(mrtLocation);
-		$("#mrtSelector").append(html);
+		$("#mrtContainer").append(html);
+	};
+
+	var bindMrtSelector = function(obj) {
+		$(obj).change(function() {
+			var latLng = $(this).val().split(",");
+			var myLatlng = new google.maps.LatLng(latLng[0], latLng[1]);
+			// console.log(myLatlng);
+			map.setCenter(myLatlng);
+		});
 	};
 
 	return {
 		init: init,
 		// markJob: markJob
-		buildTaipeiMrtSelector: buildTaipeiMrtSelector
+		buildTaipeiMrtSelector: buildTaipeiMrtSelector,
+		bindMrtSelector: bindMrtSelector
 	};
 }(google, $));
 
