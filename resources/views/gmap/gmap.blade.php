@@ -8,29 +8,29 @@
 	</style>
 </head>
 <body>
-	<div id="mrtSelector">
+	<div id="mrtContainer">
 
 	</div>
 	<div id="map-canvas"></div>
 
 	<script id="mrt-template" type="text/x-handlebars-template">
-		<select>
+		<select id="mrtSelector">
 		@{{#each .}}
 			 <option value="@{{latitude}},@{{longitude}}">@{{name}}</option>
 		@{{/each}}
 		</select>
 	</script>
 
-	<script src="{{ asset("js/3rd-party/jquery-2.1.4.min.js") }}" charset="utf-8"></script>
-	<script src="{{ asset("js/3rd-party/handlebars-v3.0.3.js") }}" charset="utf-8"></script>
+	<script type="text/javascript" src="{{ asset("js/vendor.js") }}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwibvTIKkJFEfmx8gQuwZgGsPridiX08I"> </script>
-	<script src="{{ asset("js/jgmap.js") }}" charset="utf-8"></script>
+	<script type="text/javascript" src="{{ asset("js/jgmap.js") }}"></script>
 
-
-	<script charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
 		var jgmap = JGMAP;
-		// jgmap.init();
+		jgmap.init();
 		jgmap.buildTaipeiMrtSelector();
+		jgmap.bindMrtSelector(mrtSelector);
+
 	</script>
 </body>
 </html>
