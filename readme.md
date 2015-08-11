@@ -37,3 +37,15 @@
 > gulp watch
 
 5. gulp watch 執行後 只要有監看到的檔案，儲存後都會自動佈署
+
+### 使用 bower 管理套件
+
+1. 安裝 bower
+> npm install -g bower
+
+2. 安裝你要的套件 (ex:jquery)
+> bower install jquery
+
+3. 安裝後會放在　resources/assets/bower
+
+4. 之後可以配合elixir 輸出到 public/js下面，範例請參考 gulp.js
