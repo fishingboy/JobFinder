@@ -120,16 +120,7 @@ class Job extends Model
         $total_page = ceil($count / $page_size);
 
         /* 轉換資料格式 */
-        foreach ($rows as $key => $row)
-        {
-            // 員人工數
-            $row->employees = Lib::convert_employees($row->employees);
-            // 資本額
-            $row->capital   = Lib::number2capital($row->capital);
-            // 薪資
-            $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
-        }
-
+        $rows = self::_convert_row_data($rows);
 
         return [
             'companyID'  => $companyID,
@@ -206,6 +197,7 @@ class Job extends Model
                  ->select('job.*', 'company.*')
                  ->get();
 
+            $job_rows = self::_convert_row_data($job_rows);
             $row->jobs = $job_rows;
         }
 
@@ -219,5 +211,22 @@ class Job extends Model
             'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
             'rows'       => $rows,
         ];
+    }
+
+    /**
+     * 轉換 job 資料
+     */
+    private static function _convert_row_data($rows)
+    {
+        foreach ($rows as $key => $row)
+        {
+            // 員人工數
+            $row->employees = Lib::convert_employees($row->employees);
+            // 資本額
+            $row->capital   = Lib::number2capital($row->capital);
+            // 薪資
+            $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
+        }
+        return $rows;
     }
 }
