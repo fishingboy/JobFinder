@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Classes\Job104;
 use App\Classes\JobPtt;
+use App\Library\Debug;
 use App\Models\Job;
 use App\Models\Company;
 
@@ -103,9 +104,14 @@ class JobController extends Controller
         }
 
         if ($format == 'json')
+        {
             return response()->json($data);
+        }
         else
+        {
+            Debug::fblog('data', $data);
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
+        }
     }
 
     /**

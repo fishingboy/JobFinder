@@ -158,8 +158,8 @@ class Job extends Model
 
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
-                 ->groupBy('job.lat', 'job.lat')
-                 ->select(DB::raw('count(*) as job_count, job.lat, job.lon, company.*'));
+                 ->groupBy('job.lat', 'job.lon')
+                 ->select(DB::raw('job.lat, job.lon, COUNT(*) AS job_count'));
                  // ->select('count(*)', 'job.lat', 'job.lon', 'company.*');
 
         // 搜尋
@@ -195,6 +195,19 @@ class Job extends Model
         // 取得資料
         $rows       = $obj->get();
         $total_page = ceil($count / $page_size);
+
+        /* 取得工作資料 */
+        foreach ($rows as $key => $row)
+        {
+            $job_rows = DB::table('job')
+                 ->join('company', 'job.companyID', '=', 'company.companyID')
+                 ->where('job.lat', '=', $row->lat)
+                 ->where('job.lon', '=', $row->lon)
+                 ->select('job.*', 'company.*')
+                 ->get();
+
+            $row->jobs = $job_rows;
+        }
 
         return [
             'companyID'  => $companyID,
