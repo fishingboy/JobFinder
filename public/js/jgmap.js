@@ -1,6 +1,7 @@
 var JGMAP = (function(google, $) {
 	var myLocation = {};
 	var map = {};
+	var markers = [];
 
 	var myStorage = localStorage;
 
@@ -60,11 +61,17 @@ var JGMAP = (function(google, $) {
 
 			res.rows.forEach(function(jobValue, jobKey) {
 				var myLatlng = new google.maps.LatLng(jobValue.lat, jobValue.lon);
+
+				// add marker
 				var marker = new google.maps.Marker({
 					position: myLatlng,
 					map: map,
-					title: jobValue.name
+					title: jobValue.name,
+					size: new google.maps.Size(71, 71)
 				});
+
+				// console.log(jobKey * 200);
+				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
 
 				var infowindow = new google.maps.InfoWindow({
 					content: "<div>" +
@@ -84,6 +91,17 @@ var JGMAP = (function(google, $) {
 					infowindow.open(map, marker);
 				});
 			});
+		});
+	};
+
+	var addJobMarkerWithTimeout = function(data, myLatlng, timeout) {
+		window.setTimeout(function() {
+			markers.push(new google.maps.Marker({
+				position: myLatlng,
+				map: map,
+				title: data.name,
+				animation: google.maps.Animation.DROP
+			}), timeout);
 		});
 	};
 
