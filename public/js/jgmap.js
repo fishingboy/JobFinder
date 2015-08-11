@@ -63,26 +63,26 @@ var JGMAP = (function(google, $) {
 				var myLatlng = new google.maps.LatLng(jobValue.lat, jobValue.lon);
 
 				// add marker
-				// var marker = new google.maps.Marker({
-				// 	position: myLatlng,
-				// 	map: map,
-				// 	title: jobValue.name,
-				// 	size: new google.maps.Size(71, 71)
-				// });
+				var marker = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					title: jobValue.name,
+					size: new google.maps.Size(71, 71)
+				});
 
 				// console.log(jobKey * 200);
-				addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 100);
+				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
 
-				// var infowindow = new google.maps.InfoWindow({
-				// 	maxWidth: 200,
-				// 	content: renderInfowindow(jobValue.jobs)
-				// });
+				var infowindow = new google.maps.InfoWindow({
+					maxWidth: 200,
+					content: renderInfowindow(jobValue.jobs)
+				});
 
-				// google.maps.event.addListener(marker, 'click', function() {
-				// 	// map.setZoom(20);
-				// 	map.setCenter(marker.getPosition());
-				// 	infowindow.open(map, marker);
-				// });
+				google.maps.event.addListener(marker, 'click', function() {
+					// map.setZoom(20);
+					map.setCenter(marker.getPosition());
+					infowindow.open(map, marker);
+				});
 			});
 		});
 	};
