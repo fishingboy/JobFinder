@@ -73,16 +73,10 @@ var JGMAP = (function(google, $) {
 				// console.log(jobKey * 200);
 				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
 
+
 				var infowindow = new google.maps.InfoWindow({
-					content: "<div>" +
-						"<H1>" + jobValue.name + "</H1>",
-					maxWidth: 200
-						// content: "<div>" +
-						// 	"<H1>" + jobValue.name + "</H1>" +
-						// 	"<p></p>" +
-						// 	"<div>" + jobValue.profile + "</div>" +
-						// 	"</div>",
-						// maxWidth: 200
+					maxWidth: 200,
+					content: renderInfowindow(jobValue.jobs)
 				});
 
 				google.maps.event.addListener(marker, 'click', function() {
@@ -93,6 +87,21 @@ var JGMAP = (function(google, $) {
 			});
 		});
 	};
+
+	var renderInfowindow = function(data) {
+		content = "<div>";
+
+		data.forEach(function(jValue, jKey) {
+			content += "<span>" + jValue.name + jValue.title + "</span>" +
+				"<p></p>" +
+				"<span>" + jValue.sal_month_low + "~" + jValue.sal_month_high +
+				"</span><p></p>";
+		});
+
+		content += "</div>";
+		return content;
+	};
+
 
 	var addJobMarkerWithTimeout = function(data, myLatlng, timeout) {
 		window.setTimeout(function() {
