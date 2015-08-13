@@ -1,16 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Nobile:700,400);
-html, body, div, span, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-abbr, address, cite, code,
-del, dfn, em, img, ins, kbd, q, samp,
-small, strong, sub, sup, var,
-b, i,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section, summary,
-time, mark, audio, video {
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -22,7 +11,7 @@ time, mark, audio, video {
 
 html, body {
   height: 100%;
-  font-family: 'Nobile', arial, serif,"Microsoft JhengHei","新細明體", "PMingLiU", Helvetica,Lucida Grande,san-serif, Arial;
+  font-family: "Nobile", arial, serif, "Microsoft JhengHei", "新細明體", "PMingLiU", Helvetica, Lucida Grande, san-serif, Arial;
 }
 
 * {
@@ -36,8 +25,7 @@ body {
   line-height: 1;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
@@ -49,9 +37,13 @@ blockquote, q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after,
+blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
 q:before, q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -65,14 +57,14 @@ a {
 }
 
 ins {
-  background-color: #ff9;
-  color: #000;
+  background-color: #ffff99;
+  color: black;
   text-decoration: none;
 }
 
 mark {
-  background-color: #ff9;
-  color: #000;
+  background-color: #ffff99;
+  color: black;
   font-style: italic;
   font-weight: bold;
 }
@@ -108,11 +100,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
-::-webkit-search-cancel-button {
-  display: none;
-}
-
-.hide {
+::-webkit-search-cancel-button, .hide {
   display: none;
 }
 
@@ -122,9 +110,9 @@ body {
   background-repeat: repeat;
   min-width: 300px;
   overflow-x: hidden;
-  color: #333;
+  color: #333333;
   font-size: 100%;
-  font-family: "Nobile","Microsoft YaHei","Microsoft JhengHei","Apple LiGothic Medium","PMingLiU",sans-serif,​Helvetica,​Heiti,'Open Sans';
+  font-family: "Nobile", "Microsoft YaHei", "Microsoft JhengHei", "Apple LiGothic Medium";
 }
 
 img {
@@ -137,23 +125,8 @@ button {
   cursor: pointer;
 }
 
-::-webkit-input-placeholder {
-  color: #eee;
-  letter-spacing: 1px;
-}
-
-:-moz-placeholder {
-  color: #eee;
-  letter-spacing: 1px;
-}
-
-::-moz-placeholder {
-  color: #eee;
-  letter-spacing: 1px;
-}
-
-:-ms-input-placeholder {
-  color: #eee;
+::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder {
+  color: #eeeeee;
   letter-spacing: 1px;
 }
 
@@ -164,7 +137,7 @@ button {
 
 .header h1 {
   margin-top: 20px;
-  color: #fff;
+  color: white;
   font-weight: 700;
   font-size: 1.8em;
   font-style: italic;
@@ -180,10 +153,11 @@ button {
 }
 .jobtable th, .jobtable td {
   padding: 8px 5px;
-  color: #eee;
+  color: #eeeeee;
   text-align: center;
-  font-size: .9em;
+  font-size: 0.9em;
   line-height: 1.4;
+  vertical-align: middle;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #555555), color-stop(100%, #444444));
   background-image: -webkit-linear-gradient(#555555, #444444);
   background-image: -moz-linear-gradient(#555555, #444444);
@@ -192,10 +166,10 @@ button {
   -webkit-box-shadow: #333333 1px 1px 5px;
   -moz-box-shadow: #333333 1px 1px 5px;
   box-shadow: #333333 1px 1px 5px;
-  vertical-align: middle;
 }
 .jobtable thead th {
-  color: #fff;
+  padding: 5px 10px;
+  color: white;
   font-weight: 500;
   white-space: nowrap;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9b84a), color-stop(100%, #f9892c));
@@ -203,35 +177,56 @@ button {
   background-image: -moz-linear-gradient(#f9b84a, #f9892c);
   background-image: -o-linear-gradient(#f9b84a, #f9892c);
   background-image: linear-gradient(#f9b84a, #f9892c);
+  text-shadow: rgba(51, 51, 51, 0.2) 1px 2px 0;
 }
 .jobtable .fixword {
-  margin: 0 auto;
+  width: 300px;
+  padding: 0 10px;
   word-break: break-word;
   word-wrap: break-word;
 }
 .jobtable .table-sort {
-  color: #fff;
+  color: white;
   background: none;
   padding: 3px;
   position: relative;
   bottom: 2px;
 }
 .jobtable .btn-detail {
-  color: #fff;
-  -webkit-background-clip: padding-box;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ff9547;
+  line-height: 26px;
+  -webkit-background-clip: padding;
   -moz-background-clip: padding;
   background-clip: padding-box;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ff9547;
+}
+.jobtable .btn-detail:hover {
+  color: #47f6ff;
+  border: 1px solid #47f6ff;
+  -webkit-transition-property: border, color;
+  -moz-transition-property: border, color;
+  -o-transition-property: border, color;
+  transition-property: border, color;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-in;
+  -moz-transition-timing-function: ease-in;
+  -o-transition-timing-function: ease-in;
+  transition-timing-function: ease-in;
 }
 
 .job-detail > td {
   padding: 0;
-  background: #111;
+  background: #111111;
   -webkit-box-shadow: inset #111111 0 1px 5px;
   -moz-box-shadow: inset #111111 0 1px 5px;
   box-shadow: inset #111111 0 1px 5px;
@@ -257,17 +252,17 @@ button {
   vertical-align: middle;
   color: white;
   text-align: center;
-  font-size: .8em;
+  font-size: 0.8em;
   background-color: rgba(51, 51, 51, 0.5);
 }
 .pagenavi li a {
   display: block;
-  color: #fff;
+  color: white;
   padding: 8px 13px;
   cursor: pointer;
 }
 .pagenavi li:hover {
-  background-color: #333;
+  background-color: #333333;
 }
 .pagenavi li.active {
   -webkit-box-shadow: #ff9547 0 0 10px;
