@@ -43,9 +43,7 @@ var JGMAP = (function(google, $) {
 			zoom: 16
 		};
 
-		map = new google.maps.Map(document.getElementById(
-				'map-canvas'),
-			mapOptions);
+		map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 		markJob(map);
 	}
 
@@ -68,13 +66,14 @@ var JGMAP = (function(google, $) {
 					map: map,
 					title: jobValue.name,
 					size: new google.maps.Size(71, 71)
+
 				});
 
 				// console.log(jobKey * 200);
 				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
 
 				var infowindow = new google.maps.InfoWindow({
-					maxWidth: 200,
+					maxWidth: 300,
 					content: renderInfowindow(jobValue.jobs)
 				});
 
@@ -88,20 +87,22 @@ var JGMAP = (function(google, $) {
 	};
 
 	var renderInfowindow = function(data) {
-		content = "<div>";
+		content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>" ;
 
 		data.forEach(function(jValue, jKey) {
-			content += "<span>" + jValue.name + jValue.title + "</span>" +
-				"<p></p>" +
-				"<span>" + jValue.sal_month_low + "~" + jValue.sal_month_high +
-				"</span><p></p>";
+			content += 
+				"<div class='g-block'>" +
+				"<div class='g-name'>" + jValue.name + "</div>" +
+				"<div class='g-title'>" + jValue.title + "</div>" +
+				"<div class='g-phone'>" + "<i class='fa fa-phone'></i> 0912345678" + "</div>" +
+				"<div class='g-salary'>" + jValue.sal_month_low + "~" + jValue.sal_month_high + "</div>" +
+				"</div>";
 		});
 
 		content += "</div>";
 		return content;
 	};
-
-
+	
 	var addJobMarkerWithTimeout = function(data, myLatlng, timeout) {
 		window.setTimeout(function() {
 			markers.push(new google.maps.Marker({
