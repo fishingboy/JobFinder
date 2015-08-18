@@ -1,4 +1,5 @@
 <form method='GET'>
+    <input type='hidden' name='companyID' value='{{ $companyID or '' }}'>
     <input type='hidden' name='page' value='{{ $curr_page }}'>
     <input type='hidden' name='page_size' value='{{ $page_size }}'>
     @foreach($orderby as $key => $value)

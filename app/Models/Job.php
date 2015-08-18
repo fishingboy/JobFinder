@@ -198,7 +198,7 @@ class Job extends Model
                  ->get();
 
             $job_rows = self::_convert_row_data($job_rows);
-            $row->jobs = $job_rows;
+            $row->companies = self::_group_company_data($job_rows);
         }
 
         return [
@@ -228,5 +228,65 @@ class Job extends Model
             $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
         }
         return $rows;
+    }
+
+    /**
+     * group 公司資訊
+     */
+    private static function _group_company_data($rows)
+    {
+        $companies = [];
+        foreach ($rows as $row)
+        {
+            $data = self::_split_row_data($row);
+            if ( ! isset($companies[$row->companyID]))
+            {
+                $companies[$row->companyID] = $data['company'];
+                $companies[$row->companyID]->job_count = 1;
+                $companies[$row->companyID]->jobs[] = $data['job'];
+            }
+            else
+            {
+                $companies[$row->companyID]->job_count++;
+                $companies[$row->companyID]->jobs[] = $data['job'];
+            }
+        }
+        return array_values($companies);
+    }
+
+    /**
+     * 切割公司及工作資訊
+     * @param  array $row 工作及公司資訊
+     * @return array      切割完畢的工作及公司資訊
+     */
+    private static function _split_row_data($row = '')
+    {
+        $company = $job = [];
+        $company_flag = 0;
+        foreach ($row as $key => $value)
+        {
+            if ($key == 'c_code')
+            {
+                $company_flag = 1;
+            }
+
+            if ($key == 'companyID')
+            {
+                $company[$key] = $value;
+            }
+            else if ( ! $company_flag || $key == 'pay')
+            {
+                $job[$key] = $value;
+            }
+            else
+            {
+                $company[$key] = $value;
+            }
+        }
+
+        return [
+            'company' => (object) $company,
+            'job'     => (object) $job
+        ];
     }
 }
