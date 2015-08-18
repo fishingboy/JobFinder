@@ -75,7 +75,7 @@ var JGMAP = (function(google, $) {
 
 
 				var infowindow = new google.maps.InfoWindow({
-					maxWidth: 300,
+					maxWidth: 210,
 					content: renderInfowindow(jobValue.jobs)
 				});
 
@@ -119,7 +119,7 @@ var JGMAP = (function(google, $) {
 				"<div class='g-block'>" +
 				"<div class='g-name'>" + jValue.name + "</div>" +
 				"<div class='g-title'>" + jValue.title + "</div>" +
-				"<div class='g-phone'>" + "<i class='fa fa-phone'></i> 0912345678" +
+				"<div class='g-phone'>" + "<i class='fa fa-phone'></i>(039)0912345678" +
 				"</div>" +
 				"<div class='g-salary'>" + jValue.sal_month_low + "~" + jValue.sal_month_high +
 				"</div>" +
