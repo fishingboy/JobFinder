@@ -43,7 +43,7 @@ var JGMAP = (function(google, $) {
 			zoom: 16
 		};
 
-		map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 		markJob(map);
 	}
 
@@ -72,10 +72,41 @@ var JGMAP = (function(google, $) {
 				// console.log(jobKey * 200);
 				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
 
+
+
 				var infowindow = new google.maps.InfoWindow({
 					maxWidth: 300,
 					content: renderInfowindow(jobValue.jobs)
 				});
+
+
+				google.maps.event.addListener(infowindow, 'domready', function() {
+					// Reference to the DIV that wraps the bottom of infowindow
+					var iwOuter = $('.gm-style-iw');
+
+					/* Since this div is in a position prior to .gm-div style-iw.
+					 * We use jQuery and create a iwBackground variable,
+					 * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+					 */
+					var iwBackground = iwOuter.prev();
+
+					// Removes background shadow DIV
+					iwBackground.children(':nth-child(2)').css({
+						'display': 'none'
+					});
+
+					// Removes white background DIV
+					iwBackground.children(':nth-child(4)').css({
+						'display': 'none'
+					});
+					iwBackground.children(':nth-child(1)').css({
+						'top': '304px'
+					});
+					iwBackground.children(':nth-child(3)').css({
+						'top': '304px'
+					});
+				});
+
 
 				google.maps.event.addListener(marker, 'click', function() {
 					// map.setZoom(20);
@@ -87,22 +118,23 @@ var JGMAP = (function(google, $) {
 	};
 
 	var renderInfowindow = function(data) {
-		content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>" ;
+		content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>";
 
 		data.forEach(function(jValue, jKey) {
-			content += 
+			content +=
 				"<div class='g-block'>" +
 				"<div class='g-name'>" + jValue.name + "</div>" +
 				"<div class='g-title'>" + jValue.title + "</div>" +
-				"<div class='g-phone'>" + "<i class='fa fa-phone'></i> 0912345678" + "</div>" +
-				"<div class='g-salary'>" + jValue.sal_month_low + "~" + jValue.sal_month_high + "</div>" +
+				"<div class='g-phone'>" + "<i class='fa fa-phone'></i> 0912345678" +
+				"</div>" +
+				"<div class='g-salary'>" + jValue.sal_month_low + "~" + jValue.sal_month_high +
+				"</div>" +
 				"</div>";
 		});
-
 		content += "</div>";
 		return content;
 	};
-	
+
 	var addJobMarkerWithTimeout = function(data, myLatlng, timeout) {
 		window.setTimeout(function() {
 			markers.push(new google.maps.Marker({
