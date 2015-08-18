@@ -99,12 +99,6 @@ var JGMAP = (function(google, $) {
 					iwBackground.children(':nth-child(4)').css({
 						'display': 'none'
 					});
-					iwBackground.children(':nth-child(1)').css({
-						'top': '304px'
-					});
-					iwBackground.children(':nth-child(3)').css({
-						'top': '304px'
-					});
 				});
 
 
