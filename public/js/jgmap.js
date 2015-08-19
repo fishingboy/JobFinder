@@ -53,7 +53,7 @@ var JGMAP = (function(google, $) {
 			url: "/job/position",
 			dataType: "json",
 			data: {
-				page_size: 500
+				page_size: 100
 			}
 		}).done(function(res) {
 
@@ -64,20 +64,16 @@ var JGMAP = (function(google, $) {
 				var marker = new google.maps.Marker({
 					position: myLatlng,
 					map: map,
-					title: jobValue.name,
-					size: new google.maps.Size(71, 71)
-
+					title: jobValue.name
 				});
+
+                var infowindow = new google.maps.InfoWindow({
+                    maxWidth: 210,
+                    content: renderInfowindow(jobValue.companies)
+                });
 
 				// console.log(jobKey * 200);
 				// addJobMarkerWithTimeout(jobValue, myLatlng, jobKey * 200);
-
-
-
-				var infowindow = new google.maps.InfoWindow({
-					maxWidth: 210,
-					content: renderInfowindow(jobValue.jobs)
-				});
 
 
 				google.maps.event.addListener(infowindow, 'domready', function() {
@@ -101,7 +97,6 @@ var JGMAP = (function(google, $) {
 					});
 				});
 
-
 				google.maps.event.addListener(marker, 'click', function() {
 					// map.setZoom(20);
 					map.setCenter(marker.getPosition());
@@ -112,18 +107,21 @@ var JGMAP = (function(google, $) {
 	};
 
 	var renderInfowindow = function(data) {
-		content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>";
+		var content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>";
 
-		data.forEach(function(jValue, jKey) {
-			content +=
-				"<div class='g-block'>" +
-				"<div class='g-name'>" + jValue.name + "</div>" +
-				"<div class='g-title'>" + jValue.title + "</div>" +
-				"<div class='g-phone'>" + "<i class='fa fa-phone'></i>(039)0912345678" +
-				"</div>" +
-				"<div class='g-salary'>" + jValue.sal_month_low + "~" + jValue.sal_month_high +
-				"</div>" +
-				"</div>";
+		data.forEach(function(cValue, cKey) {
+			content += "<div class='g-name'>" + cValue.name + "</div>";
+
+			cValue.jobs.forEach(function(jValue,jKey){
+				content +=
+					"<div class='g-block'>" +
+					"<div class='g-title'>" + jValue.title + "</div>" +
+					//"<div class='g-phone'>" + "<i class='fa fa-phone'></i>(039)0912345678" +
+					//"</div>" +
+					"<div class='g-salary'>" + jValue.pay +
+					"</div>" +
+					"</div>";
+			});
 		});
 		content += "</div>";
 		return content;
