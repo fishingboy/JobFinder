@@ -1,7 +1,8 @@
 var JGMAP = (function(google, $) {
-	var myLocation = {};
-	var map = {};
-	var markers = [];
+
+	var myLocation = {},
+	map = {},
+	markers = [];
 
 	var myStorage = localStorage;
 
@@ -36,6 +37,8 @@ var JGMAP = (function(google, $) {
 
 	};
 
+
+    //初始化 google map
 	function initGMap(myLocation) {
 
 		var mapOptions = {
@@ -47,6 +50,7 @@ var JGMAP = (function(google, $) {
 		markJob(map);
 	}
 
+    //呼叫api 在地圖上加上marker
 	var markJob = function() {
 		$.ajax({
 			method: "GET",
@@ -106,6 +110,7 @@ var JGMAP = (function(google, $) {
 		});
 	};
 
+    //產出Infowindow畫面
 	var renderInfowindow = function(data) {
 		var content = "<div class='info'>" + "<div class='g-top'>Jobfinder</div>";
 
@@ -138,6 +143,7 @@ var JGMAP = (function(google, $) {
 		}, timeout);
 	};
 
+    /* 產生台北捷運Selector */
 	var buildTaipeiMrtSelector = function() {
 		var source = $("#mrt-template").html();
 		var template = Handlebars.compile(source);
@@ -145,6 +151,7 @@ var JGMAP = (function(google, $) {
 		$("#mrtContainer").append(html);
 	};
 
+    //綁定捷運selector event 點選後 googlemap 移動至該座標中心
 	var bindMrtSelector = function(obj) {
 		$(obj).change(function() {
 			var latLng = $(this).val().split(",");
@@ -160,6 +167,7 @@ var JGMAP = (function(google, $) {
 		buildTaipeiMrtSelector: buildTaipeiMrtSelector,
 		bindMrtSelector: bindMrtSelector
 	};
+
 }(google, $));
 
 
