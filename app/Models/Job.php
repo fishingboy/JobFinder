@@ -147,11 +147,26 @@ class Job extends Model
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
         $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
 
+
+
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
-                 ->groupBy('job.lat', 'job.lon')
-                 ->select(DB::raw('job.lat, job.lon, COUNT(*) AS job_count'));
-                 // ->select('count(*)', 'job.lat', 'job.lon', 'company.*');
+                 ->groupBy('job.lat', 'job.lon');
+
+        // 計算距離
+        if (isset($param['lat']) && $param['lat'] && isset($param['lon']) && $param['lon'])
+        {
+            $far_value = $param['lat'] * $param['lat'] + $param['lat'] * $param['lat'];
+            $obj->select(DB::raw("job.lat,
+                                  job.lon,
+                                  COUNT(*) AS job_count,
+                                  SQRT(ABS(job.lat * job.lat + job.lon * job.lon - {$far_value})) as far"));
+        }
+        else
+        {
+            $obj->select(DB::raw('job.lat, job.lon, COUNT(*) AS job_count'));
+        }
+
 
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
@@ -174,7 +189,13 @@ class Job extends Model
             $obj->where('job.companyID', $companyID);
         }
 
-        // 排序
+        // 距離排序
+        if (isset($param['lat']) && $param['lat'] && isset($param['lon']) && $param['lon'])
+        {
+            $obj->orderBy('far', 'asc');
+        }
+
+        // 參數排序
         if (isset($param['orderby']))
         {
             foreach ($param['orderby'] as $key => $asc)

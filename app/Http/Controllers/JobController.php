@@ -25,7 +25,9 @@ class JobController extends Controller
         'page',
         'companyID',
         'orderby',
-        'keyword'
+        'keyword',
+        'lat',
+        'lon'
     ];
 
     /**
