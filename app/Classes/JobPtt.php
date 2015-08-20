@@ -31,7 +31,7 @@ class JobPtt extends JobBase
     
     public $_total_page = 0;
     
-    private $_limit = 55;
+    private $_limit = 50;
 
     /**
      * 從來源更新資料庫
@@ -39,13 +39,13 @@ class JobPtt extends JobBase
     public function update($condition = [])
     {
     	//先抓第一頁
-    	if ($this->_clawer_first_page())
+    	if ($this->clawer_first_page())
     	{
     		//有頁數後開始往後抓
-    		$this->_clawer_prev_job();
+    		$this->clawer_prev_job();
     		
     		//開始抓單頁的資料
-    		$this->_clawer_job_page();
+    		$this->clawer_job_page();
     		
     	}
     	
@@ -57,7 +57,7 @@ class JobPtt extends JobBase
      * 
      * @param unknown $param
      */
-    private function _clawer_first_page()
+    protected function clawer_first_page()
     {
     	$result = Curl::get_response($this->_ptt_url);
     	
@@ -68,9 +68,9 @@ class JobPtt extends JobBase
     	
     	$this->_content = $result['data'];
     		
-    	$this->_total_page = $this->_find_page_btn($this->_content);
+    	$this->_total_page = $this->_find_list_page_btn($this->_content);
     		
-    	$this->_find_job_title($this->_content);
+    	$this->_find_list_title($this->_content);
     		
     	return TRUE;
     	
@@ -82,7 +82,7 @@ class JobPtt extends JobBase
      *
      * @param unknown $param
      */
-    private function _clawer_prev_job()
+    protected function clawer_prev_job()
     {
     	$limit = $this->_total_page - $this->_limit; 
     	
@@ -100,14 +100,64 @@ class JobPtt extends JobBase
     		
 	    	$this->_content = $result['data'];
 	    	
-	    	$this->_find_job_title($this->_content);
+	    	$this->_find_list_title($this->_content);
 	    	
 	    	
     	}
     }
     
+    protected function clawer_job_page()
+    {
+    	if (count($this->_ptt_list_url) == 0 )
+    	{
+    		return FALSE;
     
-    private function _find_job_title($content = "")
+    	}
+    	 
+    	foreach ($this->_ptt_list_url as  $num =>  $url)
+    	{
+    		$result = Curl::get_response($url);
+    
+    		if (!$result['status'])
+    		{
+    			echo "取不到該筆資料 ". $url;
+    			continue;
+    		}
+    
+    		$content = $this->_exchage_content_format($result['data']);
+    
+    		//整理格式後寫到 DB
+    		$job_data['title']        = $this->_find_job_title($content);
+    		
+    		if (NULL == $job_data['title'])
+    		{
+    			echo "該筆抓不到 title " . $url; 
+    			continue;
+    		}
+     		$job_data['description']  = $this->_find_job_description($content);
+     		$job_data['source_url']   = $url;
+			$job_data['source']       = 'ptt';
+			$job_data['j_code']       = $this->_gen_j_code($job_data['title']);
+			$job_data['post_date']    = $this->_find_postdate($content);
+			var_dump($job_data);
+			$jobID = Job::insert($job_data);
+     		
+    	}
+    	
+    	exit("為了畢免跑到 view 發生錯誤訊息，先在這裡中斷了");
+    	
+    	
+    	 
+    }
+    
+    private function _gen_j_code ($str)
+    {
+    	$num = 0;
+    	return $hash_str = md5($str);
+    }
+    
+    
+    private function _find_list_title($content = "")
     {
     	$patten = '/.*\<a\ href="\/bbs\/Soft_Job\/(.*).html\"\>\[徵才\]\ (.*)\<\/a\>.*/';
     	
@@ -121,7 +171,7 @@ class JobPtt extends JobBase
     	
     }
     
-    private function _find_page_btn($content = "")
+    private function _find_list_page_btn($content = "")
     {
     	
     	$patten = '/.*href=\"\/bbs\/Soft_Job\/index(\d+).html">\&lsaquo\; 上頁<\/a>.*/';
@@ -133,41 +183,66 @@ class JobPtt extends JobBase
     	
     	return (int) $match[1];
     	
-    	
     }
     
-    
-    private function _clawer_job_page()
+    private function _find_postdate($content = "")
     {
-    	if (count($this->_ptt_list_url) == 0 )
-    	{
-    		return FALSE;
-    		
-    	}
+    	$patten = '/.*\<span\ class=\"article\-meta\-tag\">時間<\/span><span\ class=\"article-meta-value\">(.*)<\/span><\/div>.*/';
     	
-    	foreach ($this->_ptt_list_url as $url)
+    	if (!preg_match($patten, $content, $match))
     	{
-    		$result = Curl::get_response($url);
-    		
-    		if (!$result['status'])
-    		{
-    			continue;
-    		}
-    		
-    		//整理格式後寫到 DB
-    		$job['title']        = "";
-    		$job['content']      = "";
-    		$job['company_name'] = "";
-    		$job['location']     = "";
-    		$job['work_time']    = "";
-    		$job['contract']     = "";
-    		$job['other']        = "";
-    		
-    		
+    		return NULL;
     	}
+    	$match[1] = str_replace('：', ':', $match[1]);
     	
+    	$post_date = date("Y-m-d H:i:s", strtotime($match[1]));
+    	
+    	return  $post_date;
     }
+    
+    private function _exchage_content_format($content)
+    {
+    	$patten[] = "/\:/";
+    	$patten[] = "/\】/";
+    	$patten[] = "/》/";
+    	return preg_replace("/\:/","：", $content);
+    }
+    
+    private function _find_job_title($content)
+    {
+    	
+    	$patten = '/\[徵才\]\ (.*)\ \-\ 看板\ Soft_Job/';
 
+    	
+    	if (!preg_match($patten, strip_tags($content), $match))
+    	{
+    		return NULL;
+    	}
+    	$title = $match[1];
+    	
+    	return $title;
+    }
+    
+    
+    private function _find_job_description($content)
+    {
+    	
+    	$content = preg_replace('/\s(?=\s)/', '', $content);
+    	$content = preg_replace('/[\n\r\t]/', ' ', $content);
+    	
+    	$patten = '/<span class=\"article\-meta-value\">.*<\/span><\/div>(.*)\<span\ class\=\"f2\"\>.*發信站.*/';
+    	
+    	
+    	if (!preg_match($patten, $content, $match))
+    	{
+    		return NULL;
+    	}
+    	
+    	$descript = strip_tags($match[1]);
+    	 
+    	return $descript;
+    }
+    
     /**
      * 搜尋
      */
