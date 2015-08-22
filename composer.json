@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "sunra/php-simple-html-dom-parser": "v1.5.0",
          "firephp/firephp-core" : "dev-master",
-         "doctrine/dbal": "~2.3"
+         "doctrine/dbal": "~2.3",
+         "laravelcollective/html": "5.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
