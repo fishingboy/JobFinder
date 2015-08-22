@@ -141,6 +141,7 @@ class Job extends Model
      */
     public static function position($param = [])
     {
+        DB::enableQueryLog();
         Debug::fblog('Models\Job.param', $param);
 
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
@@ -156,11 +157,13 @@ class Job extends Model
         // 計算距離
         if (isset($param['lat']) && $param['lat'] && isset($param['lon']) && $param['lon'])
         {
-            $far_value = $param['lat'] * $param['lat'] + $param['lat'] * $param['lat'];
             $obj->select(DB::raw("job.lat,
                                   job.lon,
                                   COUNT(*) AS job_count,
-                                  SQRT(ABS(job.lat * job.lat + job.lon * job.lon - {$far_value})) as far"));
+                                  SQRT(
+                                        pow(job.lat - {$param['lat']}, 2) +
+                                        pow(job.lon - {$param['lon']}, 2)
+                                      ) AS far"));
         }
         else
         {
@@ -208,6 +211,12 @@ class Job extends Model
         $rows       = $obj->get();
         $total_page = ceil($count / $page_size);
 
+        $queries = DB::getQueryLog();
+        $last_query = end($queries);
+
+        // 顯示 sql
+        Debug::fblog('$last_query', $queries);
+
         /* 取得工作資料 */
         foreach ($rows as $key => $row)
         {
@@ -221,6 +230,8 @@ class Job extends Model
             $job_rows = self::_convert_row_data($job_rows);
             $row->companies = self::_group_company_data($job_rows);
         }
+
+
 
         return [
             'companyID'  => $companyID,
