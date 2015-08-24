@@ -1,10 +1,12 @@
 var urlParams = JOBFINDER.getUrlParams(),
 	orderby = JOBFINDER.getOrderBy(),
 	options = {
-		apiUrl: '/job/',
+		apiUrl: '/job',
+		source: urlParams.source,
 		page: urlParams.page,
 		page_size: 50,
-		orderby: orderby
+		orderby: orderby,
+		
 	};
 
 $(function() {

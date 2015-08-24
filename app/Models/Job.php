@@ -129,7 +129,7 @@ class Job extends Model
 
         
 //         $queries = DB::getQueryLog();
-//         dd($obj->toSql());
+//        dd($obj->toSql());
         
 //         dd($queries);
         

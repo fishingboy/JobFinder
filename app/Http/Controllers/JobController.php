@@ -67,7 +67,7 @@ class JobController extends Controller
      * @param  string  $format  回應格式
      * @return Response
      */
-    public function get(Request $request, $format = 'json', $source = '104')
+    public function get(Request $request, $format = 'json')
     {
         // 查詢參數(先寫死)
         $search_param = $this->_get_param($request);
