@@ -1,16 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Services\MrtService;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Library\Curl;
 use App\Library\Lib;
-use App\Library\GoogleGeocoding;
 use App\Models\Company;
-
-use App\Classes\TaipeiMrtCrawler;
 use App\Classes\Crawler104;
 
 /**
@@ -102,25 +100,27 @@ class CrawlerController extends Controller
         return view('update_company_report', $view_data);
     }
 
-    public function getMrt()
+    public function getMrt(MrtService $mrtService)
     {
-        set_time_limit(900);
-        $mrtCrawler = new TaipeiMrtCrawler();
-
+//        set_time_limit(900);
+//        $mrtCrawler = new TaipeiMrtCrawler();
+//
 //        $stations = $mrtCrawler->startCraw();
-        $stations = $this->getMrtDummyData();
-
-        $geo = new GoogleGeocoding();
-
-        foreach ($stations as $index => $stop)
-        {
-            $location = $geo->addressToGeocode($stop["address"]);
-            $stations[$index]["lat"] = $location["lat"];
-            $stations[$index]["lng"] = $location["lng"];
-        }
-        echo "<PRE>";
-        var_dump($stations);
-        echo "</PRE>";
+//
+//        exit();
+////        $stations = $this->getMrtDummyData();
+//
+//        $geo = new GoogleGeocoding();
+//
+//        foreach ($stations as $index => $stop)
+//        {
+//            $location = $geo->addressToGeocode($stop["address"]);
+//            $stations[$index]["lat"] = $location["lat"];
+//            $stations[$index]["lng"] = $location["lng"];
+//        }
+//        echo "<PRE>";
+//        var_dump($stations);
+//        echo "</PRE>";
     }
 
     public function getMrtDummyData()
