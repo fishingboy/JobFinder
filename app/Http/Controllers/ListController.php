@@ -10,9 +10,17 @@ use App\Http\Controllers\Controller;
 
 class ListController extends Controller
 {
-	public function listJob()
+	public function listJob($args = '104')
 	{
-		return view('lists/job');
+		if ($args == '104')
+		{
+			return view('lists/job');
+		
+		}
+		else 
+		{
+			return view('lists/job_ptt');
+		}
 	}
 
 	public function listCompany()

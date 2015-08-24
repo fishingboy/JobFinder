@@ -24,7 +24,8 @@ class JobController extends Controller
         'page',
         'companyID',
         'orderby',
-        'keyword'
+        'keyword',
+    	'source'
     ];
 
     /**
@@ -44,7 +45,8 @@ class JobController extends Controller
                 'sal_month_low'        => 'DESC',
                 'period'               => 'DESC',
                 'job_addr_no_descript' => 'ASC',
-            ]
+            ],
+        	
         ];
 
         // 取得參數
@@ -56,7 +58,6 @@ class JobController extends Controller
                 $search_param[$field] = $value;
             }
         }
-
         return $search_param;
     }
 
@@ -66,7 +67,7 @@ class JobController extends Controller
      * @param  string  $format  回應格式
      * @return Response
      */
-    public function get(Request $request, $format = 'json')
+    public function get(Request $request, $format = 'json', $source = '104')
     {
         // 查詢參數(先寫死)
         $search_param = $this->_get_param($request);

@@ -4,6 +4,7 @@ namespace App\Classes;
 use App\Classes\JobBase;
 use App\Library\Curl;
 use App\Models\Job;
+use App\Models\Company;
 
 /**
 * Job PTT
@@ -124,7 +125,7 @@ class JobPtt extends JobBase
     			continue;
     		}
     
-    		$content = $this->_exchage_content_format($result['data']);
+    		$content = $result['data'];
     
     		//整理格式後寫到 DB
     		$job_data['title']        = $this->_find_job_title($content);
@@ -134,13 +135,22 @@ class JobPtt extends JobBase
     			echo "該筆抓不到 title " . $url; 
     			continue;
     		}
-     		$job_data['description']  = $this->_find_job_description($content);
-     		$job_data['source_url']   = $url;
-			$job_data['source']       = 'ptt';
-			$job_data['j_code']       = $this->_gen_j_code($job_data['title']);
-			$job_data['post_date']    = $this->_find_postdate($content);
-			var_dump($job_data);
-			$jobID = Job::insert($job_data);
+    		$company_data['name']   = $this->_find_company_name($content);
+    		$company_data['c_code'] = $this->_gen_hash_code($company_data['name']);
+    		
+    		$companyID = Company::insert($company_data);
+    		
+    		if ($companyID)
+    		{
+	     		$job_data['description']  = $this->_find_job_description($content);
+	     		$job_data['source_url']   = $url;
+				$job_data['source']       = 'ptt';
+				$job_data['j_code']       = $this->_gen_hash_code($job_data['title']);
+				$job_data['companyID']    = $companyID;
+				$job_data['post_date']    = $this->_find_postdate($content);
+				
+				$jobID = Job::insert($job_data);
+    		}
      		
     	}
     	
@@ -150,12 +160,53 @@ class JobPtt extends JobBase
     	 
     }
     
-    private function _gen_j_code ($str)
+    private function _gen_hash_code ($str)
     {
     	$num = 0;
     	return $hash_str = md5($str);
     }
     
+    private function _find_company_name($content = "")
+    {
+    	$content = $this->_exchage_content_format($content);
+    	
+    	$patten[] = '/(.*有限公司).*/';
+    	$patten[] = '/(.*顧問公司).*/';
+    	$patten[] = '/.*公司名稱：(.*)/';
+    	 
+    	$content = strip_tags($content);
+    	
+    	foreach ($patten as $ptn)
+    	{
+	    	if (preg_match($ptn, $content, $match))
+	    	{
+	    		break;
+	    	}
+	    	
+	    	
+    	}
+    	
+    	if (!isset($match[1]))
+    	{
+    		return "來源 PTT";
+    	}
+    	
+    	
+    	$rep_patten[] = "/【公司名稱：/";
+    	$rep_patten[] = "/公司名稱：/";
+    	$rep_patten[] = "/(【.*：)/";
+    	
+    	$match[1] = trim($match[1]);
+    	$match[1] = preg_replace($rep_patten, '', $match[1]);
+    	
+    	if ($match[1] == "")
+    	{
+    		return "來源 PTT";
+    	}
+    	$title = $match[1];
+    	 
+    	return $title;
+    }
     
     private function _find_list_title($content = "")
     {
@@ -187,6 +238,8 @@ class JobPtt extends JobBase
     
     private function _find_postdate($content = "")
     {
+    	$content = $this->_exchage_content_format($content);
+    	
     	$patten = '/.*\<span\ class=\"article\-meta\-tag\">時間<\/span><span\ class=\"article-meta-value\">(.*)<\/span><\/div>.*/';
     	
     	if (!preg_match($patten, $content, $match))
@@ -205,11 +258,12 @@ class JobPtt extends JobBase
     	$patten[] = "/\:/";
     	$patten[] = "/\】/";
     	$patten[] = "/》/";
-    	return preg_replace("/\:/","：", $content);
+    	return preg_replace($patten,"：", $content);
     }
     
     private function _find_job_title($content)
     {
+    	$content = $this->_exchage_content_format($content);
     	
     	$patten = '/\[徵才\]\ (.*)\ \-\ 看板\ Soft_Job/';
 

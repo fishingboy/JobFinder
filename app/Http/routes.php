@@ -19,6 +19,7 @@ Route::get('/', function(){return view('link');});
 
 // 工作列表
 Route::get('/list', 'ListController@listJob');
+Route::get('/list/{source}', 'ListController@listJob');
 Route::get('/list/company', 'ListController@listCompany');
 
 // 資料更新
