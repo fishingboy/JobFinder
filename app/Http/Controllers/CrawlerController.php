@@ -102,25 +102,7 @@ class CrawlerController extends Controller
 
     public function getMrt(MrtService $mrtService)
     {
-//        set_time_limit(900);
-//        $mrtCrawler = new TaipeiMrtCrawler();
-//
-//        $stations = $mrtCrawler->startCraw();
-//
-//        exit();
-////        $stations = $this->getMrtDummyData();
-//
-//        $geo = new GoogleGeocoding();
-//
-//        foreach ($stations as $index => $stop)
-//        {
-//            $location = $geo->addressToGeocode($stop["address"]);
-//            $stations[$index]["lat"] = $location["lat"];
-//            $stations[$index]["lng"] = $location["lng"];
-//        }
-//        echo "<PRE>";
-//        var_dump($stations);
-//        echo "</PRE>";
+        $mrtService->getLocationWithGeo();
     }
 
     public function getMrtDummyData()
