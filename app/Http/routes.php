@@ -31,6 +31,7 @@ Route::get('/old_list/{source}', 'UpdateController@index');
 Route::get('/crawler/company/get/{companyID}', 'CrawlerController@get_company');
 Route::get('/crawler/company/get', 'CrawlerController@get_company');
 Route::get('/crawler/company/update', 'CrawlerController@update_company');
+Route::get('/crawler/mrt', 'CrawlerController@getMrt');
 
 // API
 // job
@@ -70,3 +71,5 @@ Route::get('/clear_readed', 'ToolController@clear_readed');
 
 // test
 Route::get('/plugin/firephp', 'PluginController@firephp');
+
+Route::resource('mrt', 'MrtController', ['only' => 'index']);
