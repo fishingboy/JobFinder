@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Services\MrtService;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,6 +9,9 @@ use App\Library\Curl;
 use App\Library\Lib;
 use App\Models\Company;
 use App\Classes\Crawler104;
+
+use App\Services\MrtService;
+use App\Repositories\MrtRepository;
 
 /**
  * 爬蟲
