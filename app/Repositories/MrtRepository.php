@@ -23,4 +23,27 @@ class MrtRepository extends EloquentRepository
     {
         $this->model = $model;
     }
+
+    public function getGroupLineStations()
+    {
+        $data = $this->getAll();
+
+        foreach($data as $station)
+        {
+            $result[$station->line][]  =
+            [
+                "uid" => $station->uid,
+                "name" => $station->name,
+                "area" => $station->area,
+                "lat" => $station->lat,
+                "lng" => $station->lng,
+                "address" => $station->address,
+            ];
+        }
+
+        return $result;
+//        echo "<PRE>";
+//        var_dump($result);
+//        echo "</PRE>";
+    }
 }
