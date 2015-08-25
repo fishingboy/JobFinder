@@ -108,12 +108,13 @@ JOBFINDER.companyList.renderView = function(data) {
 /*建立分頁元素*/
 JOBFINDER.pagination.createPager = function(options) {
 	// var settings = options || {};
+	console.log(options);
 	var settings = $.extend({
 		pagination: [],
 
 	}, options || {});
 	var pageRange = pagination.pageRangeCalculate(settings);
-
+	
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
 		settings.pagination.push(page);
 	}
@@ -136,7 +137,7 @@ JOBFINDER.pagination.pageRangeCalculate = function(options) {
 		}, options || {}),
 		startPage = settings.currentPage,
 		endPage = settings.totalPage;
-
+console.log(settings);
 	if (settings.currentPage - settings.rangeScope <= 0) {
 		endPage = settings.minPage + (settings.rangeScope * 2);
 		startPage = settings.minPage;
@@ -328,10 +329,9 @@ var getUrlParams = function() {
 		urlParams[decode(match[1])] = decode(match[2]);
 	
 	
-	urlParams['source'] = window.location.pathname.replace('/list/', '');
-	urlParams['source'] = urlParams['source'].replace('/', '');
+	urlParams['source'] = window.location.pathname.replace('list', '');
+	urlParams['source'] = urlParams['source'].replace(/\//g, '');
 	
-	// console.log(urlParams);
 	return urlParams;
 };
 
