@@ -39,4 +39,9 @@ abstract class EloquentRepository implements IEloquentRepository
     {
         return $this->model->find($id);
     }
+
+    public function getNewModel($attributes = [])
+    {
+        return $this->model->newInstance($attributes);
+    }
 }
