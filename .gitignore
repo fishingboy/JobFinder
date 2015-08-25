@@ -3,3 +3,5 @@
 Homestead.yaml
 .env
 /resources/json/condition.json
+resources/assets/bower/
+.idea/
