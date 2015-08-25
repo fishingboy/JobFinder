@@ -1,0 +1,14 @@
+{
+  "name": "JobFinder",
+  "version": "0.0.0",
+  "homepage": "https://github.com/fishingboy/JobFinder",
+  "authors": [
+    "RAIN <rainlay@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "handlebars": "~3.0.3",
+    "jquery": "~2.1.4",
+    "underscore": "~1.8.3"
+  }
+}

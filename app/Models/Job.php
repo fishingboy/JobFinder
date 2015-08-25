@@ -120,16 +120,7 @@ class Job extends Model
         $total_page = ceil($count / $page_size);
 
         /* 轉換資料格式 */
-        foreach ($rows as $key => $row)
-        {
-            // 員人工數
-            $row->employees = Lib::convert_employees($row->employees);
-            // 資本額
-            $row->capital   = Lib::number2capital($row->capital);
-            // 薪資
-            $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
-        }
-
+        $rows = self::_convert_row_data($rows);
 
         return [
             'companyID'  => $companyID,
@@ -150,17 +141,35 @@ class Job extends Model
      */
     public static function position($param = [])
     {
+        DB::enableQueryLog();
         Debug::fblog('Models\Job.param', $param);
 
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
         $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
 
+
+
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
-                 ->groupBy('job.lat', 'job.lat')
-                 ->select(DB::raw('count(*) as job_count, job.lat, job.lon, company.*'));
-                 // ->select('count(*)', 'job.lat', 'job.lon', 'company.*');
+                 ->groupBy('job.lat', 'job.lon');
+
+        // 計算距離
+        if (isset($param['lat']) && $param['lat'] && isset($param['lon']) && $param['lon'])
+        {
+            $obj->select(DB::raw("job.lat,
+                                  job.lon,
+                                  COUNT(*) AS job_count,
+                                  SQRT(
+                                        pow(job.lat - {$param['lat']}, 2) +
+                                        pow(job.lon - {$param['lon']}, 2)
+                                      ) AS far"));
+        }
+        else
+        {
+            $obj->select(DB::raw('job.lat, job.lon, COUNT(*) AS job_count'));
+        }
+
 
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
@@ -183,7 +192,13 @@ class Job extends Model
             $obj->where('job.companyID', $companyID);
         }
 
-        // 排序
+        // 距離排序
+        if (isset($param['lat']) && $param['lat'] && isset($param['lon']) && $param['lon'])
+        {
+            $obj->orderBy('far', 'asc');
+        }
+
+        // 參數排序
         if (isset($param['orderby']))
         {
             foreach ($param['orderby'] as $key => $asc)
@@ -196,6 +211,28 @@ class Job extends Model
         $rows       = $obj->get();
         $total_page = ceil($count / $page_size);
 
+        $queries = DB::getQueryLog();
+        $last_query = end($queries);
+
+        // 顯示 sql
+        Debug::fblog('$last_query', $queries);
+
+        /* 取得工作資料 */
+        foreach ($rows as $key => $row)
+        {
+            $job_rows = DB::table('job')
+                 ->join('company', 'job.companyID', '=', 'company.companyID')
+                 ->where('job.lat', '=', $row->lat)
+                 ->where('job.lon', '=', $row->lon)
+                 ->select('job.*', 'company.*')
+                 ->get();
+
+            $job_rows = self::_convert_row_data($job_rows);
+            $row->companies = self::_group_company_data($job_rows);
+        }
+
+
+
         return [
             'companyID'  => $companyID,
             'count'      => $count,
@@ -205,6 +242,83 @@ class Job extends Model
             'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
             'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
             'rows'       => $rows,
+        ];
+    }
+
+    /**
+     * 轉換 job 資料
+     */
+    private static function _convert_row_data($rows)
+    {
+        foreach ($rows as $key => $row)
+        {
+            // 員人工數
+            $row->employees = Lib::convert_employees($row->employees);
+            // 資本額
+            $row->capital   = Lib::number2capital($row->capital);
+            // 薪資
+            $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
+        }
+        return $rows;
+    }
+
+    /**
+     * group 公司資訊
+     */
+    private static function _group_company_data($rows)
+    {
+        $companies = [];
+        foreach ($rows as $row)
+        {
+            $data = self::_split_row_data($row);
+            if ( ! isset($companies[$row->companyID]))
+            {
+                $companies[$row->companyID] = $data['company'];
+                $companies[$row->companyID]->job_count = 1;
+                $companies[$row->companyID]->jobs[] = $data['job'];
+            }
+            else
+            {
+                $companies[$row->companyID]->job_count++;
+                $companies[$row->companyID]->jobs[] = $data['job'];
+            }
+        }
+        return array_values($companies);
+    }
+
+    /**
+     * 切割公司及工作資訊
+     * @param  array $row 工作及公司資訊
+     * @return array      切割完畢的工作及公司資訊
+     */
+    private static function _split_row_data($row = '')
+    {
+        $company = $job = [];
+        $company_flag = 0;
+        foreach ($row as $key => $value)
+        {
+            if ($key == 'c_code')
+            {
+                $company_flag = 1;
+            }
+
+            if ($key == 'companyID')
+            {
+                $company[$key] = $value;
+            }
+            else if ( ! $company_flag || $key == 'pay')
+            {
+                $job[$key] = $value;
+            }
+            else
+            {
+                $company[$key] = $value;
+            }
+        }
+
+        return [
+            'company' => (object) $company,
+            'job'     => (object) $job
         ];
     }
 }

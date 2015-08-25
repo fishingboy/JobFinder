@@ -16,6 +16,7 @@ Route::get('/welcome', function(){return view('welcome'); });
 
 // 目前的 route 總表，方便測試
 Route::get('/', function(){return view('link');});
+Route::get('/map', function(){return view('gmap/gmap');});
 
 // 工作列表
 Route::get('/list', 'ListController@listJob');

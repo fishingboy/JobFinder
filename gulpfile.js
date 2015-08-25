@@ -15,6 +15,14 @@ elixir(function(mix) {
 	mix.scripts(['jobFinder.js', 'urlParams.js'], 'public/js/jobFinderMain.js');
 });
 
+
+elixir(function(mix) {
+	mix.scripts(['../bower/jquery/dist/jquery.js',
+		'../bower/underscore/underscore.js',
+		'../bower/handlebars/handlebars.js'
+	], 'public/js/vendor.js');
+});
+
 /*
  |--------------------------------------------------------------------------
  |custom set
