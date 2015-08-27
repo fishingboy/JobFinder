@@ -62,6 +62,10 @@ Route::match(['get', 'post'], '/favorite/{format}', 'FavoriteController@get');
 Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 
+//static 統計
+Route::get('/static/update', 'StaticsController@update');
+Route::get('/static/{source}', 'StaticsController@get');
+
 // 轉址器
 Route::get('/go/job/{j_code}', 'GoController@job');
 Route::get('/go/company/{j_code}', 'GoController@company');
