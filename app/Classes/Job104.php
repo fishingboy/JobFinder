@@ -152,6 +152,7 @@ class Job104 extends JobBase
             'ondutytime'           =>  isset($row['ONDUTYTIME']) ? $row['ONDUTYTIME'] : NULL,
             'offduty_time'         =>  isset($row['OFFDUTY_TIME']) ? $row['OFFDUTY_TIME'] : NULL,
             'others'               =>  isset($row['OTHERS']) ? $row['OTHERS'] : NULL,
+        	'source'  			   =>  '104'
         ];
     }
 

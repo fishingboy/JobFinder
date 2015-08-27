@@ -16,8 +16,9 @@
 	<br>
 	<li><a target='_blank' href='/'>首頁</a></li>
 	<br>
-	<li><a target='_blank' href='/list'>104 列表</a></li>
-	<li><a target='_blank' href='/list/company'>104 列表(公司檢視)</a></li>
+	<li><a target='_blank' href='/list'>所有工作列表</a></li>
+	<li><a target='_blank' href='/list/104'>104 列表</a></li>
+	<li><a target='_blank' href='/list/company'>公司檢視( 包括能夠 parse 到 PTT 公司名的)</a></li>
 	<li><a target='_blank' href='/list/ptt'>PTT 列表</a></li>
 	<br>
 	<li><a target='_blank' href='/old_list'>(舊) 104 列表</a></li>

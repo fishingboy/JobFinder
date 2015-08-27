@@ -17,10 +17,12 @@ class ListController extends Controller
 			return view('lists/job');
 		
 		}
-		else 
-		{
-			return view('lists/job_ptt');
-		}
+		
+	}
+	
+	public function listJobPtt($args = 'ptt')
+	{
+		return view('lists/job_ptt');
 	}
 
 	public function listCompany()
