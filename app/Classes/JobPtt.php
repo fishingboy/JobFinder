@@ -147,7 +147,7 @@ class JobPtt extends JobBase
 				$job_data['source']       = 'ptt';
 				$job_data['j_code']       = $this->_gen_hash_code($job_data['title']);
 				$job_data['companyID']    = $companyID;
-				$job_data['post_date']    = $this->_find_postdate($content);
+				$job_data['appear_date']    = $this->_find_postdate($content);
 				
 				$jobID = Job::insert($job_data);
     		}
@@ -248,7 +248,7 @@ class JobPtt extends JobBase
     	}
     	$match[1] = str_replace('：', ':', $match[1]);
     	
-    	$post_date = date("Y-m-d H:i:s", strtotime($match[1]));
+    	$post_date = date("Y-m-d", strtotime($match[1]));
     	
     	return  $post_date;
     }
