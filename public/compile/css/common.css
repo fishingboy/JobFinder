@@ -307,7 +307,6 @@ button {
 }
 
 .info [class^="g-"] {
-  padding: 2px 5px;
   line-height: 1.5;
 }
 
@@ -348,22 +347,31 @@ button {
 }
 
 .g-block {
-  padding: 10px 0 10px 15px !important;
+  padding: 10px 15px;
 }
 .g-block:hover {
   background: #eeeeee;
 }
 
 .g-name {
+  padding: 5px 5px 5px 15px;
   font-weight: 700;
+  background: #fbf2b0;
+  -webkit-box-shadow: 0 2px 5px #c7b88f;
+  -moz-box-shadow: 0 2px 5px #c7b88f;
+  box-shadow: 0 2px 5px #c7b88f;
 }
 
+.g-phone {
+  padding: 2px 5px;
+}
 .g-phone .fa {
   margin-right: 5px;
 }
 
 .g-salary {
   display: inline-block;
+  padding: 2px 5px;
   color: white;
   background: #4cb1ff;
   -webkit-border-radius: 10px;
