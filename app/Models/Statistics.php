@@ -112,4 +112,82 @@ Class Statistics extends Model
 		
 		return $result[0];
 	}
+	
+	public static function get_all_language_by_month($month)
+	{
+		if ($month == "")
+		{
+			$month = date('M');
+		}
+		else 
+		{
+			$month    = date('M', strtotime($month));
+		}
+		
+		
+		$obj = DB::table('statistics')
+		->select($month, 'language');
+		
+		$result = $obj->get();
+		
+		foreach ($result as $rows)
+		{
+			$total_result[$rows->language] = $rows->$month;
+		}
+	
+		arsort($total_result);
+		return $total_result;
+	}
+	
+	public static function get_all_skill_by_month($month)
+	{
+		if ($month == "")
+		{
+			$month = date('M');
+		}
+		else
+		{
+			$month    = date('M', strtotime($month));
+		}
+		
+		
+		$obj = DB::table('statistics')
+		->select(DB::raw("sum({$month}) as total, skill"))
+		->groupBy('skill');
+		
+		$result = $obj->get();
+		
+		foreach ($result as $rows)
+		{
+			$total_result[$rows->skill] = $rows->total;
+		}
+		
+		arsort($total_result);
+		return $total_result;
+	}
+	
+	public static function get_language_by_skill($skill = "")
+	{
+		if ($skill == "")
+		{
+			return FALSE;
+		}
+	
+		//select language, sum(`aug`+`dec`) as total from `statistics` where skill = 2 group by language
+		$month_total = "`jan` + `feb` + `mar` + `apr` + `may` + `jun` +`jul` +`aug` + `sep` + `oct` + `nov` + `dec`";
+		$obj = DB::table('statistics')
+		->select(DB::raw("sum({$month_total}) as total, language"))
+		->where('skill', $skill)
+		->groupBy('language');
+	
+		$result = $obj->get();
+	
+		foreach ($result as $rows)
+		{
+			$total_result[$rows->language] = $rows->total;
+		}
+	
+		arsort($total_result);
+		return $total_result;
+	}
 }

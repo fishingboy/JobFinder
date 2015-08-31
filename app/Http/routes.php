@@ -63,12 +63,17 @@ Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get'
 Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 
 //static 統計
+Route::get('/statistics/dashboard', function(){return view('statistics/dashboard');});
 Route::get('/statistics/update', 'StaticsController@update');
 Route::get('/statistics/update/{date}', 'StaticsController@update');
-Route::get('/statistics/code/', 'StaticsController@get');
-Route::get('/statistics/code/{language}', 'StaticsController@get');
-
-Route::get('/statistics/rank/', 'StaticsController@rank');
+Route::get('/statistics/trend_line/', 'StaticsController@trend_line');
+Route::get('/statistics/trend_line/{language}', 'StaticsController@trend_line');
+Route::get('/statistics/rank_bar', 'StaticsController@rank_bar');
+Route::get('/statistics/rank_bar/{month}', 'StaticsController@rank_bar');
+Route::get('/statistics/skill_pie', 'StaticsController@skill_pie');
+Route::get('/statistics/skill_pie/{month}', 'StaticsController@skill_pie');
+Route::get('/statistics/skill_group_pie', 'StaticsController@skill_group_pie');
+Route::get('/statistics/skill_group_pie/{month}', 'StaticsController@skill_group_pie');
 
 // 轉址器
 Route::get('/go/job/{j_code}', 'GoController@job');

@@ -14,7 +14,6 @@
 </div>
 </body>
 <script type="text/javascript">
-var randomScalingFactor = function(){ return Math.round(Math.random()*255)};
 <?php 
 	///*
 	foreach($data as $language => $char_data)
@@ -22,7 +21,7 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*255)};
 		$r = rand(0, 255);
 		$g = rand(0, 255);
 		$b = rand(0, 255);
-		$a = rand(1, 2);
+		$a = (rand(0, 10) / 10);
 		$line_dataset[] = array(
 				"label"                => $language,
 				"strokeColor"          => "rgba({$r},{$g},{$b},{$a})",
@@ -38,8 +37,6 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*255)};
 ?>
 
 var languageDataSet = <?php echo json_encode($line_dataset)?>;
-var java = <?php echo json_encode($data['java'])?>;
-var php = <?php echo json_encode($data['php'])?>;
 var LanguageChartData = {
 	labels : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 	datasets : languageDataSet
