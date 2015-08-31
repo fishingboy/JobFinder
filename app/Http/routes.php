@@ -63,8 +63,12 @@ Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get'
 Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 
 //static 統計
-Route::get('/static/update', 'StaticsController@update');
-Route::get('/static/{source}', 'StaticsController@get');
+Route::get('/statistics/update', 'StaticsController@update');
+Route::get('/statistics/update/{date}', 'StaticsController@update');
+Route::get('/statistics/code/', 'StaticsController@get');
+Route::get('/statistics/code/{language}', 'StaticsController@get');
+
+Route::get('/statistics/rank/', 'StaticsController@rank');
 
 // 轉址器
 Route::get('/go/job/{j_code}', 'GoController@job');

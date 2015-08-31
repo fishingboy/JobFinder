@@ -206,21 +206,32 @@ class Job104 extends JobBase
         // 取不到資料時
         if ( ! $json_data)
         {
-            return '資料取得錯誤';
+            return ['資料取得錯誤'];
         }
-
+        
         // 寫入資料
         if ( ! $this->_preview_mode)
         {
             foreach ($json_data['data'] as $row)
             {
                 // 寫入 company 資料表
-                $company_data = $this->_convert_company_row_data($row);
+                if (!isset($row['C']))
+                {
+                	print_r($row);
+                	echo "該筆垃圾 ";
+                	continue;
+                }
+                
+            	$company_data = $this->_convert_company_row_data($row);
+            	
                 $companyID = Company::insert($company_data);
 
                 // 寫入 job 資料表
                 $job_data = $this->_convert_job_row_data($row);
+                
                 $job_data['companyID'] = $companyID;
+                
+                //var_dump($job_data);
                 $jobID = Job::insert($job_data);
             }
         }

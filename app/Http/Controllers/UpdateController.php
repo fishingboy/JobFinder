@@ -111,12 +111,17 @@ class UpdateController extends Controller
         $condition_file = '';
         if (file_exists($json_file))
         {
-            $json = file_get_contents($json_file);
+        	$json = file_get_contents($json_file);
             $data = json_decode($json, TRUE);
+
             if ($data)
             {
                 $conditions = $data;
                 $condition_file = $json_file;
+            }
+            else 
+            {
+            	exit("JSON 格式壞了！請檢查一下");	
             }
         }
 
