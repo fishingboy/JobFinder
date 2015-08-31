@@ -80,11 +80,12 @@ class Job extends Model
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
         $companyID = (isset($param['companyID'])) ? $param['companyID'] : NULL;
+        $source    = (isset($param['source'])) ? $param['source'] : NULL;
 
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
                  ->select('company.*', 'job.*');
-
+        
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
@@ -92,6 +93,12 @@ class Job extends Model
             $obj->orWhere('job.description', 'like', "%{$param['keyword']}%");
             $obj->orWhere('job.others', 'like', "%{$param['keyword']}%");
         }
+        
+        if (isset($param['source']) && $param['source'])
+        {
+        	$obj->orWhere('job.source', '=', "{$param['source']}");
+        }
+        
 
         // 取得總筆數
         $count = $obj->count();
@@ -114,11 +121,19 @@ class Job extends Model
                 $obj->orderBy($key, $asc);
             }
         }
+        
 
         // 取得資料
         $rows       = $obj->get();
         $total_page = ceil($count / $page_size);
 
+        
+//         $queries = DB::getQueryLog();
+//        dd($obj->toSql());
+        
+//         dd($queries);
+        
+        
         /* 轉換資料格式 */
         $rows = self::_convert_row_data($rows);
 

@@ -33,7 +33,8 @@ JOBFINDER.listJobs = function(options, renderView) {
 		orderby: {
 			sal_month_high: 'DESC',
 			sal_month_low: 'DESC'
-		}
+		},
+		source : 'ptt',
 	}, options || {});
 
 	var sendData = {
@@ -41,8 +42,6 @@ JOBFINDER.listJobs = function(options, renderView) {
 		page_size: settings.page_size,
 		orderby: settings.orderby
 	};
-
-	// console.log(sendData);
 
 	$.ajax({
 		url: settings.apiUrl,

@@ -39,7 +39,8 @@ JOBFINDER.listJobs = function(options, renderView) {
 	var sendData = {
 		page: settings.page,
 		page_size: settings.page_size,
-		orderby: settings.orderby
+		orderby: settings.orderby,
+		source: settings.source,
 	};
 
 	// console.log(sendData);
@@ -107,16 +108,17 @@ JOBFINDER.companyList.renderView = function(data) {
 /*建立分頁元素*/
 JOBFINDER.pagination.createPager = function(options) {
 	// var settings = options || {};
+	console.log(options);
 	var settings = $.extend({
 		pagination: [],
 
 	}, options || {});
 	var pageRange = pagination.pageRangeCalculate(settings);
-
+	
 	for (var page = pageRange.start; page <= pageRange.end; page++) {
 		settings.pagination.push(page);
 	}
-	console.log(settings);
+	//console.log(settings);
 	$('#pagerBody').empty();
 	var source = $("#pagerTmpl").html();
 	var template = Handlebars.compile(source);
@@ -135,7 +137,7 @@ JOBFINDER.pagination.pageRangeCalculate = function(options) {
 		}, options || {}),
 		startPage = settings.currentPage,
 		endPage = settings.totalPage;
-
+console.log(settings);
 	if (settings.currentPage - settings.rangeScope <= 0) {
 		endPage = settings.minPage + (settings.rangeScope * 2);
 		startPage = settings.minPage;
@@ -167,7 +169,8 @@ JOBFINDER.pagination.refreshPage = function(options, renderView) {
 		apiUrl: options.apiUrl,
 		page_size: options.page_size,
 		page: urlParams.page,
-		orderby: orderby
+		orderby: orderby,
+		source: urlParams.source
 	};
 
 	JOBFINDER.listJobs(settings, renderView);
@@ -324,7 +327,11 @@ var getUrlParams = function() {
 
 	while ((match = search.exec(query)) !== null)
 		urlParams[decode(match[1])] = decode(match[2]);
-	// console.log(urlParams);
+	
+	
+	urlParams['source'] = window.location.pathname.replace('list', '');
+	urlParams['source'] = urlParams['source'].replace(/\//g, '');
+	
 	return urlParams;
 };
 
