@@ -27,7 +27,8 @@ class JobController extends Controller
         'orderby',
         'keyword',
         'lat',
-        'lon'
+        'lon',
+    	'source'
     ];
 
     /**
@@ -47,7 +48,8 @@ class JobController extends Controller
                 'sal_month_low'        => 'DESC',
                 'period'               => 'DESC',
                 'job_addr_no_descript' => 'ASC',
-            ]
+            ],
+        	
         ];
 
         // 取得參數
@@ -59,7 +61,6 @@ class JobController extends Controller
                 $search_param[$field] = $value;
             }
         }
-
         return $search_param;
     }
 

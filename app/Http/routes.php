@@ -20,6 +20,8 @@ Route::get('/map', function(){return view('gmap/gmap');});
 
 // 工作列表
 Route::get('/list', 'ListController@listJob');
+Route::get('/list/104', 'ListController@listJob');
+Route::get('/list/ptt', 'ListController@listJobPtt');
 Route::get('/list/company', 'ListController@listCompany');
 
 // 資料更新

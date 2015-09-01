@@ -103,6 +103,6 @@ class Lib
      */
     public static function convert_employees($employees)
     {
-        return ($employees == 0) ? '暫不提供' : number_format($employees);
+        return ($employees == 0) ? '暫不提供' : number_format((int) $employees);
     }
 }
