@@ -65,7 +65,8 @@ Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get'
 Route::match(['get', 'post'], '/favorite/get/{format}', 'FavoriteController@get');
 
 //static 統計
-Route::get('/statistics/dashboard', function(){return view('statistics/dashboard');});
+Route::get('/statistics/dashboard', 'StaticsController@dashboard');
+Route::get('/statistics/dashboard/{month}', 'StaticsController@dashboard');
 Route::get('/statistics/update', 'StaticsController@update');
 Route::get('/statistics/update/{date}', 'StaticsController@update');
 Route::get('/statistics/trend_line/', 'StaticsController@trend_line');

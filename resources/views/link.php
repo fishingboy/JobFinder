@@ -42,6 +42,8 @@
 	<br>
 	<li><a target='_blank' href='/plugin/firephp'>firephp 測試</a></li>
 	<li><a target='_blank' href='/db_test'>資料庫測試</a></li>
+	
+	<li><a target='_blank' href='/statistics/dashboard'>統計圖表</a></li>
 <ul>
 </body>
 </html>

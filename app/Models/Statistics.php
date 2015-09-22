@@ -27,6 +27,7 @@ Class Statistics extends Model
 				->select(DB::raw('count(j_code) as language_total'))
 				->whereBetween('appear_date', [$last_month, $current_month]);
 
+		var_dump($last_month, $current_month);
 		switch ($code_language)
 		{
 			case 'java' :
