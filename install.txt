@@ -47,4 +47,4 @@ JobFinder 安裝步驟
 
    http://jobfinder/update/104
 
-   會去打 104 API 同步資料，會花些時間，請稍待
+   會去打 104 API 同步資料，會花些時間，請稍待....
