@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Doctrine\DBAL\Statement;
 
 class AlterAppearDateTypeAndRemovePostDate extends Migration
 {
@@ -14,7 +13,7 @@ class AlterAppearDateTypeAndRemovePostDate extends Migration
     public function up()
     {
         //
-        DB:Statement("ALTER TABLE `job` CHANGE `appear_date` `appear_date` DATE NULL DEFAULT NULL COMMENT '職務更新日期 格式為YYYYMMDD (年月日)';");
+        DB::statement("ALTER TABLE `job` CHANGE `appear_date` `appear_date` DATE NULL DEFAULT NULL COMMENT '職務更新日期 格式為YYYYMMDD (年月日)';");
     }
 
     /**
@@ -25,6 +24,6 @@ class AlterAppearDateTypeAndRemovePostDate extends Migration
     public function down()
     {
         //
-        DB:Statement("ALTER TABLE `job` DROP `post_date`;");
+        DB::statement("ALTER TABLE `job` DROP `post_date`;");
     }
 }
