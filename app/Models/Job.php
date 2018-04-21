@@ -75,6 +75,7 @@ class Job extends Model
      */
     public static function search($param = [])
     {
+        DB::enableQueryLog();
         Debug::fblog('Models\Job.param', $param);
 
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
@@ -89,11 +90,23 @@ class Job extends Model
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
-            $obj->where('job.title', 'like', "%{$param['keyword']}%");
-            $obj->orWhere('job.description', 'like', "%{$param['keyword']}%");
-            $obj->orWhere('job.others', 'like', "%{$param['keyword']}%");
+            $obj->where(function ($query) use ($param) {
+                $query->where('job.title', 'like', "%{$param['keyword']}%");
+                $query->orWhere('job.description', 'like', "%{$param['keyword']}%");
+                $query->orWhere('job.others', 'like', "%{$param['keyword']}%");
+            });
         }
-        
+
+        // 排除搜尋
+        if (isset($param['not_keyword']) && $param['not_keyword'])
+        {
+            $obj->where(function ($query) use ($param) {
+                $query->where('job.title', 'not like', "%{$param['not_keyword']}%");
+                $query->where('job.description', 'not like', "%{$param['not_keyword']}%");
+                $query->where('job.others', 'not like', "%{$param['not_keyword']}%");
+            });
+        }
+
         if (isset($param['source']) && $param['source'])
         {
         	$obj->orWhere('job.source', '=', "{$param['source']}");
@@ -129,6 +142,7 @@ class Job extends Model
 
         
 //         $queries = DB::getQueryLog();
+//        echo "<pre>queries = " . json_encode($queries, JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE) . "</pre>\n";
 //        dd($obj->toSql());
         
 //         dd($queries);

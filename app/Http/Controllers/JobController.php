@@ -26,6 +26,7 @@ class JobController extends Controller
         'companyID',
         'orderby',
         'keyword',
+        'not_keyword',
         'lat',
         'lon',
     	'source'
@@ -34,7 +35,7 @@ class JobController extends Controller
     /**
      * 取得 get 查詢欄位
      *
-     * @param  array $search_field 可查詢欄位
+     * @param Request $request
      * @return array               查詢參數
      */
     private function _get_param(Request $request)
