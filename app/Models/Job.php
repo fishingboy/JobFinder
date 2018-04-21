@@ -159,6 +159,7 @@ class Job extends Model
             'total_page' => $total_page,
             'orderby'    => isset($param['orderby']) ? $param['orderby'] : NULL,
             'keyword'    => isset($param['keyword']) ? $param['keyword'] : '',
+            'not_keyword'    => isset($param['not_keyword']) ? $param['not_keyword'] : '',
             'rows'       => $rows,
         ];
     }

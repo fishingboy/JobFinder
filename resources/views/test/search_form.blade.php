@@ -5,6 +5,7 @@
     @foreach($orderby as $key => $value)
         <input type='hidden' name='orderby[{{ $key }}]' value='{{ $value }}'>
     @endforeach
-    <input type='text' name='keyword' value='{{ $keyword }}' style='width:300px;'>
+    <b>包含:</b> <input type='text' name='keyword' value='{{ $keyword }}' style='width:300px;'>
+    <b>不包含</b> <input type='text' name='not_keyword' value='{{ $not_keyword }}' style='width:300px;'>
     <input type='submit' value='搜尋'>
 </form>
