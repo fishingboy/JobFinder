@@ -44,7 +44,7 @@ class Job104 extends JobBase
      * 104 API 網址
      * @var string
      */
-    private $_api_url = 'http://www.104.com.tw/i/apis/jobsearch.cfm';
+    private $_api_url = 'https://www.104.com.tw/i/apis/jobsearch.cfm';
 
     /**
      * 呼叫 104 API 的查詢條件

@@ -13,7 +13,7 @@ class Lib
      */
     public static function get_104_company_url($c_code)
     {
-        return 'http://www.104.com.tw/jobbank/custjob/index.php?j=' . $c_code;
+        return 'https://www.104.com.tw/jobbank/custjob/index.php?j=' . $c_code;
     }
 
     /**
@@ -23,7 +23,7 @@ class Lib
      */
     public static function get_104_job_url($j_code)
     {
-        return 'http://www.104.com.tw/jobbank/custjob/index.php?r=job&j=' . $j_code;
+        return 'https://www.104.com.tw/jobbank/custjob/index.php?r=job&j=' . $j_code;
     }
     /**
      * 將資本額轉成數字
