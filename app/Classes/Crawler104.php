@@ -18,7 +18,7 @@ class Crawler104
      */
     public static function get_company($j_code = '')
     {
-        $url = "http://www.104.com.tw/jobbank/custjob/index.php?r=cust&j={$j_code}";
+        $url = "https://www.104.com.tw/jobbank/custjob/index.php?r=cust&j={$j_code}";
         $data = Curl::get_response($url);
 
         if ($data['status'])
