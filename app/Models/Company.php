@@ -171,8 +171,10 @@ class Company extends Model
     public static function get_null_employees()
     {
         $count      = DB::table('company')->count();
-        $null_count = DB::table('company')->whereNull('employees')->count();
-        $rows       = DB::table('company')->whereNull('employees')->limit(1)->get();
+        $null_count = DB::table('company')->whereNull('employees')
+                                          ->orWhere('employees', -1)->count();
+        $rows       = DB::table('company')->whereNull('employees')
+                                          ->orWhere('employees', -1)->limit(1)->get();
         if ($count)
         {
             return [
