@@ -90,21 +90,33 @@ class Job extends Model
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
-            $obj->where(function ($query) use ($param) {
-                $query->where('job.title', 'like', "%{$param['keyword']}%");
-                $query->orWhere('job.description', 'like', "%{$param['keyword']}%");
-                $query->orWhere('job.others', 'like', "%{$param['keyword']}%");
+            $keywords = explode(",", $param['keyword']);
+            $obj->where(function ($query) use ($param, $keywords) {
+                $first = true;
+                foreach ($keywords as $keyword) {
+                    if ($first) {
+                        $query->where('job.title', 'like', "%{$keyword}%");
+                    } else {
+                        $query->orWhere('job.title', 'like', "%{$keyword}%");
+                    }
+                    $query->orWhere('job.description', 'like', "%{$keyword}%");
+                    $query->orWhere('job.others', 'like', "%{$keyword}%");
+                    $first = false;
+                }
             });
         }
 
         // 排除搜尋
         if (isset($param['not_keyword']) && $param['not_keyword'])
         {
-            $obj->where(function ($query) use ($param) {
-                $query->where('job.title', 'not like', "%{$param['not_keyword']}%");
-                $query->where('job.description', 'not like', "%{$param['not_keyword']}%");
-                $query->where('job.others', 'not like', "%{$param['not_keyword']}%");
-            });
+            $not_keywords = explode(",", $param['not_keyword']);
+            foreach ($not_keywords as $not_keyword) {
+                $obj->where(function ($query) use ($param, $not_keyword) {
+                    $query->where('job.title', 'not like', "%{$not_keyword}%");
+                    $query->where('job.description', 'not like', "%{$not_keyword}%");
+                    $query->where('job.others', 'not like', "%{$not_keyword}%");
+                });
+            }
         }
 
         if (isset($param['source']) && $param['source'])
