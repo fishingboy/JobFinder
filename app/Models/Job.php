@@ -90,20 +90,39 @@ class Job extends Model
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
-            $keywords = explode(",", $param['keyword']);
-            $obj->where(function ($query) use ($param, $keywords) {
-                $first = true;
-                foreach ($keywords as $keyword) {
-                    if ($first) {
-                        $query->where('job.title', 'like', "%{$keyword}%");
-                    } else {
-                        $query->orWhere('job.title', 'like', "%{$keyword}%");
+            if (strpos($param['keyword'], '&')) {
+                $keywords = explode("&", $param['keyword']);
+                $obj->where(function ($query) use ($param, $keywords) {
+                    foreach ($keywords as $keyword) {
+                        $query->where(function ($query) use ($keyword) {
+                            $query->where('job.title', 'like', "%{$keyword}%");
+                            $query->orWhere('job.description', 'like', "%{$keyword}%");
+                            $query->orWhere('job.others', 'like', "%{$keyword}%");
+                        });
                     }
-                    $query->orWhere('job.description', 'like', "%{$keyword}%");
-                    $query->orWhere('job.others', 'like', "%{$keyword}%");
-                    $first = false;
-                }
-            });
+                });
+            } else {
+                $keywords = explode(",", $param['keyword']);
+                $obj->where(function ($query) use ($param, $keywords) {
+                    $first = true;
+                    foreach ($keywords as $keyword) {
+                        if ($first) {
+                            $query->where(function ($query) use ($keyword) {
+                                $query->where('job.title', 'like', "%{$keyword}%");
+                                $query->orWhere('job.description', 'like', "%{$keyword}%");
+                                $query->orWhere('job.others', 'like', "%{$keyword}%");
+                            });
+                        } else {
+                            $query->orWhere(function ($query) use ($keyword) {
+                                $query->where('job.title', 'like', "%{$keyword}%");
+                                $query->orWhere('job.description', 'like', "%{$keyword}%");
+                                $query->orWhere('job.others', 'like', "%{$keyword}%");
+                            });
+                        }
+                        $first = false;
+                    }
+                });
+            }
         }
 
         // 排除搜尋
