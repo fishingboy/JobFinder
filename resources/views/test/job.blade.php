@@ -61,6 +61,9 @@
 
                             <a href='/go/job/{{ $row->j_code }}' target='_blank'>
                                 {{ $row->title }}
+                                @if ($row->is_new)
+                                    <span style="color:red; font-weight: bold;">(new)</span>
+                                @endif
                             </a>
                         </td>
                         <td {!! ($row->company_readed == 1) ? "class='readed'" : '' !!}>
@@ -74,7 +77,9 @@
                         <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                         <td class='center'>{{ $row->employees }}</td>
                         <td class='center'>{{ $row->capital }}</td>
-                        <td class='center'>{{ $row->created_at }}</td>
+                        <td class='center'>
+                            {{ (new DateTime($row->created_at))->format("m-d H:i") }}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

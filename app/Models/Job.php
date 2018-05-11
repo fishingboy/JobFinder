@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Faker\Provider\DateTime;
 use Illuminate\Database\Eloquent\Model;
 use App\Library\Lib;
 use App\Library\Debug;
@@ -311,6 +312,10 @@ class Job extends Model
      */
     private static function _convert_row_data($rows)
     {
+        // 三天內為最新
+        $new_limit = new \DateTime();
+        $new_limit = $new_limit->sub(new \DateInterval("P3D"))->format("Y-m-d H:i:s");
+
         foreach ($rows as $key => $row)
         {
             // 員人工數
@@ -319,6 +324,8 @@ class Job extends Model
             $row->capital   = Lib::number2capital($row->capital);
             // 薪資
             $row->pay       = Lib::convert_pay($row->sal_month_low, $row->sal_month_high);
+            // 是否為最新
+            $row->is_new = ($row->created_at >= $new_limit) ? true : false;
         }
         return $rows;
     }
