@@ -174,7 +174,8 @@ class Company extends Model
         $null_count = DB::table('company')->whereNull('employees')
                                           ->orWhere('employees', -1)->count();
         $rows       = DB::table('company')->whereNull('employees')
-                                          ->orWhere('employees', -1)->limit(1)->get();
+                                          ->orWhere('employees', -1)
+                                          ->orderByRaw("RAND()")->limit(1)->get();
         if ($count)
         {
             return [
