@@ -150,6 +150,18 @@ class UpdateController extends Controller
             $job_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
         }
 
+        // 清除過期工作
+        if (! $conditions['preview'] && $job_data['page'] == $job_data['total_page']) {
+            $this->clear_expired_job();
+        }
+
 		return view('update_report', $job_data);
+	}
+
+    public function clear_expired_job()
+    {
+        $today = date("Y-m-d 00:00:00");
+        DB::delete("delete from job WHERE updated_at < '$today'");
+        echo "刪除過期工作記錄!!!";
 	}
 }
