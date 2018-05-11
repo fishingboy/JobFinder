@@ -42,6 +42,7 @@
                         <th>地址</th>
                         <th class='width100'>員工人數</th>
                         <th>資本額</th>
+                        <th>時間</th>
                     </tr>
                 </thead>
 
@@ -73,6 +74,7 @@
                         <td>{{ $row->job_addr_no_descript }}{{ $row->job_address }}</td>
                         <td class='center'>{{ $row->employees }}</td>
                         <td class='center'>{{ $row->capital }}</td>
+                        <td class='center'>{{ $row->created_at }}</td>
                     </tr>
                     @endforeach
                 </tbody>
