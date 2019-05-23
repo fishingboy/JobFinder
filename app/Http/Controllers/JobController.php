@@ -42,7 +42,7 @@ class JobController extends Controller
     {
         // 預設值
         $search_param = [
-            'page_size' => 20,
+            'page_size' => 100,
             'page'      => 1,
             'orderby' => [
                 'sal_month_high'       => 'DESC',
