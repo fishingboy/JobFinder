@@ -59,7 +59,7 @@ class UpdateJobs extends Command
         ];
 
         // 從 json 取得查詢條件
-        $json_file = "../resources/json/condition.json";
+        $json_file = public_path()."/../resources/json/condition.json";
         $condition_file = '';
         if (file_exists($json_file))
         {
