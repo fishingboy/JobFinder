@@ -49,3 +49,7 @@
 3. 安裝後會放在　resources/assets/bower
 
 4. 之後可以配合elixir 輸出到 public/js下面，範例請參考 gulp.js
+
+
+### 設定查詢條件
+請將 resources/json/condition.sample.json 複製成 resources/json/condition.json 並調整裡面的條件(請在 104 搜尋頁面打開表單看屬性) 
