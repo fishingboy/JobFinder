@@ -1,0 +1,11 @@
+# Php files
+[*.php]
+insert_final_newline = false
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+# Tab indentation (no size specified)
+[Makefile]
+indent_style = tab
