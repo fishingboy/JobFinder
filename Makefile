@@ -16,3 +16,10 @@ update-f:
 gulp-watch:
 	gulp watch
 
+pull:
+	@echo ">>> Pull Code on Current branch [$(BRANCH)]"
+	git pull origin $(BRANCH) --rebase
+
+push:
+	@echo ">>> Current branch [$(BRANCH)] Pushing Code"
+	git push origin $(BRANCH)
