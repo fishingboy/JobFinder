@@ -34,14 +34,19 @@ class Lib
      */
     public static function capital2number($str)
     {
+        if ($str == "暫不提供") {
+            return 0;
+        }
+
         $str = str_replace('元', '', $str);
         $str = str_replace('萬', '', $str);
         $str = str_replace('億', 'e', $str);
         $tmp = explode('e', $str);
+
         if (count($tmp) == 1)
-            $money = $tmp[0] * 10000;
+            $money = intval($tmp[0]) * 10000;
         else
-            $money = $tmp[0] * 10000 * 10000 + $tmp[1] * 10000;
+            $money = intval($tmp[0]) * 10000 * 10000 + intval($tmp[1]) * 10000;
 
         return $money;
     }

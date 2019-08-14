@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\FreshMrtLocation::class,
         \App\Console\Commands\UpdateJobs::class,
+        \App\Console\Commands\UpdateCompanies::class,
     ];
 
     /**
