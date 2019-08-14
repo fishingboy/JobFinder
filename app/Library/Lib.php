@@ -1,6 +1,8 @@
 <?php
 namespace App\Library;
 
+use Exception;
+
 /**
  * curl library
  */
@@ -104,5 +106,44 @@ class Lib
     public static function convert_employees($employees)
     {
         return ($employees == 0) ? '暫不提供' : number_format((int) $employees);
+    }
+
+    /**
+     * 取得查詢條件
+     * @return array
+     * @throws Exception
+     */
+    public static function get_conditions()
+    {
+        // 查詢條件預設值
+//        $conditions = [
+//            'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
+//            'area' => ['6001001000', '6001002000'],
+//            'role' => [1, 4],
+//            'exp'  => 7,
+//            'kws'  => 'php python',
+//            'kwop' => 3,
+//        ];
+
+        // 從 json 取得查詢條件
+        $json_file = public_path()."/../resources/json/condition.json";
+        if (file_exists($json_file))
+        {
+            $json = file_get_contents($json_file);
+            $data = json_decode($json, TRUE);
+
+            if ($data)
+            {
+                $conditions = $data;
+            }
+            else
+            {
+                throw new Exception("JSON 格式壞了！請檢查一下");
+            }
+        } else {
+            throw new Exception("找不到設定檔。");
+        }
+
+        return $conditions;
     }
 }
