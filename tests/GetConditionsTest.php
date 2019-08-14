@@ -17,6 +17,8 @@ class GetConditionsTest extends TestCase
         $data = Lib::get_conditions();
         echo "<pre>data = " . print_r($data, true) . "</pre>\n";
 
+        $this->assertIsArray($data);
         $this->assertArrayHasKey("cat", $data);
+        $this->assertArrayHasKey("cat1", $data);
     }
 }

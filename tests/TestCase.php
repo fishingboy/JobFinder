@@ -22,4 +22,27 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    /**
+     * Asserts that a variable is of type array.
+     * @param $actual
+     * @param string $message
+     */
+    public static function assertIsArray($actual, $message = '')
+    {
+        $delta = 0.0;
+        $maxDepth = 10;
+        $canonicalize = false;
+        $ignoreCase = false;
+
+        $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+            'array',
+            $delta,
+            $maxDepth,
+            $canonicalize,
+            $ignoreCase
+        );
+
+        self::assertThat(gettype($actual), $constraint, $message);
+    }
 }
