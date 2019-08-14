@@ -23,3 +23,9 @@ pull:
 push:
 	@echo ">>> Current branch [$(BRANCH)] Pushing Code"
 	git push origin $(BRANCH)
+
+update-104-jobs:
+	php artisan update:jobs 104
+
+update-companies:
+	php artisan update:companies
