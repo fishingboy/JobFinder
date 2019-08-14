@@ -141,7 +141,7 @@ class Lib
                 throw new Exception("JSON 格式壞了！請檢查一下");
             }
         } else {
-            throw new Exception("找不到設定檔。");
+            throw new Exception("找不到設定檔 [$json_file]。");
         }
 
         return $conditions;

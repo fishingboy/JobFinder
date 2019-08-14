@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Classes\Job104;
 use App\Classes\JobPtt;
+use App\Library\Lib;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -42,45 +44,21 @@ class UpdateJobs extends Command
     {
         $source = $this->argument('source');
         $preview = $this->option('preview');
-        $this->line('把我顯示在畫面上' . $source . "::" . $preview);
 
+        $this->line("[" . date("Y-m-d H:i:s") . "] 開始同步 $source Jobs...");
 
         // 取得 job 實體
         $job = $this->_create_job($source);
 
-        // 查詢條件預設值
-        $conditions = [
-            'cat'  => ['2007001006', '2007001004', '2007001008', '2007001012'],
-            'area' => ['6001001000', '6001002000'],
-            'role' => [1, 4],
-            'exp'  => 7,
-            'kws'  => 'php python',
-            'kwop' => 3,
-        ];
-
         // 從 json 取得查詢條件
-        $json_file = public_path()."/../resources/json/condition.json";
-        $condition_file = '';
-        if (file_exists($json_file))
-        {
-            $json = file_get_contents($json_file);
-            $data = json_decode($json, TRUE);
-
-            if ($data)
-            {
-                $conditions = $data;
-                $condition_file = $json_file;
-            }
-            else
-            {
-                exit("JSON 格式壞了！請檢查一下");
-            }
-        } else {
-            $this->line("找不到設定檔。");
+        try {
+            $conditions = Lib::get_conditions();
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
             exit;
         }
 
-
+        // 每次取得 100 筆
         $conditions['pgsz'] = 100;
 
         $page = 1;
@@ -98,8 +76,7 @@ class UpdateJobs extends Command
 
             // 判斷更新是否要自動跳轉下一頁
             $job_data['go_next_page_js'] = '';
-            if ($preview || $page >= $job_data['total_page'])
-            {
+            if ($preview || $page >= $job_data['total_page']) {
                 break;
             }
 
@@ -113,7 +90,7 @@ class UpdateJobs extends Command
             $this->clear_expired_job();
         }
 
-        $this->line("update [$source] 成功 !");
+        $this->line("[" . date("Y-m-d H:i:s") . "] Update [$source] 成功 !");
     }
 
     /**
@@ -141,6 +118,6 @@ class UpdateJobs extends Command
     {
         $today = date("Y-m-d 00:00:00");
         DB::delete("delete from job WHERE updated_at < '$today'");
-        echo "刪除過期工作記錄!!!";
+        $this->line("刪除過期工作記錄!!!");
     }
 }
