@@ -60,6 +60,10 @@
 * 確認你已經有裝 `docker`, 以及本機可以使用 `make` 
 
 * `git clone Repo`
+
+* Copy Env File:
+    * `cp .env.example .env`
+
 * `make all`
 * 前往 `localhost:80` -> 即可看到
     
