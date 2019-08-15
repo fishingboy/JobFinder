@@ -5,6 +5,7 @@ use App\Classes\JobBase;
 use App\Library\Curl;
 use App\Library\Lib;
 use App\Models\Job;
+use Exception;
 
 /**
 * 爬蟲

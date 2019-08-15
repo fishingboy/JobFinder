@@ -19,6 +19,5 @@ class GetConditionsTest extends TestCase
 
         $this->assertIsArray($data);
         $this->assertArrayHasKey("cat", $data);
-        $this->assertArrayHasKey("cat1", $data);
     }
 }
