@@ -5,7 +5,7 @@ BRANCH := $(shell git name-rev --name-only HEAD)
 
 .PHONY: build update-d update-f gulp-watch
 
-all: env-build start build init-db
+all: env-build start build init-db init-data
 
 build: update-d update-f
 
@@ -56,6 +56,10 @@ rebuild: destroy all
 # DB init
 init-db:
 	docker exec -it dev_phpfpm php artisan migrate
+
+# Data Init
+init-data:
+	cp resources/json/condition.sample.json resources/json/condition.json
 
 # Behavior
 
