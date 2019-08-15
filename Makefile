@@ -7,7 +7,7 @@ BRANCH := $(shell git name-rev --name-only HEAD)
 
 all: env-build start build init-db
 
-build: update-d update-f gulp-watch
+build: update-d update-f
 
 # Git Related
 pull:
@@ -56,7 +56,6 @@ rebuild: destroy all
 # DB init
 init-db:
 	docker exec -it dev_phpfpm php artisan migrate
-
 
 # Behavior
 
