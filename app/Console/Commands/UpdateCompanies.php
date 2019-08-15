@@ -84,7 +84,9 @@ class UpdateCompanies extends Command
                 exit;
             }
 
-            $this->line("更新完成 $count / $total_count 筆公司資料: {$company_data['row']->name}");
+
+            $capital = Lib::number2capital($data['capital']);
+            $this->line("更新完成 $count / $total_count 筆公司資料: {$company_data['row']->name} - ({$data['employees']}人/{$capital})");
 
             // 判斷更新是否要自動跳轉下一頁
             if ($preview || $company_data['null_count'] <= 0) {
