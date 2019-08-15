@@ -64,6 +64,9 @@
 * Copy Env File:
     * `cp .env.example .env`
 
+* Add Env AppKey:
+    * `BNx7BhfE6D3QCntRKJWLsAOEGmOEdaWn`
+
 * `make all`
 * 前往 `localhost:80` -> 即可看到
     
