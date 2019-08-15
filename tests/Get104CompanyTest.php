@@ -27,4 +27,16 @@ class Get104CompanyTest extends TestCase
         $this->assertArrayHasKey("capital", $data);
         $this->assertArrayHasKey("url", $data);
     }
+
+    public function test_取得104公司3_找不到公司網址()
+    {
+        // 爬 104 網頁取得資訊
+        $c_code = "4f039a01f49d425f4a42c3ebc0a2a0fa";
+        $data = Crawler104::get_company($c_code);
+
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey("employees", $data);
+        $this->assertArrayHasKey("capital", $data);
+        $this->assertArrayHasKey("url", $data);
+    }
 }

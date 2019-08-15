@@ -75,7 +75,12 @@ class Crawler104
         preg_match_all('/<meta property="og:url" content="(.*)">/', $response, $matches);
 
         if ( ! isset($matches[1][0])) {
-            throw new Exception("找不到公司的網址。");
+            // throw new Exception("找不到公司的網址。");
+            return [
+                'employees' => -1,
+                'capital'   => -1,
+                'url'       => NULL,
+            ];
         }
         $company_new_url = $matches[1][0];
 
