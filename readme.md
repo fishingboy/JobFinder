@@ -53,3 +53,34 @@
 
 ### 設定查詢條件
 請將 resources/json/condition.sample.json 複製成 resources/json/condition.json 並調整裡面的條件(請在 104 搜尋頁面打開表單看屬性) 
+
+
+#### Mac Docker 流 懶人建制法 (Win待測試)
+
+* 確認你已經有裝 `docker`, 以及本機可以使用 `make` 
+
+* `git clone Repo`
+
+* Copy Env File:
+    * `cp .env.example .env`
+
+* Add Env AppKey:
+    * `BNx7BhfE6D3QCntRKJWLsAOEGmOEdaWn`
+
+* `make all`
+* 前往 `localhost:80` -> 即可看到
+    
+* 欲更新公司&職缺:
+    * `make refresh`
+* 分開更新:
+    * 更新104職缺: `make dk-update-jobs`    
+    * 更新公司相關: `make dk-update-companies`    
+    
+* 欲暫停使用：
+    * `make stop` -> 關閉Docker
+* 欲刪除:
+    * `make destroy`
+        1. 會將 docker 相關 container 刪除
+        2. 會將 vendor / node_module 套件刪掉
+* 重裝:整個系統重建 (注意!既存的DB資料將會消失)
+    * `make rebuild`
