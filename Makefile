@@ -37,7 +37,10 @@ gulp-watch:
 	gulp watch
 
 # Environment Related
-env-build: docker-build
+env-build: docker-build init-env
+
+init-env:
+	cp .env.example .env
 
 cp_conf:
 	cp _conf/default.conf /tmp
