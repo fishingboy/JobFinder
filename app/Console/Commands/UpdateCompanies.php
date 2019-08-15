@@ -48,7 +48,7 @@ class UpdateCompanies extends Command
 
         $count = 0;
         $total_count = 0;
-        while (true) {
+        while ($count <= $total_count) {
             $count++;
 
             $company_data = Company::get_null_employees();
