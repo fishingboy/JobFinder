@@ -5,7 +5,7 @@ BRANCH := $(shell git name-rev --name-only HEAD)
 
 .PHONY: build update-d update-f gulp-watch
 
-all: env-build start db-init
+all: env-build start init-db
 
 build: update-d update-f gulp-watch
 
