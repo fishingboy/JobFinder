@@ -26,7 +26,7 @@ dev_nginx:
   restart: always
   image: nginx:1.9.6
   ports:
-    - "80:80"
+    - "9487:80"
   links:
     - dev_phpfpm:phpfpm
   volumes:

@@ -23,6 +23,7 @@ push:
 start: cp_conf
 	docker-compose up -d --no-recreate
 	chmod 777 resources
+	@echo ">>> Start: Visit http://localhost:9487 ...."
 
 stop:
 	docker-compose stop

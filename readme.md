@@ -68,7 +68,7 @@
     * `BNx7BhfE6D3QCntRKJWLsAOEGmOEdaWn`
 
 * `make all`
-* 前往 `localhost:80` -> 即可看到
+* 前往 `localhost:9487` -> 即可看到
     
 * 欲更新公司&職缺:
     * `make refresh`
