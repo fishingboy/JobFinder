@@ -5,7 +5,7 @@ BRANCH := $(shell git name-rev --name-only HEAD)
 
 .PHONY: build update-d update-f gulp-watch
 
-all: build env-build start
+all: env-build start db-init
 
 build: update-d update-f gulp-watch
 
@@ -27,7 +27,6 @@ start: cp_conf
 stop:
 	docker-compose stop
 
-
 update-d:
 	composer install
 
@@ -38,7 +37,7 @@ gulp-watch:
 	gulp watch
 
 # Environment Related
-env-build: docker-build init-db
+env-build: docker-build
 
 cp_conf:
 	cp _conf/default.conf /tmp
@@ -48,6 +47,11 @@ docker-build:
 
 docker-destroy:
 	docker-compose down --remove-orphans
+
+destroy: docker-destroy
+	rm -rf vendor && rm -rf node_modules
+
+rebuild: destroy all
 
 # DB init
 init-db:
