@@ -70,7 +70,16 @@ class UpdateCompanies extends Command
                 $data = Crawler104::get_company($c_code);
             } catch (Exception $e) {
                 $this->error("[$c_code] Error:" . $e->getMessage());
+
+                // 增加 retry 次數
+                Company::add_retry_times($companyID);
+
                 exit;
+            }
+
+            if ($data['employees'] == -1) {
+                // 增加 retry 次數
+                Company::add_retry_times($companyID);
             }
 
             if ($data)

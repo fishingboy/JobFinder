@@ -170,12 +170,22 @@ class Company extends Model
      */
     public static function get_null_employees()
     {
-        $count      = DB::table('company')->count();
-        $null_count = DB::table('company')->whereNull('employees')
-                                          ->orWhere('employees', -1)->count();
-        $rows       = DB::table('company')->whereNull('employees')
-                                          ->orWhere('employees', -1)
-                                          ->orderByRaw("RAND()")->limit(1)->get();
+        $count = DB::table('company')->count();
+        $null_count = DB::table('company')
+            ->where(function($query) {
+                $query->whereNull('employees');
+                $query->orWhere('employees', -1);
+            })
+            ->where("retry", "<", 3)
+            ->count();
+        $rows = DB::table('company')
+            ->where(function($query) {
+                $query->whereNull('employees');
+                $query->orWhere('employees', -1);
+            })
+            ->where("retry", "<", 3)
+            ->orderByRaw("RAND()")
+            ->limit(1)->get();
         if ($count)
         {
             return [
@@ -190,4 +200,9 @@ class Company extends Model
         }
     }
 
+    public static function add_retry_times($company_id)
+    {
+        DB::statement("UPDATE `company` SET retry = retry + 1 WHERE companyID = {$company_id}");
+        return true;
+    }
 }
