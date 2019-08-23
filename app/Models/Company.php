@@ -184,7 +184,7 @@ class Company extends Model
                 $query->orWhere('employees', -1);
             })
             ->where("retry", "<", 3)
-            ->orderByRaw("RAND()")
+            ->orderBy("retry", "asc")
             ->limit(1)->get();
         if ($count)
         {
