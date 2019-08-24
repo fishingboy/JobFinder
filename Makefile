@@ -2,6 +2,7 @@
 include .env
 export
 BRANCH := $(shell git name-rev --name-only HEAD)
+PHP_CONTAINER := dev_phpfpm
 
 .PHONY: build update-d update-f gulp-watch
 
@@ -56,7 +57,7 @@ rebuild: destroy all
 
 # DB init
 init-db:
-	docker exec -it dev_phpfpm php artisan migrate
+	docker exec -it $(PHP_CONTAINER) php artisan migrate
 
 # Data Init
 init-data:
@@ -72,10 +73,10 @@ update-companies:
 
 # Behavior w/Docker
 dk-update-jobs:
-	docker exec -it dev_phpfpm php artisan update:jobs 104
+	docker exec -it $(PHP_CONTAINER) php artisan update:jobs 104
 
 dk-update-companies:
-	docker exec -it dev_phpfpm php artisan update:companies
+	docker exec -it $(PHP_CONTAINER) php artisan update:companies
 
 refresh: dk-update-jobs dk-update-companies
 
