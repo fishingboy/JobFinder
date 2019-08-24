@@ -2,7 +2,7 @@
 include .env
 export
 BRANCH := $(shell git name-rev --name-only HEAD)
-PHP_CONTAINER := dev_phpfpm
+PHP_CONTAINER := jf_dev_phpfpm
 
 .PHONY: build update-d update-f gulp-watch
 
