@@ -11,6 +11,8 @@ use App\Library\Debug;
 use App\Models\Job;
 use App\Models\Company;
 
+use Illuminate\Support\Facades\Redis;
+
 /**
  * Job API
  */
@@ -50,7 +52,7 @@ class JobController extends Controller
                 'period'               => 'DESC',
                 'job_addr_no_descript' => 'ASC',
             ],
-        	
+
         ];
 
         // 取得參數
@@ -76,12 +78,21 @@ class JobController extends Controller
         // 查詢參數(先寫死)
         $search_param = $this->_get_param($request);
 
-        // 取得查詢資料
-        $data = Job::search($search_param);
-        if ($data)
-        {
-            $data = array_merge(['status' => TRUE], $data);
+        $data = Redis::get('result');
+
+        if ( ! $data){
+            $data = Job::search($search_param);  // 取得查詢資料
+
+            if ( ! $data ){
+                die('No data');
+            }
+
+            Redis::set('result', $data);
+        }else{
+            $data = json_decode($data, TRUE);
         }
+
+        $data = array_merge(['status' => TRUE], $data);
 
         if ($format == 'json')
             return response()->json($data);
