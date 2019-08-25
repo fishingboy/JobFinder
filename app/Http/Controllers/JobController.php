@@ -78,18 +78,10 @@ class JobController extends Controller
         // 查詢參數(先寫死)
         $search_param = $this->_get_param($request);
 
-        $data = Redis::get('result');
+        $data = Job::search($search_param);  // 取得查詢資料
 
-        if ( ! $data){
-            $data = Job::search($search_param);  // 取得查詢資料
-
-            if ( ! $data ){
-                die('No data');
-            }
-
-            Redis::set('result', $data);
-        }else{
-            $data = json_decode($data, TRUE);
+        if ( ! $data ){
+            die('No data');
         }
 
         $data = array_merge(['status' => TRUE], $data);
@@ -97,7 +89,7 @@ class JobController extends Controller
         if ($format == 'json')
             return response()->json($data);
         else
-            return "<pre>data = " . print_r($data, TRUE). "</pre>";
+        return "<pre>data = " . print_r($data, TRUE). "</pre>";
     }
 
     /**
