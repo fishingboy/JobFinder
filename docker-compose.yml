@@ -1,34 +1,55 @@
-jf_dev_mysql:
-  container_name: jf_dev_mysql
-  restart: always
-  image: mariadb:10.3
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_DATABASE=homestead
-    - MYSQL_USER=homestead
-    - MYSQL_PASSWORD=secret
-jf_dev_phpfpm:
-  container_name: jf_dev_phpfpm
-  restart: always
-  build: './_dockerConf/phpfpm/'
-  links:
-    - jf_dev_mysql:db
-  environment:
-    - DB_HOST=jf_dev_mysql
-    - BEANSTALKD_HOST=jf_dev_queue
-  volumes:
-    - ./:/var/project
-  working_dir: /var/project
-jf_dev_nginx:
-  container_name: jf_dev_nginx
-  restart: always
-  image: nginx:1.9.6
-  ports:
-    - "9487:80"
-  links:
-    - jf_dev_phpfpm:phpfpm
-  volumes:
-    - /tmp/default.conf:/etc/nginx/conf.d/default.conf
-    - ./:/var/project
+version: '3'
+services:
+  jf_dev_redis:
+    container_name: jf_dev_redis
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - jf_docker_network
+  jf_dev_mysql:
+    container_name: jf_dev_mysql
+    restart: always
+    image: mariadb:10.3
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=homestead
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    networks:
+      - jf_docker_network
+  jf_dev_phpfpm:
+    container_name: jf_dev_phpfpm
+    restart: always
+    build: './_dockerConf/phpfpm/'
+  #  links:
+  #    - jf_dev_mysql:db
+    environment:
+      - DB_HOST=jf_dev_mysql
+      - BEANSTALKD_HOST=jf_dev_queue
+      - REDIS_HOST=jf_dev_redis
+    volumes:
+      - ./:/var/project
+    working_dir: /var/project
+    networks:
+      - jf_docker_network
+  jf_dev_nginx:
+    container_name: jf_dev_nginx
+    restart: always
+    image: nginx:1.9.6
+    ports:
+      - "9487:80"
+  #  links:
+  #    - jf_dev_phpfpm:phpfpm
+  #    - jf_dev_redis:redis
+    volumes:
+      - /tmp/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/project
+    networks:
+      - jf_docker_network
+
+networks:
+  jf_docker_network:
