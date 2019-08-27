@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "fishingboy/JobFinder",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["104", "job"],
     "license": "MIT",
     "type": "project",
     "require": {
