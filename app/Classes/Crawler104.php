@@ -59,6 +59,7 @@ class Crawler104
     public static function get_company_2019($j_code = '')
     {
         $url = "https://www.104.com.tw/jobbank/custjob/index.php?r=cust&j={$j_code}";
+
         $data = Curl::get_response($url);
 
         if ( ! $data['status'])
@@ -72,6 +73,9 @@ class Crawler104
 
         // 找公司新網址
         $response = $data['data'];
+
+//        echo "<pre>response = " . print_r($response, true) . "</pre>\n";
+
         preg_match_all('/<meta property="og:url" content="(.*)">/', $response, $matches);
 
         if ( ! isset($matches[1][0])) {
@@ -90,7 +94,8 @@ class Crawler104
 
         // 呼叫 api
         $api_url = "https://www.104.com.tw/company/ajax/content/{$company_code}?";
-        $data = Curl::get_response($api_url);
+        $referer = "https://www.104.com.tw/company/{$company_code}";
+        $data = Curl::get_response($api_url, [], "GET", $referer);
 
         if ( ! $data['status'])
         {

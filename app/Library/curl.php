@@ -25,7 +25,7 @@ class Curl
      * @param  string url
      * @return string data
      */
-    public static function get_response($url, $param = [], $method='GET')
+    public static function get_response($url, $param = [], $method='GET', $referer = "")
     {
         $timeout = 100;
         $curl = curl_init($url);
@@ -51,6 +51,9 @@ class Curl
         @ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         @ curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
 
+        if ($referer) {
+            @ curl_setopt($curl, CURLOPT_REFERER, $referer);
+        }
 
         $data = curl_exec($curl);
 
