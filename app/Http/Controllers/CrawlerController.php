@@ -95,8 +95,8 @@ class CrawlerController extends Controller
         $view_data['go_next_page_js'] = '';
         if ($company_data['null_count'] > 0)
         {
-//            $next_url = "/crawler/company/update";
-//            $view_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
+            $next_url = "/crawler/company/update";
+            $view_data['go_next_page_js'] = "<script>window.location.href = '{$next_url}';</script>";
         }
 
         return view('update_company_report', $view_data);
