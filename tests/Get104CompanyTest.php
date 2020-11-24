@@ -22,6 +22,8 @@ class Get104CompanyTest extends TestCase
         $c_code = "623a426b34363e6730323a63383e361972929296e41364a6785j50";
         $data = Crawler104::get_company($c_code);
 
+//        echo "<pre>data = " . print_r($data, true) . "</pre>\n";
+
         $this->assertIsArray($data);
         $this->assertArrayHasKey("employees", $data);
         $this->assertArrayHasKey("capital", $data);
