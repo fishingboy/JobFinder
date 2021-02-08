@@ -116,11 +116,10 @@ return [
         'cluster' => false,
 
         'default' => [
-            'host'     => '127.0.0.1',
+            'host'     => env('REDIS_HOST', ''),
             'port'     => 6379,
             'database' => 0,
         ],
-
     ],
 
 ];
