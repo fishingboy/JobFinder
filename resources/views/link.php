@@ -40,7 +40,6 @@
 	<br>
 	<li><a target='_blank' href='/truncate'>清空 job, company 資料</a></li>
 	<br>
-	<li><a target='_blank' href='/plugin/firephp'>firephp 測試</a></li>
 	<li><a target='_blank' href='/db_test'>資料庫測試</a></li>
     <br>
 	<li><a target='_blank' href='/statistics/update'>統計圖表更新</a></li>

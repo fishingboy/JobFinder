@@ -81,7 +81,4 @@ Route::get('/go/company/{j_code}', 'App\Http\Controllers\GoController@company');
 Route::get('/truncate', 'App\Http\Controllers\ToolController@truncate');
 Route::get('/clear_readed', 'App\Http\Controllers\ToolController@clear_readed');
 
-// test
-Route::get('/plugin/firephp', 'App\Http\Controllers\PluginController@firephp');
-
 Route::resource('mrt', 'App\Http\Controllers\MrtController', ['only' => 'index']);

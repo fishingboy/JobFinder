@@ -195,8 +195,6 @@ class Job104 extends JobBase
         $url = $this->_get_api_url();
         $json_data = Curl::get_json_data($url);
 
-        Debug::fblog($json_data);
-
         // 取得額外資訊
         $api_condition_response = '';
         if ($this->_preview_mode)
@@ -209,7 +207,7 @@ class Job104 extends JobBase
         {
             return ['資料取得錯誤'];
         }
-        
+
         // 寫入資料
         if ( ! $this->_preview_mode)
         {
@@ -222,16 +220,16 @@ class Job104 extends JobBase
                 	echo "該筆垃圾 ";
                 	continue;
                 }
-                
+
             	$company_data = $this->_convert_company_row_data($row);
-            	
+
                 $companyID = Company::insert($company_data);
 
                 // 寫入 job 資料表
                 $job_data = $this->_convert_job_row_data($row);
-                
+
                 $job_data['companyID'] = $companyID;
-                
+
                 //var_dump($job_data);
                 $jobID = Job::insert($job_data);
             }

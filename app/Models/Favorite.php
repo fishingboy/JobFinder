@@ -164,8 +164,6 @@ class Favorite extends Model
             }
         };
 
-        Debug::fblog('Favorite.sql' ,$sql);
-
         return [
             'count'      => $count,
             'page_size'  => $page_size,
@@ -184,7 +182,6 @@ class Favorite extends Model
     {
         if ( ! isset($param['id']) || ! isset($param['sn']))
         {
-            Debug::fblog('Sort Param Error!!!');
             return FALSE;
         }
 
@@ -196,25 +193,19 @@ class Favorite extends Model
         $rows = DB::table('favorite')->where('favoriteID', $id)->get();
         if (count($rows) == 0)
         {
-            Debug::fblog("No Such Record (favorite.favoriteID={$id})!!!");
             return FALSE;
         }
         $row = $rows[0];
-        Debug::fblog('favorite.sort.row', $row);
 
         $type = $row->type;
 
         // 如果是往後排序的話，sn 要加 1
-        Debug::fblog("({$sn} * 10) > {$row->sn}");
         if (($sn * 10) > $row->sn)
         {
-            Debug::fblog("sn = sn +1");
             $sn++;
         }
 
         // 插入到兩點之間
-        Debug::fblog('sort', "sort({$id}, {$sn})");
-
         $sn = intval($sn . '0') + 5;
         $sql = "UPDATE `favorite`
                 SET sn=:sn
@@ -226,10 +217,6 @@ class Favorite extends Model
             'type' => $type
         ];
         $r = DB::update($sql, $data);
-
-        Debug::fblog('sort.sql', $sql);
-        Debug::fblog('sort.data', $data);
-        Debug::fblog('sort.r', $r);
 
         // 重整順序
         self::rebuild_sn($type);
@@ -250,7 +237,6 @@ class Favorite extends Model
                        ) as SN
                 SET F.sn = SN.rownum
                 WHERE F.favoriteID=SN.favoriteID";
-        Debug::fblog('rebuild_sn.sql', $sql, ['type' => $type]);
         DB::update($sql, ['type' => $type]);
         return TRUE;
     }

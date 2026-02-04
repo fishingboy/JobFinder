@@ -119,9 +119,9 @@ class UpdateController extends Controller
                 $conditions = $data;
                 $condition_file = $json_file;
             }
-            else 
+            else
             {
-            	exit("JSON 格式壞了！請檢查一下");	
+            	exit("JSON 格式壞了！請檢查一下");
             }
         }
 
@@ -133,7 +133,6 @@ class UpdateController extends Controller
 
 		// 更新資料庫
 		$job_data = $job->update($conditions);
-		Debug::fblog('$job_data', $job_data);
 
         // 將查詢條件塞到 view 顯示
         if ( ! isset($job_data['condition']) || ! $job_data['condition'])

@@ -77,7 +77,6 @@ class Job extends Model
     public static function search($param = [])
     {
         DB::enableQueryLog();
-        Debug::fblog('Models\Job.param', $param);
 
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
@@ -87,7 +86,7 @@ class Job extends Model
         $obj = DB::table('job')
                  ->join('company', 'job.companyID', '=', 'company.companyID')
                  ->select('company.*', 'job.*');
-        
+
         // 搜尋
         if (isset($param['keyword']) && $param['keyword'])
         {
@@ -143,7 +142,7 @@ class Job extends Model
         {
         	$obj->orWhere('job.source', '=', "{$param['source']}");
         }
-        
+
 
         // 取得總筆數
         $count = $obj->count();
@@ -166,20 +165,20 @@ class Job extends Model
                 $obj->orderBy($key, $asc);
             }
         }
-        
+
 
         // 取得資料
         $rows       = $obj->get();
         $total_page = ceil($count / $page_size);
 
-        
+
 //         $queries = DB::getQueryLog();
 //        echo "<pre>queries = " . json_encode($queries, JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE) . "</pre>\n";
 //        dd($obj->toSql());
-        
+
 //         dd($queries);
-        
-        
+
+
         /* 轉換資料格式 */
         $rows = self::_convert_row_data($rows);
 
@@ -204,7 +203,6 @@ class Job extends Model
     public static function position($param = [])
     {
         DB::enableQueryLog();
-        Debug::fblog('Models\Job.param', $param);
 
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
@@ -275,9 +273,6 @@ class Job extends Model
 
         $queries = DB::getQueryLog();
         $last_query = end($queries);
-
-        // 顯示 sql
-        Debug::fblog('$last_query', $queries);
 
         /* 取得工作資料 */
         foreach ($rows as $key => $row)

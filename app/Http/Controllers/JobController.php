@@ -50,7 +50,7 @@ class JobController extends Controller
                 'period'               => 'DESC',
                 'job_addr_no_descript' => 'ASC',
             ],
-        	
+
         ];
 
         // 取得參數
@@ -113,7 +113,6 @@ class JobController extends Controller
         }
         else
         {
-            Debug::fblog('data', $data);
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
         }
     }

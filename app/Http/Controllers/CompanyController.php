@@ -85,7 +85,6 @@ class CompanyController extends Controller
         }
         else
         {
-            Debug::fblog($data);
             return "<pre>data = " . print_r($data, TRUE). "</pre>";
         }
     }

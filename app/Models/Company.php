@@ -75,8 +75,6 @@ class Company extends Model
      */
     public static function search($param = [])
     {
-        Debug::fblog('Models\Company.param', $param);
-
         $page_size = (isset($param['page_size'])) ? intval($param['page_size']) : 50;
         $page      = (isset($param['page'])) ? intval($param['page']) : 1;
 
@@ -115,7 +113,6 @@ class Company extends Model
                 GROUP BY `companyID`
                 {$orderby_sql}
                 LIMIT {$page_start}, {$page_size}";
-        Debug::fblog('Models\Company.sql', $sql);
 
         $rows  = DB::select($sql);
         $count = DB::select("SELECT FOUND_ROWS() as cnt")[0]->cnt;
