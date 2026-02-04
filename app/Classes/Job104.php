@@ -21,7 +21,9 @@ class Job104 extends JobBase
 
     public function __construct()
     {
-        define('JSON_DIR', __DIR__ . '/../../resources/json/');
+        if (!defined('JSON_DIR')) {
+            define('JSON_DIR', __DIR__ . '/../../resources/json/');
+        }
     }
 
     /**
@@ -178,9 +180,11 @@ class Job104 extends JobBase
     }
 
     /**
-     * 從來源更新資料庫
+     * 從 104 API 取得工作資料
+     * @param array|null $conditions 查詢條件
+     * @return array|null 包含 data, RECORDCOUNT, PAGE, TOTALPAGE 等資訊的陣列，失敗時回傳 null
      */
-    public function update($conditions = NULL)
+    public function getJobs($conditions = NULL)
     {
         // 設定更新時的查詢條件
         if ($conditions)
@@ -188,17 +192,29 @@ class Job104 extends JobBase
             $this->_set_update_condition($conditions);
         }
 
-        // 判斷是否為預灠模式
-        $this->_preview_mode = $conditions['preview'];
-
         // 取得 api 網址，查詢資料
         $url = $this->_get_api_url();
         $json_data = Curl::get_json_data($url);
+
+        return $json_data;
+    }
+
+    /**
+     * 從來源更新資料庫
+     */
+    public function update($conditions = NULL)
+    {
+        // 判斷是否為預灠模式
+        $this->_preview_mode = isset($conditions['preview']) ? $conditions['preview'] : false;
+
+        // 取得工作資料
+        $json_data = $this->getJobs($conditions);
 
         // 取得額外資訊
         $api_condition_response = '';
         if ($this->_preview_mode)
         {
+            $url = $this->_get_api_url();
             $api_condition_response = Curl::get_response(str_replace('&fmt=8', '&fmt=9', $url))['data'];
         }
 
@@ -256,7 +272,7 @@ class Job104 extends JobBase
         return [
             'source'              => self::class,
             'preview_mode'        => $this->_preview_mode,
-            'api_url'             => $url,
+            'api_url'             => $this->_get_api_url(),
             'condition'           => $api_condition_response,
             'record_count'        => $record_count,
             'finish_record_count' => $finish_record_count,
