@@ -5,3 +5,6 @@ Homestead.yaml
 /resources/json/condition.json
 resources/assets/bower/
 .idea/
+
+# Claude
+.claude/
