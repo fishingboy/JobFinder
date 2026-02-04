@@ -8,3 +8,4 @@ resources/assets/bower/
 
 # Claude
 .claude/
+/.phpunit.result.cache

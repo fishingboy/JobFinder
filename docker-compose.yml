@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   dev_mysql:
     container_name: dev_mysql

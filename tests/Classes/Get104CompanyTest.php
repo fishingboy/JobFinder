@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Classes;
+
 use App\Classes\Crawler104;
+use PHPUnit\Framework\TestCase;
 
 class Get104CompanyTest extends TestCase
 {

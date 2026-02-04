@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+namespace Tests\Classes;
+
 use App\Library\Lib;
+use Tests\TestCase;
 
 class GetConditionsTest extends TestCase
 {

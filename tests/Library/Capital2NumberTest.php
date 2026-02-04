@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Library;
+
 use App\Library\Lib;
+use PHPUnit\Framework\TestCase;
 
 class Capital2NumberTest extends TestCase
 {
