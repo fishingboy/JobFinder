@@ -1,34 +1,39 @@
-dev_mysql:
-  container_name: dev_mysql
-  restart: always
-  image: mariadb:10.3
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_DATABASE=homestead
-    - MYSQL_USER=homestead
-    - MYSQL_PASSWORD=secret
-dev_phpfpm:
-  container_name: dev_phpfpm
-  restart: always
-  build: './_dockerConf/phpfpm/'
-  links:
-    - dev_mysql:db
-  environment:
-    - DB_HOST=dev_mysql
-    - BEANSTALKD_HOST=dev_queue
-  volumes:
-    - ./:/var/project
-  working_dir: /var/project
-dev_nginx:
-  container_name: dev_nginx
-  restart: always
-  image: nginx:1.9.6
-  ports:
-    - "9487:80"
-  links:
-    - dev_phpfpm:phpfpm
-  volumes:
-    - /tmp/default.conf:/etc/nginx/conf.d/default.conf
-    - ./:/var/project
+version: '3.8'
+
+services:
+  dev_mysql:
+    container_name: dev_mysql
+    restart: always
+    image: mariadb:10.3
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=homestead
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+
+  dev_phpfpm:
+    container_name: dev_phpfpm
+    restart: always
+    build: './_dockerConf/phpfpm/'
+    depends_on:
+      - dev_mysql
+    environment:
+      - DB_HOST=dev_mysql
+      - BEANSTALKD_HOST=dev_queue
+    volumes:
+      - ./:/var/project
+    working_dir: /var/project
+
+  dev_nginx:
+    container_name: dev_nginx
+    restart: always
+    image: nginx:1.24
+    ports:
+      - "9487:80"
+    depends_on:
+      - dev_phpfpm
+    volumes:
+      - ./_conf/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/project
