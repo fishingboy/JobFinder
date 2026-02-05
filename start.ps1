@@ -112,7 +112,7 @@ function Stop-App {
 
 function Build-Dependencies {
     Write-Host ">>> Installing Composer dependencies..." -ForegroundColor Cyan
-    composer install
+    docker exec -it dev_phpfpm composer install
     Write-Host ">>> Installing NPM dependencies..." -ForegroundColor Cyan
     npm install
 }

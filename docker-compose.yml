@@ -20,6 +20,8 @@ services:
     environment:
       - DB_HOST=dev_mysql
       - BEANSTALKD_HOST=dev_queue
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/var/project
     working_dir: /var/project
