@@ -50,3 +50,9 @@
   - 修改 `update()` 方法改用 `getJobs()` 取得資料
   - 修正 `JSON_DIR` 常數重複定義問題
 - **tests/Classes/Job104GetJobsTest.php** - 新增測試檔案，包含 4 個測試案例
+
+### 加入 Xdebug
+
+- **_dockerConf/phpfpm/Dockerfile** - 安裝 xdebug 擴充套件
+- **_dockerConf/phpfpm/xdebug.ini** - 新增 xdebug 設定檔（port 9003）
+- **docker-compose.yml** - 加入 `host.docker.internal` 設定
