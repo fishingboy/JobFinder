@@ -26,6 +26,13 @@ services:
       - ./:/var/project
     working_dir: /var/project
 
+  dev_chrome:
+    container_name: dev_chrome
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: '2g'
+
   dev_nginx:
     container_name: dev_nginx
     restart: always

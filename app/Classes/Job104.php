@@ -6,6 +6,11 @@ use App\Library\Curl;
 use App\Library\Debug;
 use App\Models\Company;
 use App\Models\Job;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverWait;
 
 
 /**
@@ -43,10 +48,22 @@ class Job104 extends JobBase
     ];
 
     /**
-     * 104 API 網址
+     * 104 搜尋頁面網址
      * @var string
      */
-    private $_api_url = 'https://www.104.com.tw/i/apis/jobsearch.cfm';
+    private $_search_url = 'https://www.104.com.tw/jobs/search/';
+
+    /**
+     * 104 職缺詳細 API 網址
+     * @var string
+     */
+    private $_job_detail_api_url = 'https://www.104.com.tw/job/ajax/content/';
+
+    /**
+     * Selenium WebDriver 網址
+     * @var string
+     */
+    private $_selenium_url = 'http://dev_chrome:4444';
 
     /**
      * 呼叫 104 API 的查詢條件
@@ -55,47 +72,69 @@ class Job104 extends JobBase
     private $_update_conditions = [
         'cat'  => '2007001006',
         'role' => [1, 4],
-        'pgsz' => 50,
-        'fmt'  => 8,
     ];
 
     /**
-     * 取得 104 API 呼叫網址
-     * @return string url
+     * 組合搜尋頁面的 URL
+     * @param array $conditions 查詢條件
+     * @param int $page 頁碼
+     * @return string 完整搜尋 URL
      */
-    private function _get_api_url()
+    private function _buildSearchUrl($conditions, $page = 1)
     {
-        return $this->_api_url . '?' . $this->_get_api_params() . '&fmt=8';
-    }
+        $params = [];
 
-    /**
-     * 組合 api 參數
-     * @return string api 參數
-     */
-    private function _get_api_params()
-    {
-        $get_param_array = [];
-        foreach ($this->_update_conditions as $key => $value)
-        {
-            $value_str = '';
-            switch (gettype($value))
-            {
-                case 'array':
-                    $value_str = implode(',', $value);
-                    break;
-
-                case 'string':
-                    $value_str = urlencode($value);
-                    break;
-
-                case 'integer':
-                default:
-                    $value_str = $value;
-                    break;
-            }
-            $get_param_array[] = "{$key}={$value_str}";
+        // 關鍵字：condition.json 用 kws，搜尋頁用 keyword
+        if (isset($conditions['kws'])) {
+            $params['keyword'] = $conditions['kws'];
         }
-        return implode('&', $get_param_array);
+        if (isset($conditions['keyword'])) {
+            $params['keyword'] = $conditions['keyword'];
+        }
+
+        // 職務類別：condition.json 用 cat，搜尋頁用 jobcat
+        if (isset($conditions['cat'])) {
+            $cat = is_array($conditions['cat']) ? implode(',', $conditions['cat']) : $conditions['cat'];
+            $params['jobcat'] = $cat;
+        }
+
+        // 地區
+        if (isset($conditions['area'])) {
+            $area = is_array($conditions['area']) ? implode(',', $conditions['area']) : $conditions['area'];
+            $params['area'] = $area;
+        }
+
+        // 角色
+        if (isset($conditions['role'])) {
+            $role = is_array($conditions['role']) ? implode(',', $conditions['role']) : $conditions['role'];
+            $params['ro'] = $role;
+        }
+
+        // 經歷
+        if (isset($conditions['exp'])) {
+            $params['expmin'] = $conditions['exp'];
+        }
+
+        // 關鍵字搜尋模式
+        if (isset($conditions['kwop'])) {
+            $params['kwop'] = $conditions['kwop'];
+        }
+
+        // 排序
+        if (!isset($params['order'])) {
+            $params['order'] = 12; // 依日期排序
+        }
+        if (!isset($params['asc'])) {
+            $params['asc'] = 0; // 降冪
+        }
+
+        // 每頁筆數
+        $params['pagesize'] = isset($conditions['pgsz']) ? $conditions['pgsz'] : 20;
+
+        // 頁碼
+        $params['page'] = $page;
+
+        return $this->_search_url . '?' . http_build_query($params);
     }
 
     /**
@@ -108,95 +147,356 @@ class Job104 extends JobBase
     }
 
     /**
-     * 轉換 104 API 來的 JOB DATA
-     * @param  object $row api 資料
-     * @return array      job 資料表資料
+     * 用 Selenium 從搜尋頁面取得 Job ID 列表
+     * @param array $conditions 查詢條件
+     * @param int $page 頁碼
+     * @return array ['job_ids' => [...], 'total_count' => int, 'total_page' => int]
      */
-    private function _convert_job_row_data($row)
+    private function _getJobIdsFromSearchPage($conditions, $page = 1)
     {
+        $url = $this->_buildSearchUrl($conditions, $page);
+
+        $driver = null;
+        try {
+            // 連線到 Selenium
+            $capabilities = DesiredCapabilities::chrome();
+            $driver = RemoteWebDriver::create($this->_selenium_url, $capabilities);
+
+            // 開啟搜尋頁面
+            $driver->get($url);
+
+            // 等待職缺列表渲染（等待 article 標籤出現，104 用 article 包住每筆職缺）
+            $wait = new WebDriverWait($driver, 15);
+            $wait->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('article.b-block--top-bord, article.job-list-item, div.job-list-container')
+                )
+            );
+
+            // 額外等待確保 Vue 渲染完成
+            sleep(2);
+
+            // 取得總筆數
+            $totalCount = 0;
+            $totalPage = 1;
+            try {
+                // 嘗試從頁面取得總筆數資訊
+                $countElements = $driver->findElements(
+                    WebDriverBy::cssSelector('.filter-label span, .job-list-summary .t3, div[data-v] .t3')
+                );
+                foreach ($countElements as $el) {
+                    $text = $el->getText();
+                    if (preg_match('/(\d[\d,]+)\s*個/u', $text, $m)) {
+                        $totalCount = intval(str_replace(',', '', $m[1]));
+                        break;
+                    }
+                }
+
+                // 計算總頁數
+                $pageSize = isset($conditions['pgsz']) ? $conditions['pgsz'] : 20;
+                if ($totalCount > 0) {
+                    $totalPage = ceil($totalCount / $pageSize);
+                }
+            } catch (\Exception $e) {
+                // 忽略計數錯誤
+            }
+
+            // 取得所有職缺連結，解析 job ID
+            $jobIds = [];
+            $links = $driver->findElements(WebDriverBy::cssSelector('a[href*="/job/"]'));
+            foreach ($links as $link) {
+                $href = $link->getAttribute('href');
+                // 從連結中取得 job ID，格式如 /job/xxxxx 或 https://www.104.com.tw/job/xxxxx
+                if (preg_match('/\/job\/([a-zA-Z0-9_]+)/', $href, $matches)) {
+                    $jobId = $matches[1];
+                    // 排除非職缺頁面的連結（如 ajax, search 等）
+                    if (!in_array($jobId, ['ajax', 'search', 'bank']) && strlen($jobId) > 3) {
+                        $jobIds[$jobId] = $jobId;
+                    }
+                }
+            }
+
+            $jobIds = array_values($jobIds);
+
+            $driver->quit();
+
+            return [
+                'job_ids'     => $jobIds,
+                'total_count' => $totalCount,
+                'total_page'  => $totalPage,
+                'search_url'  => $url,
+            ];
+
+        } catch (\Exception $e) {
+            if ($driver) {
+                try { $driver->quit(); } catch (\Exception $qe) {}
+            }
+            throw new \Exception("Selenium 抓取失敗: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * 用 Curl 取得單一職缺的詳細資料
+     * @param string $jobId 職缺 ID
+     * @return array|null JSON 資料
+     */
+    private function _getJobDetail($jobId)
+    {
+        $url = $this->_job_detail_api_url . $jobId;
+        $referer = "https://www.104.com.tw/job/" . $jobId;
+
+        $response = Curl::get_response($url, [], 'GET', $referer);
+
+        if ($response['status']) {
+            return json_decode($response['data'], TRUE);
+        }
+
+        return null;
+    }
+
+    /**
+     * 將新 API 的 JSON 欄位對應到現有 job DB 欄位
+     * @param array $data API 回傳的 JSON 資料
+     * @param string $jobId 職缺 ID
+     * @return array job 資料表資料
+     */
+    private function _convertNewApiJobData($data, $jobId)
+    {
+        $header = isset($data['data']['header']) ? $data['data']['header'] : [];
+        $jobDetail = isset($data['data']['jobDetail']) ? $data['data']['jobDetail'] : [];
+        $condition = isset($data['data']['condition']) ? $data['data']['condition'] : [];
+
+        // 薪資
+        $salaryLow = null;
+        $salaryHigh = null;
+        if (isset($jobDetail['salary'])) {
+            $salaryLow = isset($jobDetail['salary']['min']) ? $jobDetail['salary']['min'] : null;
+            $salaryHigh = isset($jobDetail['salary']['max']) ? $jobDetail['salary']['max'] : null;
+        }
+        if (isset($header['salary'])) {
+            // 嘗試從 header 中的月薪文字解析
+            if (preg_match('/([\d,]+)\s*[~～至]\s*([\d,]+)/u', $header['salary'], $m)) {
+                $salaryLow = $salaryLow ?: intval(str_replace(',', '', $m[1]));
+                $salaryHigh = $salaryHigh ?: intval(str_replace(',', '', $m[2]));
+            }
+        }
+
+        // 工作描述
+        $description = isset($jobDetail['jobDescription']) ? $jobDetail['jobDescription'] : null;
+
+        // 其他條件
+        $others = isset($condition['other']) ? $condition['other'] : null;
+
+        // 工作地址
+        $jobAddress = null;
+        $jobAddrNoDescript = null;
+        if (isset($jobDetail['addressRegion'])) {
+            $jobAddrNoDescript = $jobDetail['addressRegion'];
+        }
+        if (isset($jobDetail['address'])) {
+            $jobAddress = is_array($jobDetail['address'])
+                ? implode('', $jobDetail['address'])
+                : $jobDetail['address'];
+        }
+        // 有時候地址資訊在 header
+        if (!$jobAddress && isset($header['jobAddress'])) {
+            $jobAddress = $header['jobAddress'];
+        }
+
+        // 職務類別
+        $jobcatDescript = '';
+        if (isset($jobDetail['jobCategory']) && is_array($jobDetail['jobCategory'])) {
+            $cats = array_map(function ($c) {
+                return isset($c['description']) ? $c['description'] : '';
+            }, $jobDetail['jobCategory']);
+            $jobcatDescript = implode('、', array_filter($cats));
+        }
+
+        // 經歷
+        $period = null;
+        if (isset($condition['workExp'])) {
+            if (preg_match('/(\d+)/', $condition['workExp'], $m)) {
+                $period = intval($m[1]);
+            }
+        }
+
+        // 上班時間
+        $ondutyTime = null;
+        $offdutyTime = null;
+        if (isset($jobDetail['workPeriod'])) {
+            $workPeriod = $jobDetail['workPeriod'];
+            if (preg_match('/(\d{1,2}:\d{2})/', $workPeriod, $m)) {
+                $ondutyTime = $m[1];
+            }
+            if (preg_match('/\d{1,2}:\d{2}.*?(\d{1,2}:\d{2})/', $workPeriod, $m)) {
+                $offdutyTime = $m[1];
+            }
+        }
+
+        // 出現日期
+        $appearDate = isset($header['appearDate']) ? $header['appearDate'] : null;
+
+        // 學歷
+        $edu = isset($condition['edu']) ? $condition['edu'] : null;
+
+        // 需要人數
+        $needEmp = isset($header['needEmp']) ? $header['needEmp'] : null;
+
+        // 技能
+        $skills = '';
+        if (isset($condition['skill']) && is_array($condition['skill'])) {
+            $skillNames = array_map(function ($s) {
+                return isset($s['description']) ? $s['description'] : '';
+            }, $condition['skill']);
+            $skills = implode('、', array_filter($skillNames));
+        }
+
+        // 語言
+        $languages = [null, null, null];
+        if (isset($condition['language']) && is_array($condition['language'])) {
+            foreach ($condition['language'] as $i => $lang) {
+                if ($i >= 3) break;
+                $languages[$i] = isset($lang['language']) ? $lang['language'] : null;
+            }
+        }
+
+        // 經緯度
+        $lat = isset($jobDetail['lat']) ? $jobDetail['lat'] : null;
+        $lon = isset($jobDetail['lon']) ? $jobDetail['lon'] : null;
+
         return [
-            'title'                =>  isset($row['JOB']) ? $row['JOB'] : NULL,
-            'j_code'               =>  isset($row['J']) ? $row['J'] : NULL,
-            'job_addr_no_descript' =>  isset($row['JOB_ADDR_NO_DESCRIPT']) ? $row['JOB_ADDR_NO_DESCRIPT'] : NULL,
-            'job_address'          =>  isset($row['JOB_ADDRESS']) ? $row['JOB_ADDRESS'] : NULL,
-            'jobcat_descript'      =>  isset($row['JOBCAT_DESCRIPT']) ? $row['JOBCAT_DESCRIPT'] : NULL,
-            'description'          =>  isset($row['DESCRIPTION']) ? $row['DESCRIPTION'] : NULL,
-            'period'               =>  isset($row['PERIOD']) ? $row['PERIOD'] : NULL,
-            'appear_date'          =>  isset($row['APPEAR_DATE']) ? $row['APPEAR_DATE'] : NULL,
-            'dis_role'             =>  isset($row['DIS_ROLE']) ? $row['DIS_ROLE'] : NULL,
-            'dis_level'            =>  isset($row['DIS_LEVEL']) ? $row['DIS_LEVEL'] : NULL,
-            'dis_role2'            =>  isset($row['DIS_ROLE2']) ? $row['DIS_ROLE2'] : NULL,
-            'dis_level2'           =>  isset($row['DIS_LEVEL2']) ? $row['DIS_LEVEL2'] : NULL,
-            'dis_role3'            =>  isset($row['DIS_ROLE3']) ? $row['DIS_ROLE3'] : NULL,
-            'dis_level3'           =>  isset($row['DIS_LEVEL3']) ? $row['DIS_LEVEL3'] : NULL,
-            'driver'               =>  isset($row['DRIVER']) ? $row['DRIVER'] : NULL,
-            'handicompendium'      =>  isset($row['HANDICOMPENDIUM']) ? $row['HANDICOMPENDIUM'] : NULL,
-            'role'                 =>  isset($row['ROLE']) ? $row['ROLE'] : NULL,
-            'role_status'          =>  isset($row['ROLE_STATUS']) ? $row['ROLE_STATUS'] : NULL,
-            's2'                   =>  isset($row['S2']) ? $row['S2'] : NULL,
-            's3'                   =>  isset($row['S3']) ? $row['S3'] : NULL,
-            'sal_month_low'        =>  isset($row['SAL_MONTH_LOW']) ? $row['SAL_MONTH_LOW'] : NULL,
-            'sal_month_high'       =>  isset($row['SAL_MONTH_HIGH']) ? $row['SAL_MONTH_HIGH'] : NULL,
-            'worktime'             =>  isset($row['WORKTIME']) ? $row['WORKTIME'] : NULL,
-            'startby'              =>  isset($row['STARTBY']) ? $row['STARTBY'] : NULL,
-            'cert_all_descript'    =>  isset($row['CERT_ALL_DESCRIPT']) ? $row['CERT_ALL_DESCRIPT'] : NULL,
-            'jobskill_all_desc'    =>  isset($row['JOBSKILL_ALL_DESC']) ? $row['JOBSKILL_ALL_DESC'] : NULL,
-            'pcskill_all_desc'     =>  isset($row['PCSKILL_ALL_DESC']) ? $row['PCSKILL_ALL_DESC'] : NULL,
-            'language1'            =>  isset($row['LANGUAGE1']) ? $row['LANGUAGE1'] : NULL,
-            'language2'            =>  isset($row['LANGUAGE2']) ? $row['LANGUAGE2'] : NULL,
-            'language3'            =>  isset($row['LANGUAGE3']) ? $row['LANGUAGE3'] : NULL,
-            'lat'                  =>  isset($row['LAT']) ? $row['LAT'] : NULL,
-            'lon'                  =>  isset($row['LON']) ? $row['LON'] : NULL,
-            'major_cat_descript'   =>  isset($row['MAJOR_CAT_DESCRIPT']) ? $row['MAJOR_CAT_DESCRIPT'] : NULL,
-            'minbinary_edu'        =>  isset($row['MINBINARY_EDU']) ? $row['MINBINARY_EDU'] : NULL,
-            'need_emp'             =>  isset($row['NEED_EMP']) ? $row['NEED_EMP'] : NULL,
-            'need_emp1'            =>  isset($row['NEED_EMP1']) ? $row['NEED_EMP1'] : NULL,
-            'ondutytime'           =>  isset($row['ONDUTYTIME']) ? $row['ONDUTYTIME'] : NULL,
-            'offduty_time'         =>  isset($row['OFFDUTY_TIME']) ? $row['OFFDUTY_TIME'] : NULL,
-            'others'               =>  isset($row['OTHERS']) ? $row['OTHERS'] : NULL,
-        	'source'  			   =>  '104'
+            'title'                => isset($header['jobName']) ? $header['jobName'] : null,
+            'j_code'               => $jobId,
+            'job_addr_no_descript'  => $jobAddrNoDescript,
+            'job_address'          => $jobAddress,
+            'jobcat_descript'      => $jobcatDescript ?: null,
+            'description'          => $description,
+            'period'               => $period,
+            'appear_date'          => $appearDate,
+            'sal_month_low'        => $salaryLow,
+            'sal_month_high'       => $salaryHigh,
+            'worktime'             => isset($jobDetail['workType']) ? $jobDetail['workType'] : null,
+            'startby'              => isset($jobDetail['startBy']) ? $jobDetail['startBy'] : null,
+            'jobskill_all_desc'    => $skills ?: null,
+            'language1'            => $languages[0],
+            'language2'            => $languages[1],
+            'language3'            => $languages[2],
+            'lat'                  => $lat,
+            'lon'                  => $lon,
+            'minbinary_edu'        => $edu,
+            'need_emp'             => $needEmp,
+            'ondutytime'           => $ondutyTime,
+            'offduty_time'         => $offdutyTime,
+            'others'               => $others,
+            'source'               => '104',
+            'source_url'           => "https://www.104.com.tw/job/" . $jobId,
         ];
     }
 
     /**
-     * 轉換 104 API 來的 JOB DATA
-     * @param  object $row api 資料
-     * @return array      company 資料表資料
+     * 將新 API 的公司欄位對應到現有 company DB 欄位
+     * @param array $data API 回傳的 JSON 資料
+     * @return array company 資料表資料
      */
-    private function _convert_company_row_data($row)
+    private function _convertNewApiCompanyData($data)
     {
+        $company = isset($data['data']['company']) ? $data['data']['company'] : [];
+
+        // 公司代碼
+        $cCode = null;
+        if (isset($company['custNo'])) {
+            $cCode = $company['custNo'];
+        } elseif (isset($company['link'])) {
+            // 從公司連結取得代碼，格式如 //www.104.com.tw/company/xxxxx
+            if (preg_match('/\/company\/([a-zA-Z0-9_]+)/', $company['link'], $m)) {
+                $cCode = $m[1];
+            }
+        }
+
+        // 地址
+        $address = isset($company['addr']) ? $company['addr'] : null;
+        $addrNoDescript = isset($company['addrNoDesc']) ? $company['addrNoDesc'] : null;
+
+        // 產業類別
+        $indcat = isset($company['industry']) ? $company['industry'] : null;
+
+        // 公司連結
+        $link = isset($company['link']) ? $company['link'] : null;
+        if ($link && strpos($link, 'http') !== 0) {
+            $link = 'https:' . $link;
+        }
+
+        // 產品/服務
+        $product = isset($company['product']) ? $company['product'] : null;
+
+        // 公司簡介
+        $profile = isset($company['profile']) ? $company['profile'] : null;
+
+        // 福利
+        $welfare = isset($company['welfare']) ? $company['welfare'] : null;
+        // welfare 有時候在 data.welfare
+        if (!$welfare && isset($data['data']['welfare'])) {
+            $welfareData = $data['data']['welfare'];
+            if (isset($welfareData['welfare']) && is_string($welfareData['welfare'])) {
+                $welfare = $welfareData['welfare'];
+            }
+        }
+
         return [
-            'name'             => isset($row['NAME'])             ? $row['NAME'] : NULL,
-            'c_code'           => isset($row['C'])                ? $row['C'] : NULL,
-            'addr_no_descript' => isset($row['ADDR_NO_DESCRIPT']) ? $row['ADDR_NO_DESCRIPT'] : NULL,
-            'address'          => isset($row['ADDRESS'])          ? $row['ADDRESS'] : NULL,
-            'addr_indzone'     => isset($row['ADDR_INDZONE'])     ? $row['ADDR_INDZONE'] : NULL,
-            'indcat'           => isset($row['INDCAT'])           ? $row['INDCAT'] : NULL,
-            'link'             => isset($row['LINK'])             ? $row['LINK'] : NULL,
-            'product'          => isset($row['PRODUCT'])          ? $row['PRODUCT'] : NULL,
-            'profile'          => isset($row['PROFILE'])          ? $row['PROFILE'] : NULL,
-            'welfare'          => isset($row['WELFARE'])          ? $row['WELFARE'] : NULL,
+            'name'             => isset($company['name']) ? $company['name'] : null,
+            'c_code'           => $cCode,
+            'addr_no_descript' => $addrNoDescript,
+            'address'          => $address,
+            'indcat'           => $indcat,
+            'link'             => $link,
+            'product'          => $product,
+            'profile'          => $profile,
+            'welfare'          => $welfare,
         ];
     }
 
     /**
-     * 從 104 API 取得工作資料
+     * 從 104 取得工作資料（兩階段：Selenium 取 ID + Curl 取詳情）
      * @param array|null $conditions 查詢條件
-     * @return array|null 包含 data, RECORDCOUNT, PAGE, TOTALPAGE 等資訊的陣列，失敗時回傳 null
+     * @return array|null 包含 data, total_count, page, total_page 等資訊的陣列
      */
     public function getJobs($conditions = NULL)
     {
         // 設定更新時的查詢條件
-        if ($conditions)
-        {
+        if ($conditions) {
             $this->_set_update_condition($conditions);
         }
 
-        // 取得 api 網址，查詢資料
-        $url = $this->_get_api_url();
-        $json_data = Curl::get_json_data($url);
+        $page = isset($conditions['page']) ? $conditions['page'] : 1;
 
-        return $json_data;
+        // 第一階段：用 Selenium 取得 Job ID 列表
+        $searchResult = $this->_getJobIdsFromSearchPage($conditions, $page);
+
+        if (empty($searchResult['job_ids'])) {
+            return null;
+        }
+
+        // 第二階段：用 Curl 取得每筆職缺的詳細資料
+        $jobsData = [];
+        foreach ($searchResult['job_ids'] as $jobId) {
+            $detail = $this->_getJobDetail($jobId);
+            if ($detail) {
+                $jobsData[] = [
+                    'job_id' => $jobId,
+                    'detail' => $detail,
+                ];
+            }
+            // 避免請求太快被封鎖
+            usleep(500000); // 0.5 秒
+        }
+
+        return [
+            'data'        => $jobsData,
+            'total_count' => $searchResult['total_count'],
+            'page'        => $page,
+            'total_page'  => $searchResult['total_page'],
+            'search_url'  => $searchResult['search_url'],
+        ];
     }
 
     /**
@@ -210,76 +510,89 @@ class Job104 extends JobBase
         // 取得工作資料
         $json_data = $this->getJobs($conditions);
 
-        // 取得額外資訊
-        $api_condition_response = '';
-        if ($this->_preview_mode)
-        {
-            $url = $this->_get_api_url();
-            $api_condition_response = Curl::get_response(str_replace('&fmt=8', '&fmt=9', $url))['data'];
+        // 取不到資料時
+        if (!$json_data) {
+            return [
+                'source'              => self::class,
+                'preview_mode'        => $this->_preview_mode,
+                'record_count'        => 0,
+                'finish_record_count' => 0,
+                'page'                => 1,
+                'total_page'          => 1,
+                'finish_percent'      => '0.00',
+                'error'               => '資料取得錯誤（無法從搜尋頁取得職缺 ID）',
+            ];
         }
 
-        // 取不到資料時
-        if ( ! $json_data)
-        {
-            return ['資料取得錯誤'];
+        $page = $json_data['page'];
+        $totalPage = $json_data['total_page'];
+        $totalCount = $json_data['total_count'];
+        $pageSize = isset($conditions['pgsz']) ? $conditions['pgsz'] : 20;
+
+        // 預灠模式：顯示搜尋結果資訊
+        if ($this->_preview_mode) {
+            $previewData = [];
+            foreach ($json_data['data'] as $item) {
+                $jobData = $this->_convertNewApiJobData($item['detail'], $item['job_id']);
+                $companyData = $this->_convertNewApiCompanyData($item['detail']);
+                $previewData[] = [
+                    'job'     => $jobData,
+                    'company' => $companyData,
+                ];
+            }
+
+            return [
+                'source'              => self::class,
+                'preview_mode'        => true,
+                'search_url'          => $json_data['search_url'],
+                'record_count'        => $totalCount,
+                'finish_record_count' => count($json_data['data']),
+                'page'                => $page,
+                'total_page'          => $totalPage,
+                'finish_percent'      => '100.00',
+                'preview_data'        => $previewData,
+            ];
         }
 
         // 寫入資料
-        if ( ! $this->_preview_mode)
-        {
-            foreach ($json_data['data'] as $row)
-            {
-                // 寫入 company 資料表
-                if (!isset($row['C']))
-                {
-                	print_r($row);
-                	echo "該筆垃圾 ";
-                	continue;
-                }
+        foreach ($json_data['data'] as $item) {
+            $jobId = $item['job_id'];
+            $detail = $item['detail'];
 
-            	$company_data = $this->_convert_company_row_data($row);
-
-                $companyID = Company::insert($company_data);
-
-                // 寫入 job 資料表
-                $job_data = $this->_convert_job_row_data($row);
-
-                $job_data['companyID'] = $companyID;
-
-                //var_dump($job_data);
-                $jobID = Job::insert($job_data);
+            // 轉換並寫入 company 資料表
+            $companyData = $this->_convertNewApiCompanyData($detail);
+            if (!$companyData['c_code']) {
+                echo "職缺 {$jobId} 無公司代碼，跳過\n";
+                continue;
             }
-        }
+            $companyID = Company::insert($companyData);
 
-        // 回傳資料
-        $record_count        = $json_data['RECORDCOUNT'];
-        $page_size           = (isset($conditions['pgsz'])) ? $conditions['pgsz'] : 20;
-        $page                = $json_data['PAGE'];
-        $total_page          = $json_data['TOTALPAGE'];
-        $finish_record_count = $page_size * $page;
+            // 轉換並寫入 job 資料表
+            $jobData = $this->_convertNewApiJobData($detail, $jobId);
+            $jobData['companyID'] = $companyID;
+            $jobID = Job::insert($jobData);
+        }
 
         // 計算完成度
-        if ($page == $total_page)
-        {
-            $finish_percent = '100.00';
-            $finish_record_count = $record_count;
-        }
-        else
-        {
-            $finish_percent = number_format(($finish_record_count / $record_count) * 100, 2);
+        $finishRecordCount = $pageSize * $page;
+        if ($page >= $totalPage) {
+            $finishPercent = '100.00';
+            $finishRecordCount = $totalCount;
+        } else {
+            $finishPercent = $totalCount > 0
+                ? number_format(($finishRecordCount / $totalCount) * 100, 2)
+                : '0.00';
         }
 
         return [
             'source'              => self::class,
             'preview_mode'        => $this->_preview_mode,
-            'api_url'             => $this->_get_api_url(),
-            'condition'           => $api_condition_response,
-            'record_count'        => $record_count,
-            'finish_record_count' => $finish_record_count,
-            'page_size'           => $page_size,
+            'search_url'          => $json_data['search_url'],
+            'record_count'        => $totalCount,
+            'finish_record_count' => $finishRecordCount,
             'page'                => $page,
-            'total_page'          => $total_page,
-            'finish_percent'      => $finish_percent
+            'total_page'          => $totalPage,
+            'finish_percent'      => $finishPercent,
         ];
     }
 

@@ -10,7 +10,8 @@
         "sunra/php-simple-html-dom-parser": "^1.5",
         "doctrine/dbal": "^3.0",
         "fabpot/goutte": "^4.0",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "php-webdriver/webdriver": "^1.15"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

@@ -21,6 +21,7 @@ class Job104GetJobsTest extends TestCase
     {
         $job104 = new Job104();
         $result = $job104->getJobs($this->getTestConditions());
+        echo "result => " . json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . PHP_EOL;
 
         // API 可能因外部因素無法取得資料，允許回傳 null 或 array
         $this->assertTrue($result === null || is_array($result));
